@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015-2016 Red Hat, Inc, and individual contributors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>29</version>
+    </parent>
+
+    <groupId>org.jboss.schlawiner</groupId>
+    <artifactId>schlawiner-parent</artifactId>
+    <name>Schlawiner</name>
+    <version>0.5</version>
+    <packaging>pom</packaging>
+    <description>Puzzle and Dice Game</description>
+    <url>http://hpehl.github.com/schlawiner/</url>
+
+    <developers>
+        <developer>
+            <name>Harald Pehl</name>
+            <id>hpehl</id>
+            <email>hpehl@redhat.com</email>
+            <organization>Red Hat</organization>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://repository.jboss.org/licenses/apache-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:hpehl/schlawiner.git</connection>
+        <developerConnection>scm:git:git@github.com:hpehl/schlawiner.git</developerConnection>
+        <url>git@github.com:hpehl/schlawiner.git</url>
+    </scm>
+
+    <properties>
+        <gwt.draftCompile>true</gwt.draftCompile>
+        <gwt.failOnError>true</gwt.failOnError>
+        <gwt.logLevel>INFO</gwt.logLevel>
+        <gwt.optimize>0</gwt.optimize>
+        <gwt.style>DETAILED</gwt.style>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <guava.version>26.0-jre</guava.version>
+        <gwt.version>2.8.2</gwt.version>
+        <junit.version>5.3.1</junit.version>
+        <mockito.version>2.22.0</mockito.version>
+        <vertx.version>3.5.3</vertx.version>
+    </properties>
+
+    <modules>
+        <module>engine</module>
+    </modules>
+
+    <dependencyManagement>
+        <!-- Ordered by artifactId (a-z) -->
+        <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt</artifactId>
+                <version>${gwt.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-stack-depchain</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
