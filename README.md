@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/hpehl/schlawiner.png?branch=master)](https://travis-ci.org/hpehl/schlawiner)
-
 # Puzzle and Dice Game
 
 Schlawiner is a game of dice where you have to reach numbers between 1 and 100 using the basic arithmetics +, -, * and / in any order. The game is played with three dice. Each dice number can be multiplied with 10 or 100 and must be used exactly once.
@@ -44,18 +42,5 @@ Schlawiner is a game of dice where you have to reach numbers between 1 and 100 u
 </table>
 
 The differences between the numbers and the calculated results are summed up. The player with the smallest difference wins.
-
-# Play online
-
-A first working version of Schlawiner is online:
-- OpenShift: https://schlawiner-hpehl.rhcloud.com
-- Chrome Web Store: https://chrome.google.com/webstore/detail/schlawiner/kdejnglllpddknpckoffanchkbjhjlkb
-- Firefox Marketplace: https://marketplace.firefox.com/app/schlawiner/
-
-# Implementation Details
-
-Schlawiner was build using the following stack:
-- Errai: http://www.jboss.org/errai
-- HTML5 / CSS3 / SVG (you'll need a modern browser to play Schlawiner - no IE < 10)
 
 Have fun!
