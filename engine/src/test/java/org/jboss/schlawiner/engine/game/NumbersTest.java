@@ -7,43 +7,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class NumbersTest {
-    Numbers numbers;
+class NumbersTest {
+
+    private Numbers numbers;
 
     @BeforeEach
     void setUp() {
-        numbers = new Numbers();
+        numbers = new Numbers(10);
     }
 
     @Test
     void newInstance() {
-        assertEquals(-1, numbers.index());
         assertEquals(-1, numbers.current());
-        assertFalse(numbers.hasNext());
-        assertTrue(numbers.isEmpty());
-        assertEquals(0, numbers.size());
+        assertEquals(-1, numbers.index());
+        assertEquals(10, numbers.size());
+        assertTrue(0 != numbers.next());
+        assertTrue(numbers.hasNext());
+        assertFalse(numbers.isEmpty());
+
     }
 
     @Test
     void next() {
-        numbers.reset(10);
-        assertEquals(-1, numbers.index());
-        assertEquals(-1, numbers.current());
-        assertFalse(numbers.isEmpty());
-        assertEquals(10, numbers.size());
-        assertTrue(0 != numbers.next());
-        assertTrue(0 != numbers.current());
-        assertEquals(0, numbers.index());
-    }
+        numbers.next();
 
-    @Test
-    void hasNext() {
-        numbers.reset(1);
-        assertFalse(numbers.isEmpty());
-        assertEquals(1, numbers.size());
-        assertTrue(numbers.hasNext());
-        assertTrue(0 != numbers.next());
         assertEquals(0, numbers.index());
-        assertFalse(numbers.hasNext());
+        assertEquals(10, numbers.size());
+        assertTrue(0 != numbers.current());
+        assertTrue(0 != numbers.next());
+        assertTrue(numbers.hasNext());
+        assertFalse(numbers.isEmpty());
     }
 }

@@ -1,7 +1,5 @@
 package org.jboss.schlawiner.engine.algorithm;
 
-import org.jboss.schlawiner.engine.operation.Operations;
-
 public class OperationAlgorithm extends AbstractAlgorithm {
 
     OperationAlgorithm() {

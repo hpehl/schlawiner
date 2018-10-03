@@ -7,15 +7,13 @@ import com.google.common.collect.Iterators;
 
 public class Numbers implements Iterable<Integer> {
 
+    private final int count;
     private int index;
     private int current;
     private Integer[] numbers;
 
-    public Numbers() {
-        reset(0);
-    }
-
-    public void reset(int count) {
+    public Numbers(int count) {
+        this.count = count;
         this.index = -1;
         this.current = -1;
         this.numbers = new Integer[count];

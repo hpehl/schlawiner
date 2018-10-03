@@ -6,23 +6,18 @@ import com.google.common.collect.Iterables;
 
 import static com.google.common.base.Strings.emptyToNull;
 
-public class DiceNumberChecker {
+public final class DiceValidator {
 
     private final static int[] MULTIPLIERS = new int[]{1, 10, 100};
-    private final int[] diceNumbers;
 
-    public DiceNumberChecker(int[] diceNumbers) {
-        this.diceNumbers = diceNumbers;
-    }
-
-    public void check(String term) {
+    public static void validate(Dice dice, String term) throws ArithmeticException {
         int termNumbers[] = extractTermNumbers(term, true);
-        if (termNumbers.length < diceNumbers.length) {
+        if (termNumbers.length < dice.numbers.length) {
             throw new ArithmeticException("The term contains not all dice numbers.");
-        } else if (termNumbers.length > diceNumbers.length) {
+        } else if (termNumbers.length > dice.numbers.length) {
             throw new ArithmeticException("The term contains more numbers than diced.");
         } else {
-            boolean[] used = internalUsed(termNumbers);
+            boolean[] used = internalUsed(dice, termNumbers);
             for (int i = 0; i < used.length; i++) {
                 if (!used[i]) {
                     throw new ArithmeticException("You have not used all the dice numbers.");
@@ -31,20 +26,20 @@ public class DiceNumberChecker {
         }
     }
 
-    public boolean[] used(String term) {
+    public static boolean[] used(Dice dice, String term) {
         int termNumbers[] = extractTermNumbers(term, false);
-        return internalUsed(termNumbers);
+        return internalUsed(dice, termNumbers);
     }
 
-    private boolean[] internalUsed(int[] termNumbers) {
-        boolean[] used = new boolean[diceNumbers.length];
+    private static boolean[] internalUsed(Dice dice, int[] termNumbers) {
+        boolean[] used = new boolean[dice.numbers.length];
 
         number:
         for (int i = 0; i < termNumbers.length; i++) {
-            for (int j = 0; j < diceNumbers.length; j++) {
+            for (int j = 0; j < dice.numbers.length; j++) {
                 if (!used[j]) {
                     for (int k = 0; k < MULTIPLIERS.length; k++) {
-                        used[j] = termNumbers[i] == diceNumbers[j] * MULTIPLIERS[k];
+                        used[j] = termNumbers[i] == dice.numbers[j] * MULTIPLIERS[k];
                         if (used[j]) {
                             continue number;
                         }
@@ -55,7 +50,7 @@ public class DiceNumberChecker {
         return used;
     }
 
-    private int[] extractTermNumbers(String term, boolean picky) {
+    private static int[] extractTermNumbers(String term, boolean picky) {
         if (emptyToNull(term) == null || term.trim().length() == 0) {
             if (picky) {
                 throw new ArithmeticException("Empty term");
@@ -80,5 +75,8 @@ public class DiceNumberChecker {
             }
         }
         return result;
+    }
+
+    private DiceValidator() {
     }
 }

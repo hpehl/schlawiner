@@ -1,33 +1,21 @@
 package org.jboss.schlawiner.engine.game;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Iterators;
 
+import static java.util.Collections.unmodifiableList;
+
 public class Players implements Iterable<Player> {
 
     private final List<Player> players;
-    private Iterator<Player> iterator;
-    private Player me;
-    private Player computer;
+    private final Iterator<Player> iterator;
     private Player current;
 
-    public Players() {
-        this.players = new ArrayList<>();
-        reset();
-    }
-
-    void defaultPlayers() {
-        me = new Player("Player 1", true);
-        players.add(me);
-        computer = new Player("Computer", false);
-        players.add(computer);
-    }
-
-    public void reset() {
-        iterator = Iterators.cycle(players);
+    public Players(List<Player> players) {
+        this.players = unmodifiableList(players);
+        this.iterator = Iterators.cycle(players);
     }
 
     public Player next() {
@@ -45,23 +33,8 @@ public class Players implements Iterable<Player> {
         return current != null && players.indexOf(current) == players.size() - 1;
     }
 
-    public void add(Player player) {
-        players.add(player);
-    }
-
-    public void remove(Player player) {
-        if (player.equals(current)) {
-            current = null;
-        }
-        players.remove(player);
-    }
-
     public Player current() {
         return current;
-    }
-
-    public Player me() {
-        return me;
     }
 
     @Override
@@ -79,9 +52,5 @@ public class Players implements Iterable<Player> {
 
     public boolean isEmpty() {
         return players.isEmpty();
-    }
-
-    public void clear() {
-        players.clear();
     }
 }

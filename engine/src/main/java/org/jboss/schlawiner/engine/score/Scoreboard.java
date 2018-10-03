@@ -13,29 +13,25 @@ import org.jboss.schlawiner.engine.game.Players;
 
 public class Scoreboard {
 
+    private Players players;
+    private Numbers numbers;
     private NumberScore[] numberScores;
     private PlayerScore[] playerScores;
     private Map<Player, Integer> playerSums;
-    private Numbers numbers;
-    private Players players;
 
-    Scoreboard() {
-        numberScores = new NumberScore[0];
-        playerSums = new HashMap<>();
-    }
-
-    public void reset(Players players, Numbers numbers) {
+    public Scoreboard(Players players, Numbers numbers) {
         this.players = players;
         this.numbers = numbers;
+        this.numberScores = new NumberScore[numbers.size()];
+        this.playerScores = new PlayerScore[players.size()];
+        this.playerSums = new HashMap<>();
 
         int numberIndex = 0;
-        numberScores = new NumberScore[numbers.size()];
         for (Integer number : numbers) {
             numberScores[numberIndex] = new NumberScore(numberIndex, number, players);
             numberIndex++;
         }
         int playerIndex = 0;
-        playerScores = new PlayerScore[players.size()];
         for (Player player : players) {
             playerScores[playerIndex++] = new PlayerScore(player, numbers);
             playerSums.put(player, 0);

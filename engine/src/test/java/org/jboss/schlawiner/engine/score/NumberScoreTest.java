@@ -5,53 +5,45 @@ import org.jboss.schlawiner.engine.game.Players;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.util.Arrays.asList;
 import static org.jboss.schlawiner.engine.score.Score.EMPTY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NumberScoreTest {
-    private Player me;
-    private Player computer;
     private Player foo;
+    private Player bar;
+    private Players players;
     private Score one = new Score("1", 1);
     private Score two = new Score("2", 2);
     private NumberScore numberScore;
 
     @BeforeEach
     void setUp() {
-        Players players = new Players();
-        players.clear();
-        me = new Player("Harald", true);
-        computer = new Player("MacBook", false);
-        foo = new Player("Foo", true);
-        players.add(me);
-        players.add(computer);
-
+        foo = new Player("foo", true);
+        bar = new Player("bar", true);
+        players = new Players(asList(foo, bar));
         numberScore = new NumberScore(0, 42, players);
     }
 
     @Test
     void newInstance() {
         assertEquals(42, numberScore.getNumber());
-        assertEquals(EMPTY, numberScore.getScore(me));
-        assertEquals(EMPTY, numberScore.getScore(computer));
         assertEquals(EMPTY, numberScore.getScore(foo));
-        assertFalse(numberScore.hasScore(me));
-        assertFalse(numberScore.hasScore(computer));
+        assertEquals(EMPTY, numberScore.getScore(bar));
         assertFalse(numberScore.hasScore(foo));
+        assertFalse(numberScore.hasScore(bar));
     }
 
     @Test
     void scores() {
-        numberScore.setScore(me, one);
-        numberScore.setScore(foo, two);
+        numberScore.setScore(foo, one);
+        numberScore.setScore(bar, two);
 
-        assertEquals(1, numberScore.getScore(me).getDifference());
-        assertEquals(EMPTY, numberScore.getScore(computer));
-        assertEquals(EMPTY, numberScore.getScore(foo));
-        assertTrue(numberScore.hasScore(me));
-        assertFalse(numberScore.hasScore(computer));
-        assertFalse(numberScore.hasScore(foo));
+        assertEquals(1, numberScore.getScore(foo).getDifference());
+        assertEquals(2, numberScore.getScore(bar).getDifference());
+        assertTrue(numberScore.hasScore(foo));
+        assertTrue(numberScore.hasScore(bar));
     }
 }

@@ -1,6 +1,4 @@
-package org.jboss.schlawiner.engine.operation;
-
-import org.jboss.schlawiner.engine.algorithm.Solution;
+package org.jboss.schlawiner.engine.algorithm;
 
 public final class Operations {
 

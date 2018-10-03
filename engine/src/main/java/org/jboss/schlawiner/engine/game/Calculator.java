@@ -1,25 +1,23 @@
-package org.jboss.schlawiner.engine.calculator;
+package org.jboss.schlawiner.engine.game;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import com.google.common.base.CharMatcher;
-import org.jboss.schlawiner.engine.game.DiceNumberChecker;
 import org.jboss.schlawiner.engine.term.Operator;
 
-public class Calculator {
+public final class Calculator {
 
-    public int calculate(String term, int[] diceNumbers) throws ArithmeticException {
-        DiceNumberChecker checker = new DiceNumberChecker(diceNumbers);
-        checker.check(term);
+    public static int calculate(String term, Dice dice) throws ArithmeticException {
+        DiceValidator.validate(dice, term);
 
         String[] tokens = split(term);
         String[] rpn = infixToRPN(tokens);
         return evalRpn(rpn);
     }
 
-    private String[] split(String expression) {
+    private static String[] split(String expression) {
         StringBuilder number = new StringBuilder();
         List<String> tokens = new ArrayList<>();
         CharMatcher ops = CharMatcher.anyOf("()+-*/");
@@ -44,7 +42,7 @@ public class Calculator {
         return tokens.toArray(new String[0]);
     }
 
-    private String[] infixToRPN(String[] tokens) {
+    private static String[] infixToRPN(String[] tokens) {
         ArrayList<String> out = new ArrayList<>();
         Stack<String> stack = new Stack<>();
         for (String token : tokens) {
@@ -81,12 +79,12 @@ public class Calculator {
         return out.toArray(new String[0]);
     }
 
-    private boolean isOperator(String token) {
+    private static boolean isOperator(String token) {
         Operator op = Operator.toOperator(token);
         return op != null;
     }
 
-    private int cmpPrecedence(String token1, String token2) {
+    private static int cmpPrecedence(String token1, String token2) {
         if (!isOperator(token1) || !isOperator(token2)) {
             throw new ArithmeticException("Invalid tokens: " + token1 + " " + token2);
         }
@@ -94,7 +92,7 @@ public class Calculator {
         return Operator.toOperator(token1).precedence() - Operator.toOperator(token2).precedence();
     }
 
-    private int evalRpn(String[] rpn) {
+    private static int evalRpn(String[] rpn) {
         Stack<String> stack = new Stack<>();
 
         // For each token
@@ -157,5 +155,8 @@ public class Calculator {
         } catch (NumberFormatException e) {
             throw new ArithmeticException("No valid expression: " + pop);
         }
+    }
+
+    private Calculator() {
     }
 }

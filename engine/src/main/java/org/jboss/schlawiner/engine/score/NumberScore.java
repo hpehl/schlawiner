@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Players;
 
+/** Stores the score per number */
 public class NumberScore {
 
     private final int index;

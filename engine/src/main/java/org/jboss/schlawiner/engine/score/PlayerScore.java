@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
 
+/** Stores the score per player */
 public class PlayerScore {
 
     private final Player player;

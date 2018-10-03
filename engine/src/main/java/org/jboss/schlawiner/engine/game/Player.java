@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Player {
 
-    private String name;
-    private boolean human;
+    private final String name;
+    private final boolean human;
     private int retries;
 
     public Player(String name, boolean human) {
@@ -39,10 +39,6 @@ public class Player {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isHuman() {
