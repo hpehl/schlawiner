@@ -1,0 +1,41 @@
+package org.jboss.schlawiner.console;
+
+public interface Texts {
+
+    String BANNER = "\n" +
+        "                                                           ____\n" +
+        "                                                          /\\' .\\    _____\n" +
+        "                                                         /: \\___\\  / .  /\\\n" +
+        "                                                         \\' / . / /____/..\\\n" +
+        "                                                          \\/___/  \\'  '\\  /\n" +
+        "  _________      .__    .__                .__                     \\'__'\\/\n" +
+        " /   _____/ ____ |  |__ |  | _____ __  _  _|__| ____   ___________\n" +
+        " \\_____  \\_/ ___\\|  |  \\|  | \\__  \\\\ \\/ \\/ /  |/    \\_/ __ \\_  __ \\\n" +
+        " /        \\  \\___|   Y  \\  |__/ __ \\\\     /|  |   |  \\  ___/|  | \\/\n" +
+        "/_______  /\\___  >___|  /____(____  /\\/\\_/ |__|___|  /\\___  >__|\n" +
+        "        \\/     \\/     \\/          \\/               \\/     \\/\n";
+
+    String MAIN = "\n" +
+        "# Main Menu\n\n" +
+        "[1] Settings\n" +
+        "[2] Players\n" +
+        "[3] Play\n" +
+        "[0] Exit\n\n";
+
+    String SETTINGS = "\n" +
+        "## Settings\n\n" +
+        "[1] Numbers:\t%3d\n" +
+        "[2] Timeout:\t%3d\n" +
+        "[3] Retries:\t%3d\n" +
+        "[4] Penalty:\t%3d\n" +
+        "[5] Auto Dice:\t%s\n" +
+        "[6] Level:\t%s\n" +
+        "[0] Back\n\n";
+
+    String PLAYERS = "\n" +
+        "## Players\n\n" +
+        "[1] Add Player\n" +
+        "[2] Show Players\n" +
+        "[3] Remove Player\n" +
+        "[0] Back\n\n";
+}

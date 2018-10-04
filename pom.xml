@@ -72,16 +72,26 @@
         <gwt.version>2.8.2</gwt.version>
         <junit.version>5.3.1</junit.version>
         <mockito.version>2.22.0</mockito.version>
+        <slf4j.version>1.5.3</slf4j.version>
+        <textio.version>3.3.0</textio.version>
         <vertx.version>3.5.3</vertx.version>
     </properties>
 
     <modules>
+        <module>console</module>
         <module>engine</module>
     </modules>
 
     <dependencyManagement>
-        <!-- Ordered by artifactId (a-z) -->
         <dependencies>
+            <!-- Schlawiner dependencies -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>schlawiner-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- External dependencies ordered by artifactId (a-z) -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -100,6 +110,11 @@
                 <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.beryx</groupId>
+                <artifactId>text-io</artifactId>
+                <version>${textio.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>

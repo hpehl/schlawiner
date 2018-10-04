@@ -30,7 +30,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" + name + (human ? ": human" : ": computer") + '}';
+        return name + (human ? ": human" : ": computer");
     }
 
     public void retry() {

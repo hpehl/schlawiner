@@ -41,6 +41,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
         this(DEFAULT_DIFFERENCE);
     }
 
+    // WARNING: if allowedDifference < DEFAULT_DIFFERENCE, compute() might return empty solutions!
     AbstractAlgorithm(int allowedDifference) {
         this.allowedDifference = allowedDifference;
     }
