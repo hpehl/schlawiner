@@ -19,4 +19,9 @@ class Score {
     int getDifference() {
         return difference;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(term) + " Δ " + difference;
+    }
 }

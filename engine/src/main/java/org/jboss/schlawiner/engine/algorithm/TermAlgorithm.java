@@ -15,7 +15,7 @@ public class TermAlgorithm extends AbstractAlgorithm {
     private static final String C = "c";
     private final List<Term> terms;
 
-    TermAlgorithm() {
+    public TermAlgorithm() {
         super();
         terms = new ArrayList<>();
 

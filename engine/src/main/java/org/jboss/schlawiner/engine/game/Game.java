@@ -2,15 +2,22 @@ package org.jboss.schlawiner.engine.game;
 
 import org.jboss.schlawiner.engine.score.Scoreboard;
 
+/** Game state machine w/o handling of timeouts */
 public interface Game {
 
-    void start();
+    void next();
 
     boolean hasNext();
 
+    void dice(Dice dice);
+
+    void retry();
+
+    void penalty();
+
     void solution(String term);
 
-    void penalty(int points);
+    Dice getDice();
 
-    Scoreboard gameover();
+    Scoreboard getScoreboard();
 }

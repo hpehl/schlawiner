@@ -3,8 +3,7 @@ package org.jboss.schlawiner.engine.game;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.Iterators;
-
+import static com.google.common.collect.Iterators.cycle;
 import static java.util.Collections.unmodifiableList;
 
 public class Players implements Iterable<Player> {
@@ -15,7 +14,7 @@ public class Players implements Iterable<Player> {
 
     public Players(List<Player> players) {
         this.players = unmodifiableList(players);
-        this.iterator = Iterators.cycle(players);
+        this.iterator = cycle(players);
     }
 
     public Player next() {

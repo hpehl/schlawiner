@@ -1,5 +1,7 @@
 package org.jboss.schlawiner.engine.algorithm;
 
+import static java.lang.System.out;
+
 public class FindDifference {
     private static final int[][] DICE_NUMBER_COMBINATIONS = new int[][]{
             {1, 1, 1},
@@ -64,14 +66,13 @@ public class FindDifference {
         int allowedDifference = 0;
         while (true) {
             boolean solutionForAnyCombination = true;
-            System.out.println("Checking " + allowedDifference);
+            out.printf("Checking %2d%n", allowedDifference);
             Algorithm algorithm = new OperationAlgorithm(allowedDifference);
 
             mainLoop:
             for (int target = 1; target < 101; target++) {
-                for (int[] DICE_NUMBER_COMBINATION : DICE_NUMBER_COMBINATIONS) {
-                    Solutions solutions = algorithm.compute(DICE_NUMBER_COMBINATION[0], DICE_NUMBER_COMBINATION[1],
-                            DICE_NUMBER_COMBINATION[2], target);
+                for (int[] dnc : DICE_NUMBER_COMBINATIONS) {
+                    Solutions solutions = algorithm.compute(dnc[0], dnc[1], dnc[2], target);
                     if (solutions.size() == 0) {
                         solutionForAnyCombination = false;
                         break mainLoop;
@@ -80,7 +81,7 @@ public class FindDifference {
             }
 
             if (solutionForAnyCombination) {
-                System.out.println("\nMax difference: " + allowedDifference);
+                out.println("\nMax difference: " + allowedDifference);
                 break;
             }
             allowedDifference++;

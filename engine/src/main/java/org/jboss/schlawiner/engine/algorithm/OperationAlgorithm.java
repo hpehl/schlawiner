@@ -2,11 +2,11 @@ package org.jboss.schlawiner.engine.algorithm;
 
 public class OperationAlgorithm extends AbstractAlgorithm {
 
-    OperationAlgorithm() {
+    public OperationAlgorithm() {
         super();
     }
 
-    OperationAlgorithm(int allowedDifference) {
+    public OperationAlgorithm(int allowedDifference) {
         super(allowedDifference);
     }
 

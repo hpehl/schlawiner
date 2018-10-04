@@ -12,6 +12,7 @@ public class Numbers implements Iterable<Integer> {
     private int current;
     private Integer[] numbers;
 
+    /** Generates {@code count} random numbers */
     public Numbers(int count) {
         this.count = count;
         this.index = -1;
@@ -20,6 +21,17 @@ public class Numbers implements Iterable<Integer> {
         Random random = new Random();
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = 1 + random.nextInt(100);
+        }
+    }
+
+    // Used for unit tests
+    Numbers(int[] numbers) {
+        this.count = numbers.length;
+        this.index = -1;
+        this.current = -1;
+        this.numbers = new Integer[count];
+        for (int i = 0; i < count; i++) {
+            this.numbers[i] = numbers[i];
         }
     }
 

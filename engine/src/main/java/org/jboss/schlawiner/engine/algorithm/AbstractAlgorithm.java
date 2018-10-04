@@ -49,10 +49,9 @@ public abstract class AbstractAlgorithm implements Algorithm {
     public Solutions compute(int a, int b, int c, int target) {
         Solutions solutions = new Solutions(target, allowedDifference);
         for (int[] multiplier : MULTIPLIERS) {
-            final int am = a * multiplier[0];
-            final int bm = b * multiplier[1];
-            final int cm = c * multiplier[2];
-
+            int am = a * multiplier[0];
+            int bm = b * multiplier[1];
+            int cm = c * multiplier[2];
             computePermutation(am, bm, cm, target, solutions);
         }
         return solutions;

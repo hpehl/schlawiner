@@ -53,11 +53,11 @@ public class Scoreboard {
         }
     }
 
-    List<NumberScore> getNumberScores() {
+    public List<NumberScore> getNumberScores() {
         return Arrays.asList(numberScores);
     }
 
-    List<PlayerScore> getPlayerScores() {
+    public List<PlayerScore> getPlayerScores() {
         return Lists.newArrayList(playerScores);
     }
 
