@@ -40,13 +40,9 @@ public class Game {
         }
     }
 
-    /** @return {@code true} if there are more numbers, otherwise returns {@code true} if it's not the last player. */
+    /** @return {@code true} if there are more numbers or if it's not the last player, {@code false} otherwise */
     public boolean hasNext() {
-        if (numbers.hasNext()) {
-            return true;
-        } else {
-            return !players.isLast();
-        }
+        return numbers.hasNext() || !players.isLast();
     }
 
     /** Sets the specified dice numbers. */
