@@ -16,10 +16,15 @@ public class Dice {
     }
 
     /** New dice with specified numbers */
-    public Dice(int number0, int number1, int number2) {
+    Dice(int number0, int number1, int number2) {
         this.numbers = new int[3];
         this.numbers[0] = number0;
         this.numbers[1] = number1;
         this.numbers[2] = number2;
+    }
+
+    @Override
+    public String toString() {
+        return numbers[0] + " " + numbers[1] + " " + numbers[2];
     }
 }

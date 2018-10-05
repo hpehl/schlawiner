@@ -14,14 +14,12 @@ import org.jboss.schlawiner.engine.game.Players;
 public class Scoreboard {
 
     private Players players;
-    private Numbers numbers;
     private NumberScore[] numberScores;
     private PlayerScore[] playerScores;
     private Map<Player, Integer> playerSums;
 
     public Scoreboard(Players players, Numbers numbers) {
         this.players = players;
-        this.numbers = numbers;
         this.numberScores = new NumberScore[numbers.size()];
         this.playerScores = new PlayerScore[players.size()];
         this.playerSums = new HashMap<>();
@@ -53,6 +51,10 @@ public class Scoreboard {
         }
     }
 
+    public Score getScore(int numberIndex, Player player) {
+        return numberScores[numberIndex].getScore(player);
+    }
+
     public List<NumberScore> getNumberScores() {
         return Arrays.asList(numberScores);
     }
@@ -61,7 +63,7 @@ public class Scoreboard {
         return Lists.newArrayList(playerScores);
     }
 
-    int getSummedScore(Player player) {
+    public int getSummedScore(Player player) {
         if (playerSums.containsKey(player)) {
             return playerSums.get(player);
         }
@@ -81,13 +83,5 @@ public class Scoreboard {
             }
         }
         return winners;
-    }
-
-    public Numbers getNumbers() {
-        return numbers;
-    }
-
-    public Players getPlayers() {
-        return players;
     }
 }

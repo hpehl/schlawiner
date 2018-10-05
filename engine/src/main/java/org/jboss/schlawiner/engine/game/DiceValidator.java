@@ -6,11 +6,11 @@ import com.google.common.collect.Iterables;
 
 import static com.google.common.base.Strings.emptyToNull;
 
-public final class DiceValidator {
+final class DiceValidator {
 
     private final static int[] MULTIPLIERS = new int[]{1, 10, 100};
 
-    public static void validate(Dice dice, String term) throws ArithmeticException {
+    static void validate(Dice dice, String term) throws ArithmeticException {
         int termNumbers[] = extractTermNumbers(term, true);
         if (termNumbers.length < dice.numbers.length) {
             throw new ArithmeticException("The term contains not all dice numbers.");
@@ -26,7 +26,7 @@ public final class DiceValidator {
         }
     }
 
-    public static boolean[] used(Dice dice, String term) {
+    static boolean[] used(Dice dice, String term) {
         int termNumbers[] = extractTermNumbers(term, false);
         return internalUsed(dice, termNumbers);
     }

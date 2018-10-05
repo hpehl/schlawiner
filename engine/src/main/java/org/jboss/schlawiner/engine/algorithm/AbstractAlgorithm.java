@@ -1,6 +1,6 @@
 package org.jboss.schlawiner.engine.algorithm;
 
-public abstract class AbstractAlgorithm implements Algorithm {
+abstract class AbstractAlgorithm implements Algorithm {
 
     // Calculated by org.jboss.schlawiner.engine.algorithm.FindDifference
     private final static int DEFAULT_DIFFERENCE = 15;

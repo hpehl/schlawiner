@@ -4,12 +4,12 @@ import com.google.common.collect.ComparisonChain;
 
 public class Solution implements Comparable<Solution> {
 
-    public static final Solution INVALID = new Solution("Invalid term", Integer.MAX_VALUE);
+    static final Solution INVALID = new Solution("Invalid term", Integer.MAX_VALUE);
+
     private final int value;
     private final String term;
 
-
-    public Solution(String term, int value) {
+    Solution(String term, int value) {
         this.value = value;
         this.term = term;
     }

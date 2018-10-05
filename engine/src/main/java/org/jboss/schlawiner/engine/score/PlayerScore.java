@@ -56,7 +56,7 @@ public class PlayerScore {
         return null;
     }
 
-    public Player getPlayer() {
+    Player getPlayer() {
         return player;
     }
 }

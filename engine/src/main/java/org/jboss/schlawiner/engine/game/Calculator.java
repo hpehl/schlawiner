@@ -7,9 +7,9 @@ import java.util.Stack;
 import com.google.common.base.CharMatcher;
 import org.jboss.schlawiner.engine.term.Operator;
 
-public final class Calculator {
+final class Calculator {
 
-    public static int calculate(String term, Dice dice) throws ArithmeticException {
+    static int calculate(String term, Dice dice) throws ArithmeticException {
         DiceValidator.validate(dice, term);
 
         String[] tokens = split(term);

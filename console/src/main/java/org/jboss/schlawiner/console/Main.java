@@ -6,9 +6,19 @@ import java.util.List;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
+import org.jboss.schlawiner.engine.algorithm.OperationAlgorithm;
+import org.jboss.schlawiner.engine.algorithm.Solution;
+import org.jboss.schlawiner.engine.game.Dice;
+import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Level;
+import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
+import org.jboss.schlawiner.engine.game.Players;
 import org.jboss.schlawiner.engine.game.Settings;
+import org.jboss.schlawiner.engine.score.Score;
+
+import static com.google.common.base.Strings.nullToEmpty;
+import static java.util.stream.Collectors.joining;
 
 public class Main {
 
@@ -29,6 +39,7 @@ public class Main {
         this.terminal = terminal;
         this.players = new ArrayList<>();
         this.settings = Settings.defaults();
+        this.settings.setAutoDice(true);
 
         terminal.println(Texts.BANNER);
     }
@@ -63,7 +74,7 @@ public class Main {
     private void settings() {
         while (true) {
             terminal.printf(Texts.SETTINGS, settings.getNumbers(), settings.getTimeout(), settings.getRetries(),
-                settings.getPenalty(), settings.isAutoDice(), settings.getLevel());
+                settings.getPenalty(), settings.getLevel());
             int option = textIO.newIntInputReader()
                 .withMinVal(0)
                 .withMaxVal(6)
@@ -98,11 +109,6 @@ public class Main {
                         .read("Penalty after timeout (1..10)"));
                     break;
                 case 5:
-                    settings.setAutoDice(textIO.newBooleanInputReader()
-                        .withDefaultValue(false)
-                        .read("Auto dice"));
-                    break;
-                case 6:
                     settings.setLevel(textIO.newEnumInputReader(Level.class)
                         .withDefaultValue(Level.MEDIUM)
                         .read("Level"));
@@ -171,6 +177,114 @@ public class Main {
     }
 
     private void play() {
+        boolean canceled = false;
+        terminal.print(Texts.PLAY);
 
+        Game game = new Game(new Players(players), new Numbers(settings.getNumbers()), new OperationAlgorithm(),
+            settings);
+        while (game.hasNext() && !canceled) {
+            game.next();
+            game.dice(new Dice());
+
+            Players players = game.getPlayers();
+            Player currentPlayer = players.current();
+            int currentNumber = game.getNumbers().current();
+            if (players.isFirst()) {
+                printScoreboard(game);
+            }
+            if (currentPlayer.isHuman()) {
+                String term = null;
+                boolean validTerm = false;
+                while (!validTerm && !canceled) {
+                    String prompt = String.format("%s try to reach %d using %s", currentPlayer.getName(), currentNumber,
+                        game.getDice());
+                    try {
+                        term = textIO.newStringInputReader().read(prompt);
+                        if ("retry".equalsIgnoreCase(term)) {
+                            if (game.retry()) {
+                                terminal.printf("You have %d retries left.%n", currentPlayer.getRetries());
+                            } else {
+                                terminal.println("Sorry you have no retries left");
+                            }
+                        } else if ("skip".equalsIgnoreCase(term)) {
+                            game.skip();
+                            validTerm = true;
+                        } else if ("exit".equalsIgnoreCase(term)) {
+                            canceled = true;
+                        } else {
+                            int difference = game.calculate(term);
+                            Solution bestSolution = game.getAlgorithm()
+                                .compute(game.getDice().numbers[0], game.getDice().numbers[1],
+                                    game.getDice().numbers[2], currentNumber)
+                                .bestSolution();
+                            int bestDifference = Math.abs(bestSolution.getValue() - currentNumber);
+                            if (difference > bestDifference) {
+                                terminal.printf("Your difference is %d. The best solution is %s (difference %d)%n",
+                                    difference, bestSolution, bestDifference);
+                            }
+                            validTerm = true;
+                        }
+                    } catch (ArithmeticException e) {
+                        terminal.printf("No valid term '%s': %s%n", term, e.getMessage());
+                    }
+                }
+            } else {
+                Solution solution = game.solve();
+                terminal.printf("%s diced %s. Solution: %s%n", currentPlayer.getName(), game.getDice(), solution);
+            }
+        }
+
+        if (!canceled) {
+            printScoreboard(game);
+            terminal.printf("Game over. ");
+            List<Player> winners = game.getScoreboard().getWinners();
+            if (winners.size() == 1) {
+                terminal.printf("The winner is %s!%n", winners.get(0).getName());
+            } else {
+                terminal.printf("The winners are %s!%n", winners.stream().map(Player::getName).collect(joining(", ")));
+            }
+        }
+        main();
+    }
+
+    private void printScoreboard(Game game) {
+        // header
+        terminal.println();
+        terminal.printf("    ");
+        for (Player player : game.getPlayers()) {
+            terminal.printf("| %-20s ", player.getName());
+        }
+        terminal.println();
+        terminal.printf("====");
+        for (Player ignored : game.getPlayers()) {
+            terminal.printf("+=================+====");
+        }
+        terminal.println();
+
+        // body
+        int numberIndex = 0;
+        for (int number : game.getNumbers()) {
+            terminal.printf("%3d ", number);
+            for (Player player : game.getPlayers()) {
+                Score score = game.getScoreboard().getScore(numberIndex, player);
+                String difference = score.getDifference() == -1 ? "  " : String.format("%2d", score.getDifference());
+                terminal.printf("| %15s | %s ", nullToEmpty(score.getTerm()), difference);
+            }
+            terminal.println();
+            numberIndex++;
+        }
+
+        // footer
+        terminal.printf("====");
+        for (Player ignored : game.getPlayers()) {
+            terminal.printf("+=================+====");
+        }
+        terminal.println();
+        terminal.printf("    ");
+        for (Player player : game.getPlayers()) {
+            terminal.printf("|                 | %2d ", game.getScoreboard().getSummedScore(player));
+        }
+        terminal.println();
+        terminal.println();
     }
 }

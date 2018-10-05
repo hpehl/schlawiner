@@ -45,7 +45,7 @@ public class NumberScore {
         return "NumberScore{#" + index + ": " + number + ", " + scores + '}';
     }
 
-    public int getNumber() {
+    int getNumber() {
         return number;
     }
 

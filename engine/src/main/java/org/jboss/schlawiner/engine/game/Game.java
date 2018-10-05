@@ -7,6 +7,7 @@ import org.jboss.schlawiner.engine.score.Scoreboard;
 
 import static java.lang.Math.abs;
 
+/** Implements the basic game workflow. */
 public class Game {
 
     private final Players players;
@@ -30,6 +31,7 @@ public class Game {
         }
     }
 
+    /** Passes the dice to the next player. If the player is the first player, then it's the next number's turn. */
     public void next() {
         players.next();
         if (players.isFirst()) {
@@ -37,39 +39,73 @@ public class Game {
         }
     }
 
+    /** @return {@code true} if there are more numbers, otherwise returns {@code true} if it's not the last player. */
     public boolean hasNext() {
-        return numbers.hasNext();
+        if (numbers.hasNext()) {
+            return true;
+        } else {
+            return !players.isLast();
+        }
     }
 
+    /** Sets the specified dice numbers. */
     public void dice(Dice dice) {
         this.dice = dice;
     }
 
-    public void retry() {
-        if (players.current().isHuman() && players.current().getRetries() > 0) {
-            players.current().retry();
-            dice(settings.isAutoDice() ? new Dice() : null);
+    /**
+     * If the current player is human and has retries left, its retry count is decreased and new dice numbers are set.
+     * Otherwise this method does nothing.
+     *
+     * @return {@code true} if retry was successful, {@code false} otherwise
+     */
+    public boolean retry() {
+        Player currentPlayer = players.current();
+        if (currentPlayer.isHuman() && currentPlayer.getRetries() > 0) {
+            currentPlayer.retry();
+            dice(new Dice());
+            return true;
         }
+        return false;
     }
 
-    public void penalty() {
-        score("penalty", settings.getPenalty());
+    /**
+     * Skips the current number and scores {@link Settings#getPenalty()} points as penalty. Does <strong>not</strong>
+     * call {@link #next()}
+     */
+    public void skip() {
+        score("Skipped", settings.getPenalty());
     }
 
+    /** Scores {@link Settings#getPenalty()} points as timeout-penalty. */
     public void timeout() {
-        score("timeout", settings.getPenalty());
+        score("Timeout", settings.getPenalty());
     }
 
-    public void calculate(String term) {
+    /**
+     * Calculates the specified term for the current dice numbers and current target number. Meant to be called for
+     * human players.
+     *
+     * @return the difference between the calculated solution and the current number
+     */
+    public int calculate(String term) {
         if (!players.current().isHuman()) {
             throw new IllegalStateException("Current player is not human.");
         } else {
             int result = Calculator.calculate(term, dice);
-            score(term, abs(result - numbers.current()));
+            int difference = abs(result - numbers.current());
+            score(term, difference);
+            return difference;
         }
     }
 
-    public void solve() {
+    /**
+     * Computes the best solution for current dice numbers and current target number based on the level. Meant to be
+     * called for computer players.
+     *
+     * @return the best solution based on the level
+     */
+    public Solution solve() {
         if (players.current().isHuman()) {
             throw new IllegalStateException("Current player is human.");
         } else {
@@ -77,6 +113,7 @@ public class Game {
                 numbers.current());
             Solution solution = solutions.bestSolution(settings.getLevel());
             score(solution.getTerm(), abs(solution.getValue() - numbers.current()));
+            return solution;
         }
     }
 
@@ -92,8 +129,8 @@ public class Game {
         return numbers;
     }
 
-    public Settings getSettings() {
-        return settings;
+    public Algorithm getAlgorithm() {
+        return algorithm;
     }
 
     public Dice getDice() {

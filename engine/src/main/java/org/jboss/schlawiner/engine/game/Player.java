@@ -33,10 +33,6 @@ public class Player {
         return name + (human ? ": human" : ": computer");
     }
 
-    public void retry() {
-        retries--;
-    }
-
     public String getName() {
         return name;
     }
@@ -49,7 +45,11 @@ public class Player {
         return retries;
     }
 
-    public void setRetries(int retries) {
+    void setRetries(int retries) {
         this.retries = retries;
+    }
+
+    void retry() {
+        retries--;
     }
 }

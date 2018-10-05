@@ -1,6 +1,6 @@
 package org.jboss.schlawiner.engine.score;
 
-class Score {
+public class Score {
 
     final static Score EMPTY = new Score(null, -1);
 
@@ -16,7 +16,7 @@ class Score {
         return term;
     }
 
-    int getDifference() {
+    public int getDifference() {
         return difference;
     }
 

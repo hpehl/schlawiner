@@ -28,8 +28,7 @@ public interface Texts {
         "[2] Timeout:\t%3d\n" +
         "[3] Retries:\t%3d\n" +
         "[4] Penalty:\t%3d\n" +
-        "[5] Auto Dice:\t%s\n" +
-        "[6] Level:\t%s\n" +
+        "[5] Level:\t%s\n" +
         "[0] Back\n\n";
 
     String PLAYERS = "\n" +
@@ -38,4 +37,10 @@ public interface Texts {
         "[2] Show Players\n" +
         "[3] Remove Player\n" +
         "[0] Back\n\n";
+
+    String PLAY = "\n" +
+        "## Play\n\n" +
+        "To dice again, enter 'retry'.\n" +
+        "To skip the current number, enter 'skip'.\n" +
+        "To cancel the game, enter 'exit'.\n";
 }
