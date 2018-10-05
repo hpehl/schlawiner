@@ -77,7 +77,7 @@ public class Main {
                 settings.getLevel());
             int option = textIO.newIntInputReader()
                 .withMinVal(0)
-                .withMaxVal(6)
+                .withMaxVal(4)
                 .read("Please choose");
             switch (option) {
                 case 1:
