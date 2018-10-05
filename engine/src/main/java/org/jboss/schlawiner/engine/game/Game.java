@@ -18,7 +18,7 @@ public class Game {
     private Scoreboard scoreboard;
     private boolean canceled;
 
-    /** Starts a new game. The retry counter of all players is set to {@link Settings#getRetries()}. */
+    /** Starts a new game. The retry counter of all human players is set to {@link Settings#getRetries()}. */
     public Game(Players players, Numbers numbers, Algorithm algorithm, Settings settings) {
         this.players = players;
         this.numbers = numbers;
