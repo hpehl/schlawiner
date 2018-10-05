@@ -41,5 +41,5 @@ public interface Texts {
         "## Play\n\n" +
         "To dice again, enter 'retry'.\n" +
         "To skip the current number, enter 'skip'.\n" +
-        "To cancel the game, enter 'exit'.\n";
+        "To cancel the game, enter 'cancel'.\n";
 }

@@ -16,6 +16,7 @@ public class Game {
     private final Settings settings;
     private Dice dice;
     private Scoreboard scoreboard;
+    private boolean canceled;
 
     /** Starts a new game. The retry counter of all players is set to {@link Settings#getRetries()}. */
     public Game(Players players, Numbers numbers, Algorithm algorithm, Settings settings) {
@@ -24,6 +25,7 @@ public class Game {
         this.algorithm = algorithm;
         this.settings = settings;
         this.scoreboard = new Scoreboard(players, numbers);
+        this.canceled = false;
 
         for (Player player : this.players) {
             if (player.isHuman()) {
@@ -40,9 +42,12 @@ public class Game {
         }
     }
 
-    /** @return {@code true} if there are more numbers or if it's not the last player, {@code false} otherwise */
+    /**
+     * @return {@code true} if there are more numbers or if it's not the last player and the game was not canceled,
+     * {@code false} otherwise
+     */
     public boolean hasNext() {
-        return numbers.hasNext() || !players.isLast();
+        return (numbers.hasNext() || !players.isLast()) && !canceled;
     }
 
     /** Sets the specified dice numbers. */
@@ -72,6 +77,11 @@ public class Game {
      */
     public void skip() {
         score("Skipped", settings.getPenalty());
+    }
+
+    /** Cancels this game */
+    public void cancel() {
+        canceled = true;
     }
 
     /** Scores {@link Settings#getPenalty()} points as penalty. Meant to be called after a timeout. */
@@ -140,5 +150,9 @@ public class Game {
 
     public Scoreboard getScoreboard() {
         return scoreboard;
+    }
+
+    public boolean isCanceled() {
+        return canceled;
     }
 }

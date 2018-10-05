@@ -170,12 +170,11 @@ public class Main {
     }
 
     private void play() {
-        boolean canceled = false;
         Game game = new Game(new Players(players), new Numbers(settings.getNumbers()), new OperationAlgorithm(),
             settings);
 
         terminal.print(Texts.PLAY);
-        while (game.hasNext() && !canceled) {
+        while (game.hasNext()) {
             game.next();
             game.dice(new Dice());
 
@@ -188,7 +187,7 @@ public class Main {
             if (currentPlayer.isHuman()) {
                 String term = null;
                 boolean validTerm = false;
-                while (!validTerm && !canceled) {
+                while (!validTerm && !game.isCanceled()) {
                     String prompt = String.format("%s try to reach %d using %s", currentPlayer.getName(), currentNumber,
                         game.getDice());
                     try {
@@ -202,8 +201,8 @@ public class Main {
                         } else if ("skip".equalsIgnoreCase(term)) {
                             game.skip();
                             validTerm = true;
-                        } else if ("exit".equalsIgnoreCase(term)) {
-                            canceled = true;
+                        } else if ("cancel".equalsIgnoreCase(term)) {
+                            game.cancel();
                         } else {
                             int difference = game.calculate(term);
                             Solution bestSolution = game.getAlgorithm()
@@ -227,7 +226,7 @@ public class Main {
             }
         }
 
-        if (!canceled) {
+        if (!game.isCanceled()) {
             printScoreboard(game);
             terminal.printf("Game over. ");
             List<Player> winners = game.getScoreboard().getWinners();
