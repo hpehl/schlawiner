@@ -7,7 +7,7 @@ import org.jboss.schlawiner.engine.score.Scoreboard;
 
 import static java.lang.Math.abs;
 
-/** Implements the basic game workflow. */
+/** Implements the basic game workflow w/o timout handling. Timeouts are meant to be implemented outside this class. */
 public class Game {
 
     private final Players players;
@@ -17,6 +17,7 @@ public class Game {
     private Dice dice;
     private Scoreboard scoreboard;
 
+    /** Starts a new game. The retry counter of all players is set to {@link Settings#getRetries()}. */
     public Game(Players players, Numbers numbers, Algorithm algorithm, Settings settings) {
         this.players = players;
         this.numbers = numbers;
@@ -77,7 +78,7 @@ public class Game {
         score("Skipped", settings.getPenalty());
     }
 
-    /** Scores {@link Settings#getPenalty()} points as timeout-penalty. */
+    /** Scores {@link Settings#getPenalty()} points as penalty. Meant to be called after a timeout. */
     public void timeout() {
         score("Timeout", settings.getPenalty());
     }
@@ -100,8 +101,8 @@ public class Game {
     }
 
     /**
-     * Computes the best solution for current dice numbers and current target number based on the level. Meant to be
-     * called for computer players.
+     * Computes the best solution for the current dice numbers and current target number based on the level. Meant to
+     * be called for computer players.
      *
      * @return the best solution based on the level
      */
