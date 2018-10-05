@@ -84,6 +84,8 @@ public class Game {
      * human players.
      *
      * @return the difference between the calculated solution and the current number
+     *
+     * @throws IllegalStateException if the current player is not human
      */
     public int calculate(String term) {
         if (!players.current().isHuman()) {
@@ -101,6 +103,8 @@ public class Game {
      * be called for computer players.
      *
      * @return the best solution based on the level
+     *
+     * @throws IllegalStateException if the current player is human
      */
     public Solution solve() {
         if (players.current().isHuman()) {
