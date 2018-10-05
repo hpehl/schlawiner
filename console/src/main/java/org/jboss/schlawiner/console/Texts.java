@@ -25,10 +25,9 @@ public interface Texts {
     String SETTINGS = "\n" +
         "## Settings\n\n" +
         "[1] Numbers:\t%3d\n" +
-        "[2] Timeout:\t%3d\n" +
-        "[3] Retries:\t%3d\n" +
-        "[4] Penalty:\t%3d\n" +
-        "[5] Level:\t%s\n" +
+        "[2] Retries:\t%3d\n" +
+        "[3] Penalty:\t%3d\n" +
+        "[4] Level:\t%s\n" +
         "[0] Back\n\n";
 
     String PLAYERS = "\n" +

@@ -73,8 +73,8 @@ public class Main {
 
     private void settings() {
         while (true) {
-            terminal.printf(Texts.SETTINGS, settings.getNumbers(), settings.getTimeout(), settings.getRetries(),
-                settings.getPenalty(), settings.getLevel());
+            terminal.printf(Texts.SETTINGS, settings.getNumbers(), settings.getRetries(), settings.getPenalty(),
+                settings.getLevel());
             int option = textIO.newIntInputReader()
                 .withMinVal(0)
                 .withMaxVal(6)
@@ -88,27 +88,20 @@ public class Main {
                         .read("Number of numbers (2..20)"));
                     break;
                 case 2:
-                    settings.setTimeout(textIO.newIntInputReader()
-                        .withMinVal(0)
-                        .withMaxVal(300)
-                        .withDefaultValue(60)
-                        .read("Timeout in seconds (0..300)"));
-                    break;
-                case 3:
                     settings.setRetries(textIO.newIntInputReader()
                         .withMinVal(0)
                         .withMaxVal(5)
                         .withDefaultValue(3)
                         .read("Number of retries (0..5)"));
                     break;
-                case 4:
+                case 3:
                     settings.setPenalty(textIO.newIntInputReader()
                         .withMinVal(1)
                         .withMaxVal(10)
                         .withDefaultValue(5)
                         .read("Penalty after timeout (1..10)"));
                     break;
-                case 5:
+                case 4:
                     settings.setLevel(textIO.newEnumInputReader(Level.class)
                         .withDefaultValue(Level.MEDIUM)
                         .read("Level"));
@@ -178,10 +171,10 @@ public class Main {
 
     private void play() {
         boolean canceled = false;
-        terminal.print(Texts.PLAY);
-
         Game game = new Game(new Players(players), new Numbers(settings.getNumbers()), new OperationAlgorithm(),
             settings);
+
+        terminal.print(Texts.PLAY);
         while (game.hasNext() && !canceled) {
             game.next();
             game.dice(new Dice());
