@@ -27,13 +27,14 @@
 
     <artifactId>schlawiner-engine</artifactId>
     <name>Schlawiner :: Engine</name>
+    <packaging>gwt-lib</packaging>
     <description>Game engine used in the frontend (single player) and backend (multi player)</description>
 
     <!-- Ordered by artifactId (a-z) -->
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <artifactId>guava-gwt</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -46,4 +47,16 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <configuration>
+                    <moduleName>org.jboss.schlawiner.Engine</moduleName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

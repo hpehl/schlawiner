@@ -65,13 +65,19 @@
         <gwt.style>DETAILED</gwt.style>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <plugin.buildhelper.version>3.0.0</plugin.buildhelper.version>
+        <plugin.gwt.version>1.0-rc-9</plugin.gwt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <elemento.version>0.8.7</elemento.version>
         <guava.version>26.0-jre</guava.version>
+        <gwt-events.version>HEAD-SNAPSHOT</gwt-events.version>
         <gwt.version>2.8.2</gwt.version>
         <junit.version>5.3.1</junit.version>
         <mockito.version>2.22.0</mockito.version>
+        <nalu.version>1.0.0-rc-2-SNAPSHOT</nalu.version>
+        <rx.gwt>0.4</rx.gwt>
         <rxjava.version>2.2.2</rxjava.version>
         <slf4j.version>1.5.3</slf4j.version>
         <textio.version>3.3.0</textio.version>
@@ -80,6 +86,7 @@
 
     <modules>
         <module>console</module>
+        <module>frontend</module>
         <module>engine</module>
     </modules>
 
@@ -92,7 +99,27 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- External dependencies ordered by artifactId (a-z) -->
+            <!-- External dependencies ordered by artifactId -->
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-core</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-template-api</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-template-processor</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava-gwt</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -106,11 +133,36 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.gwtproject.event</groupId>
+                <artifactId>gwt-event</artifactId>
+                <version>${gwt-events.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu</artifactId>
+                <version>${nalu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu-plugin-elemental2</artifactId>
+                <version>${nalu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu-processor</artifactId>
+                <version>${nalu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.intendia.gwt.rxgwt</groupId>
+                <artifactId>rxgwt</artifactId>
+                <version>${rx.gwt}</version>
             </dependency>
             <dependency>
                 <groupId>io.reactivex.rxjava2</groupId>
@@ -131,4 +183,74 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <!-- plugins ordered by artifactId -->
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${plugin.buildhelper.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.ltgt.gwt.maven</groupId>
+                    <artifactId>gwt-maven-plugin</artifactId>
+                    <version>${plugin.gwt.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <gwt.draftCompile>false</gwt.draftCompile>
+                <gwt.logLevel>INFO</gwt.logLevel>
+                <gwt.optimize>0</gwt.optimize>
+                <gwt.style>OBFUSCATED</gwt.style>
+                <grunt-task>prod</grunt-task>
+            </properties>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>vertispan-snapshots</id>
+            <name>Vertispan Snapshots</name>
+            <url>https://repo.vertispan.com/gwt-snapshot/</url>
+        </repository>
+        <repository>
+            <id>google-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/google-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>jboss-nexus</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
 </project>

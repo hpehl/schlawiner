@@ -5,7 +5,6 @@
 .settings
 .project
 .classpath
-.wakatime-project
 buildNumber.properties
 dependency-reduced-pom.xml
 gwt-unitCache
@@ -17,5 +16,7 @@ pom.xml.tag
 pom.xml.versionsBackup
 release.properties
 target
+frontend/playground
+frontend/src/chrome
+frontend/src/old
 backend
-frontend
