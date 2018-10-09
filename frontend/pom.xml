@@ -32,41 +32,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jboss.gwt.elemento</groupId>
-            <artifactId>elemento-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.gwt.elemento</groupId>
-            <artifactId>elemento-template-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.gwt.elemento</groupId>
-            <artifactId>elemento-template-processor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava-gwt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-codeserver</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.gwtproject.event</groupId>
-            <artifactId>gwt-event</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.nalukit</groupId>
             <artifactId>nalu</artifactId>
         </dependency>
@@ -79,8 +44,38 @@
             <artifactId>nalu-processor</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-gwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.intendia.gwt.rxgwt</groupId>
             <artifactId>rxgwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.gwtproject.event</groupId>
+            <artifactId>gwt-event</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.gwt.elemento</groupId>
+            <artifactId>elemento-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.gwt.elemento</groupId>
+            <artifactId>elemento-template-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.gwt.elemento</groupId>
+            <artifactId>elemento-template-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -145,7 +140,7 @@
                     </jvmArgs>
                     <draftCompile>${gwt.draftCompile}</draftCompile>
                     <failOnError>${gwt.failOnError}</failOnError>
-                    <moduleName>org.jboss.schlawiner.client.Schlawiner</moduleName>
+                    <moduleName>org.jboss.schlawiner.Schlawiner</moduleName>
                     <moduleShortName>schlawiner</moduleShortName>
                     <optimize>${gwt.optimize}</optimize>
                     <style>${gwt.style}</style>

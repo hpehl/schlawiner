@@ -99,21 +99,20 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- External dependencies ordered by artifactId -->
             <dependency>
-                <groupId>org.jboss.gwt.elemento</groupId>
-                <artifactId>elemento-core</artifactId>
-                <version>${elemento.version}</version>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu</artifactId>
+                <version>${nalu.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jboss.gwt.elemento</groupId>
-                <artifactId>elemento-template-api</artifactId>
-                <version>${elemento.version}</version>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu-plugin-elemental2</artifactId>
+                <version>${nalu.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jboss.gwt.elemento</groupId>
-                <artifactId>elemento-template-processor</artifactId>
-                <version>${elemento.version}</version>
+                <groupId>com.github.nalukit</groupId>
+                <artifactId>nalu-processor</artifactId>
+                <version>${nalu.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -133,33 +132,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.gwtproject.event</groupId>
-                <artifactId>gwt-event</artifactId>
-                <version>${gwt-events.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.nalukit</groupId>
-                <artifactId>nalu</artifactId>
-                <version>${nalu.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.nalukit</groupId>
-                <artifactId>nalu-plugin-elemental2</artifactId>
-                <version>${nalu.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.nalukit</groupId>
-                <artifactId>nalu-processor</artifactId>
-                <version>${nalu.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.intendia.gwt.rxgwt</groupId>
                 <artifactId>rxgwt</artifactId>
                 <version>${rx.gwt}</version>
@@ -170,14 +142,41 @@
                 <version>${rxjava.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-stack-depchain</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.beryx</groupId>
                 <artifactId>text-io</artifactId>
                 <version>${textio.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-stack-depchain</artifactId>
-                <version>${vertx.version}</version>
+                <groupId>org.gwtproject.event</groupId>
+                <artifactId>gwt-event</artifactId>
+                <version>${gwt-events.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-core</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-template-api</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.gwt.elemento</groupId>
+                <artifactId>elemento-template-processor</artifactId>
+                <version>${elemento.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -186,7 +185,6 @@
 
     <build>
         <pluginManagement>
-            <!-- plugins ordered by artifactId -->
             <plugins>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -211,7 +209,6 @@
                 <gwt.logLevel>INFO</gwt.logLevel>
                 <gwt.optimize>0</gwt.optimize>
                 <gwt.style>OBFUSCATED</gwt.style>
-                <grunt-task>prod</grunt-task>
             </properties>
         </profile>
     </profiles>
