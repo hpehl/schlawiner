@@ -19,11 +19,12 @@
     <inherits name="com.google.common.collect.Collect"/>
     <inherits name="com.github.nalukit.nalu.Nalu"/>
     <inherits name="com.github.nalukit.nalu.plugin.elemental2.NaluPluginElemental2"/>
-    <inherits name="org.jboss.gwt.elemento.Core"/>
     <inherits name="org.jboss.gwt.elemento.Template"/>
     <inherits name="org.jboss.schlawiner.Engine"/>
 
-    <source path="client"/>
+    <define-configuration-property name="user.name" is-multi-valued="false"/>
+    <set-configuration-property name="user.name" value="Schlawiner"/>
     <collapse-all-properties/>
+
     <entry-point class="org.jboss.schlawiner.client.Schlawiner"/>
 </module>

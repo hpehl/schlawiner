@@ -7,7 +7,7 @@ public class Schlawiner implements EntryPoint {
 
     @Override
     public void onModuleLoad() {
-        SchlawinerApplication application = new SchlawinerApplicationImpl();
+        Application application = new ApplicationImpl();
         application.run(new NaluPluginElemental2());
     }
 }

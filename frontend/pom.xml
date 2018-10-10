@@ -50,12 +50,10 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.intendia.gwt.rxgwt</groupId>
@@ -78,7 +76,7 @@
             <artifactId>elemento-template-processor</artifactId>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.jboss.schlawiner</groupId>
             <artifactId>schlawiner-engine</artifactId>
         </dependency>
     </dependencies>
@@ -98,21 +96,8 @@
                         <configuration>
                             <sources>
                                 <source>${project.build.directory}/generated-sources/annotations</source>
+                                <source>../engine/src/main/java</source>
                             </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-resources</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>add-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                </resource>
-                            </resources>
                         </configuration>
                     </execution>
                 </executions>
@@ -126,12 +111,16 @@
                         <compilerArg>${project.build.directory}/generated-sources/gwt</compilerArg>
                         <compilerArg>-Xnamespace</compilerArg>
                         <compilerArg>NONE</compilerArg>
+                        <compilerArg>-setProperty</compilerArg>
+                        <compilerArg>user.name=${user.name}</compilerArg>
                     </compilerArgs>
                     <devmodeArgs>
                         <devmodeArg>-startupUrl</devmodeArg>
-                        <devmodeArg>schlawinder/index.html</devmodeArg>
+                        <devmodeArg>schlawiner/index.html</devmodeArg>
                         <devmodeArg>-bindAddress</devmodeArg>
                         <devmodeArg>0.0.0.0</devmodeArg>
+                        <devmodeArg>-setProperty</devmodeArg>
+                        <devmodeArg>user.name=${user.name}</devmodeArg>
                     </devmodeArgs>
                     <jvmArgs>
                         <jvmArg>-Xms1024m</jvmArg>

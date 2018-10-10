@@ -38,7 +38,7 @@ public class Main {
         this.textIO = textIO;
         this.terminal = terminal;
         this.players = new ArrayList<>();
-        this.settings = Settings.defaults();
+        this.settings = new Settings();
         this.settings.setAutoDice(true);
 
         terminal.println(Texts.BANNER);

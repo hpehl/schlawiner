@@ -5,7 +5,7 @@ import com.github.nalukit.nalu.client.component.annotation.Controller;
 import elemental2.dom.HTMLElement;
 import org.jboss.schlawiner.client.Context;
 
-@Controller(route = "/",
+@Controller(route = "/main",
     selector = "content",
     component = MainComponentImpl.class,
     componentInterface = MainComponent.class)

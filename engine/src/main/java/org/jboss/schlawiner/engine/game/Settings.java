@@ -1,11 +1,10 @@
 package org.jboss.schlawiner.engine.game;
 
+import static org.jboss.schlawiner.engine.game.Level.MEDIUM;
+
 public class Settings {
 
-    public static Settings defaults() {
-        return new Settings();
-    }
-
+    private String name;
     private int timeout; // in seconds
     private int penalty;
     private int retries;
@@ -13,14 +12,23 @@ public class Settings {
     private boolean autoDice;
     private Level level;
 
-    private Settings() {
+    public Settings() {
         // defaults
+        this.name = System.getProperty("user.name", "Schlawiner");
         this.timeout = 60;
         this.penalty = 5;
         this.retries = 3;
         this.numbers = 8;
         this.autoDice = false;
-        this.level = Level.MEDIUM;
+        this.level = MEDIUM;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getTimeout() {

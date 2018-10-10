@@ -7,9 +7,6 @@ public class MainComponentImpl extends AbstractComponent<MainController, HTMLEle
 
     @Override
     public void render() {
-        // initElement(div()
-        //     .add(h(1, "Main Menu"))
-        //     .add(p().textContent("Not yet implemented!"))
-        //     .asElement());
+        initElement(MainView.create().asElement());
     }
 }

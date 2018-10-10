@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    <link rel="stylesheet" type="text/css" href="../../public/schlawiner.css"/>
+    <title>Settings</title>
+</head>
+<body>
+<div class="page">
+    <p>Settings</p>
+    <ul class="form">
+        <li>
+            <label for="name">Name</label>
+            <input id="name" data-element="name" type="text" maxlength="20"/>
+        </li>
+        <li>
+            <label for="numbers">Numbers</label>
+            <input id="numbers" data-element="numbers" type="range" min="1" max="20"/>
+            <output for="numbers" data-element="numbersOutput"></output>
+        </li>
+        <li>
+            <label for="timeout" title="in seconds">Timeout</label>
+            <input id="timeout" data-element="timeout" type="range" min="10" max="300" step="10"/>
+            <output for="timeout" data-element="timeoutOutput"></output>
+        </li>
+        <li>
+            <label for="penalty">Penalty</label>
+            <input id="penalty" data-element="penalty" type="range" min="1" max="10"/>
+            <output for="penalty" data-element="penaltyOutput"></output>
+        </li>
+        <li>
+            <label for="retries">Retries</label>
+            <input id="retries" data-element="retries" type="range" min="0" max="5"/>
+            <output for="retries" data-element="retriesOutput"></output>
+        </li>
+        <li>
+            <label for="autoDice">Auto dice</label><input id="autoDice" data-element="autoDice" type="checkbox"/>
+        </li>
+        <li>
+            <label for="level">Level</label>
+            <div class="select">
+                <select id="level" data-element="level">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+        </li>
+    </ul>
+    <p><a href="#main">Back</a></p>
+</div>
+</body>
+</html>

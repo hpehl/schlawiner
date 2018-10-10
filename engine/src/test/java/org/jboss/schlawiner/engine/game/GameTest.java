@@ -23,7 +23,7 @@ class GameTest {
         computer = new Player("computer", false);
         players = new Players(asList(foo, computer));
         numbers = new Numbers(new int[]{16, 23, 42});
-        settings = Settings.defaults();
+        settings = new Settings();
         settings.setLevel(Level.HARD);
         game = new Game(players, numbers, new OperationAlgorithm(), settings);
     }
