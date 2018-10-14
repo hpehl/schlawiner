@@ -6,7 +6,63 @@ import java.util.Map;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Players;
 
-/** Stores the score per number */
+/**
+ * Stores the numbers as rows and the players as columns.
+ *
+ * <table>
+ * <colgroup>
+ *     <col style="width: 10%">
+ *     <col style="width: 45%">
+ *     <col style="width: 45%">
+ * </colgroup>
+ * <thead>
+ * <tr>
+ *     <th>&nbsp;</th>
+ *     <th>Player 1</th>
+ *     <th>Player 2</th>
+ * </tr>
+ * </thead>
+ * <tbody>
+ * <tr>
+ *     <td>12</td>
+ *     <td>3</td>
+ *     <td>1</td>
+ * </tr>
+ * <tr>
+ *     <td>34</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ * </tr>
+ * <tr>
+ *     <td>4</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ * </tr>
+ * <tr>
+ *     <td>52</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ * </tr>
+ * <tr>
+ *     <td>57</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ * </tr>
+ * <tr>
+ *     <td>80</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ * </tr>
+ * </tbody>
+ * <tfoot>
+ * <tr>
+ *     <th>&nbsp;</th>
+ *     <th>2</th>
+ *     <th>4</th>
+ * </tr>
+ * </tfoot>
+ * </table>
+ */
 public class NumberScore {
 
     private final int index;

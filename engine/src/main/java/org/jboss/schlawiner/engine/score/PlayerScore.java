@@ -6,7 +6,68 @@ import java.util.List;
 import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
 
-/** Stores the score per player */
+/**
+ * Stores the players as rows and the numbers as columns.
+ *
+ * <table>
+ * <colgroup>
+ *     <col style="width: 20%">
+ *     <col style="width: 11.4%">
+ *     <col style="width: 11.4%">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ *     <col style="width: 11.4">
+ * </colgroup>
+ * <thead>
+ * <tr>
+ *     <th>&nbsp;</th>
+ *     <th>12</th>
+ *     <th>34</th>
+ *     <th>4</th>
+ *     <th>52</th>
+ *     <th>57</th>
+ *     <th>80</th>
+ *     <th>&nbsp;</th>
+ * </tr>
+ * </thead>
+ * <tbody>
+ * <tr>
+ *     <td>Player 1</td>
+ *     <td>1</td>
+ *     <td>0</td>
+ *     <td>2</td>
+ *     <td>1</td>
+ *     <td>0</td>
+ *     <td>4</td>
+ * </tr>
+ * <tr>
+ *     <td>Player 2</td>
+ *     <td>0</td>
+ *     <td>0</td>
+ *     <td>1</td>
+ *     <td>2</td>
+ *     <td>0</td>
+ *     <td>3</td>
+ * </tr>
+ * </tbody>
+ * </table>
+ */
 public class PlayerScore {
 
     private final Player player;

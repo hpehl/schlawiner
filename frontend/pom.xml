@@ -64,6 +64,10 @@
             <artifactId>gwt-event</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.gwtproject.safehtml</groupId>
+            <artifactId>gwt-safehtml</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.gwt.elemento</groupId>
             <artifactId>elemento-core</artifactId>
         </dependency>
@@ -83,6 +87,21 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/resources/org/jboss/hal/public</directory>
+                            <includes>
+                                <include>external.js</include>
+                                <include>schlawiner.css</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>

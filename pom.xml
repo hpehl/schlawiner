@@ -73,6 +73,7 @@
         <elemento.version>0.8.7</elemento.version>
         <guava.version>26.0-jre</guava.version>
         <gwt-events.version>HEAD-SNAPSHOT</gwt-events.version>
+        <gwt-safehtml.version>LATEST</gwt-safehtml.version>
         <gwt.version>2.8.2</gwt.version>
         <junit.version>5.3.1</junit.version>
         <mockito.version>2.22.0</mockito.version>
@@ -157,6 +158,11 @@
                 <groupId>org.gwtproject.event</groupId>
                 <artifactId>gwt-event</artifactId>
                 <version>${gwt-events.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.gwtproject.safehtml</groupId>
+                <artifactId>gwt-safehtml</artifactId>
+                <version>${gwt-safehtml.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.gwt.elemento</groupId>
