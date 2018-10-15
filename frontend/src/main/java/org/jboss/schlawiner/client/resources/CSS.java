@@ -16,8 +16,10 @@ public interface CSS {
     String input = "input";
     String left = "left";
     String links = "links";
+    String numberScore = "number-score";
     String numpad = "numpad";
     String page = "page";
+    String playerScore = "player-score";
     String right = "right";
     String row = "row";
     String showFront = "show-front";
