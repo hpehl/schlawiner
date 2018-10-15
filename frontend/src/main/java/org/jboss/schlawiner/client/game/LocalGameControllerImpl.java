@@ -59,7 +59,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
             } else {
                 Solution solution = game.solve();
                 Score score = new Score(solution.getTerm(), abs(solution.getValue() - currentNumber));
-                component.solve(scoreboard, currentPlayer, currentIndex, score);
+                component.showScore(scoreboard, currentPlayer, currentIndex, score);
             }
         } else {
             component.message("Game Over!");
@@ -91,6 +91,29 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     @Override
     public void solve() {
-        component.message("Solve not yet implemented");
+        try {
+            DiceValidator.validate(game.getDice(), term);
+
+            Players players = game.getPlayers();
+            Player currentPlayer = players.current();
+            Scoreboard scoreboard = game.getScoreboard();
+            int currentNumber = game.getNumbers().current();
+            int currentIndex = game.getNumbers().index();
+            int difference = game.calculate(term);
+            Solution bestSolution = game.getAlgorithm()
+                .compute(game.getDice().numbers[0], game.getDice().numbers[1], game.getDice().numbers[2], currentNumber)
+                .bestSolution();
+            int bestDifference = Math.abs(bestSolution.getValue() - currentNumber);
+            if (difference > bestDifference) {
+                component.message("Your difference is " + difference + ". " +
+                    "The best solution is " + bestSolution + ".");
+            } else {
+                component.message("Well done, your solution is the best.");
+            }
+            Score score = new Score(term, difference);
+            component.showScore(scoreboard, currentPlayer, currentIndex, score);
+        } catch (ArithmeticException e) {
+            component.message(e.getMessage());
+        }
     }
 }

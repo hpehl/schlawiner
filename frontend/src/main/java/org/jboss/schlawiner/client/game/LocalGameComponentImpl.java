@@ -3,6 +3,7 @@ package org.jboss.schlawiner.client.game;
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
+import org.jboss.gwt.elemento.core.EventType;
 import org.jboss.schlawiner.client.resources.CSS;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
@@ -49,6 +50,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                             .add(diceElements[2] = new DiceElement())))
                     .add(solution = input(text).css(CSS.solution)
                         .apply(i -> i.placeholder = "Enter solution")
+                        .on(EventType.input, e -> getController().setTerm(((HTMLInputElement) e.target).value))
                         .asElement()))
                 .add(div().css(countdownContainer).add(countdown = new CountdownElement()))
                 .add(div().css(links)
@@ -129,7 +131,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void solve(Scoreboard scoreboard, Player player, int numberIndex, Score score) {
+    public void showScore(Scoreboard scoreboard, Player player, int numberIndex, Score score) {
         numberScore.setScore(scoreboard, player, numberIndex, score);
         playerScore.setScore(scoreboard, player, numberIndex, score);
     }

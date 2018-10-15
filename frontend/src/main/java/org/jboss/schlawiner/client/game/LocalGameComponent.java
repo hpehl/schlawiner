@@ -24,5 +24,5 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void highlight(Player player, int numberIndex);
 
-    void solve(Scoreboard scoreboard, Player player, int numberIndex, Score score);
+    void showScore(Scoreboard scoreboard, Player player, int numberIndex, Score score);
 }
