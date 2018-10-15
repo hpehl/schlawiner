@@ -2,10 +2,12 @@ package org.jboss.schlawiner.client.game;
 
 import elemental2.dom.Element;
 import elemental2.dom.HTMLTableElement;
+import org.jboss.gwt.elemento.core.Elements;
 import org.jboss.gwt.elemento.core.IsElement;
 import org.jboss.schlawiner.client.resources.Ids;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.score.Score;
+import org.jboss.schlawiner.engine.score.Scoreboard;
 
 import static elemental2.dom.DomGlobal.document;
 import static org.jboss.gwt.elemento.core.Elements.asHtmlElement;
@@ -41,29 +43,36 @@ abstract class ScoreElement implements IsElement<HTMLTableElement> {
         }
     }
 
-    void setScore(Player player, int numberIndex, Score score) {
+    void setScore(Scoreboard scoreboard, Player player, int numberIndex, Score score) {
         Element element = document.getElementById(scoreId(player, numberIndex));
         if (element != null) {
+            Elements.removeChildrenFrom(element);
             element.appendChild(span()
                 .title(score.getTerm())
                 .textContent(String.valueOf(score.getDifference()))
                 .asElement());
         }
+        element = document.getElementById(sumId(player));
+        if (element != null) {
+            element.textContent = String.valueOf(scoreboard.getSummedScore(player));
+        }
     }
 
+    abstract String prefix();
+
     String playerId(Player player) {
-        return Ids.build("player", player.getName());
+        return Ids.build(prefix(), "player", player.getName());
     }
 
     String numberId(int numberIndex) {
-        return Ids.build("number", String.valueOf(numberIndex));
+        return Ids.build(prefix(), "number", String.valueOf(numberIndex));
     }
 
     String scoreId(Player player, int numberIndex) {
-        return Ids.build("score", player.getName(), String.valueOf(numberIndex));
+        return Ids.build(prefix(), "score", player.getName(), String.valueOf(numberIndex));
     }
 
     String sumId(Player player) {
-        return Ids.build("sum", player.getName());
+        return Ids.build(prefix(), "sum", player.getName());
     }
 }

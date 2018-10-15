@@ -5,12 +5,17 @@ import com.github.nalukit.nalu.client.component.annotation.Controller;
 import elemental2.dom.HTMLElement;
 import org.jboss.schlawiner.client.Context;
 import org.jboss.schlawiner.engine.algorithm.OperationAlgorithm;
+import org.jboss.schlawiner.engine.algorithm.Solution;
+import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Players;
 import org.jboss.schlawiner.engine.game.Settings;
+import org.jboss.schlawiner.engine.score.Score;
+import org.jboss.schlawiner.engine.score.Scoreboard;
 
+import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
 
 @Controller(route = "/local-game",
@@ -35,7 +40,28 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     @Override
     public void dice() {
-        component.message("Dice not yet implemented");
+        if (game.hasNext()) {
+            game.next();
+            game.dice(new Dice());
+
+            Players players = game.getPlayers();
+            Player currentPlayer = players.current();
+            Scoreboard scoreboard = game.getScoreboard();
+            int currentNumber = game.getNumbers().current();
+            int currentIndex = game.getNumbers().index();
+
+            component.role(game.getDice());
+            component.highlight(game.getPlayers().current(), currentIndex);
+            if (currentPlayer.isHuman()) {
+                component.countdown(context.getSettings().getTimeout(), currentNumber);
+            } else {
+                Solution solution = game.solve();
+                Score score = new Score(solution.getTerm(), abs(solution.getValue() - currentNumber));
+                component.solve(scoreboard, currentPlayer, currentIndex, score);
+            }
+        } else {
+            component.message("Game Over!");
+        }
     }
 
     @Override

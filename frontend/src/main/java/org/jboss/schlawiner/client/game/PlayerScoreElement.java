@@ -68,4 +68,9 @@ class PlayerScoreElement extends ScoreElement implements IsElement<HTMLTableElem
     public HTMLTableElement asElement() {
         return root;
     }
+
+    @Override
+    String prefix() {
+        return "ps";
+    }
 }

@@ -10,6 +10,7 @@ import org.jboss.schlawiner.engine.game.Dice;
 import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromSafeConstant;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
+import static org.jboss.schlawiner.client.resources.CSS.numpad;
 
 class NumpadElement implements IsElement<HTMLTableElement> {
 
@@ -25,7 +26,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
 
         this.tokens = new Stack<>();
         this.numbers = new HTMLElement[3][3];
-        this.root = table()
+        this.root = table().css(numpad)
             .add(colgroup = colgroup().asElement())
             .add(tbody = tbody().asElement())
             .asElement();

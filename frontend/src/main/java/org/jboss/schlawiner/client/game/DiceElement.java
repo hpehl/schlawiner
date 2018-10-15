@@ -32,7 +32,7 @@ public class DiceElement implements IsElement<HTMLElement> {
     private double handle;
     private String currentFace;
 
-    public DiceElement() {
+    DiceElement() {
         this.currentFace = showFront;
         this.root = div().css(cube, currentFace)
             .add(figure().css(front).textContent("1"))
@@ -52,6 +52,7 @@ public class DiceElement implements IsElement<HTMLElement> {
     void role(int number) {
         counter = 0;
         Random random = new Random();
+        flip(random.nextInt(6));
         handle = setInterval((o) -> {
             counter++;
             if (counter == DICE_TIMES) {

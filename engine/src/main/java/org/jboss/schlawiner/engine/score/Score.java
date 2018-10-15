@@ -7,7 +7,7 @@ public class Score {
     private final String term;
     private final int difference;
 
-    Score(String term, int difference) {
+    public Score(String term, int difference) {
         this.term = term;
         this.difference = difference;
     }
