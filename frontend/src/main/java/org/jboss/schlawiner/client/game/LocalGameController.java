@@ -12,7 +12,7 @@ public interface LocalGameController extends IsComponent.Controller {
 
     void back();
 
-    void setTerm(String term);
+    void setTerm(String term, boolean updateInput);
 
     void solve();
 }

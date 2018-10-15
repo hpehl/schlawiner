@@ -49,7 +49,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                             if (Key.Enter.match(e)) {
                                 getController().solve();
                             } else {
-                                getController().setTerm(((HTMLInputElement) e.target).value);                            }
+                                getController().setTerm(((HTMLInputElement) e.target).value, false);
+                            }
                         })
                         .asElement()))
                 .add(div().css(countdownContainer).add(countdown = new CountdownElement()))
@@ -87,8 +88,9 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
 
     @Override
     public void start(Game game) {
-        numberScore = new NumberScoreElement(game.getPlayers(), game.getNumbers());
-        playerScore = new PlayerScoreElement(game.getPlayers(), game.getNumbers());
+        numberScore = new NumberScoreElement(this, game.getPlayers(), game.getNumbers());
+        playerScore = new PlayerScoreElement(this, game.getPlayers(), game.getNumbers());
+        showNumberScore();
         numberScoreContainer.appendChild(numberScore.asElement());
         playerScoreContainer.appendChild(playerScore.asElement());
     }
@@ -139,5 +141,15 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     public void showScore(Scoreboard scoreboard, Player player, int numberIndex, Score score) {
         numberScore.setScore(scoreboard, player, numberIndex, score);
         playerScore.setScore(scoreboard, player, numberIndex, score);
+    }
+
+    void showNumberScore() {
+        setVisible(numberScore.asElement(), true);
+        setVisible(playerScore.asElement(), false);
+    }
+
+    void showPlayerScore() {
+        setVisible(playerScore.asElement(), true);
+        setVisible(numberScore.asElement(), false);
     }
 }

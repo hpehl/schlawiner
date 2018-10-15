@@ -8,15 +8,20 @@ import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Players;
 
 import static org.jboss.gwt.elemento.core.Elements.*;
+import static org.jboss.gwt.elemento.core.EventType.click;
+import static org.jboss.schlawiner.client.resources.CSS.clickable;
 import static org.jboss.schlawiner.client.resources.CSS.contentTable;
 import static org.jboss.schlawiner.client.resources.CSS.numberScore;
 import static org.jboss.schlawiner.client.resources.UIConstants.NUMBER_WIDTH;
 
 class NumberScoreElement extends ScoreElement implements IsElement<HTMLTableElement> {
 
+    private final LocalGameComponentImpl component;
     private final HTMLTableElement root;
 
-    NumberScoreElement(Players players, Numbers numbers) {
+    NumberScoreElement(LocalGameComponentImpl component, Players players, Numbers numbers) {
+        this.component = component;
+
         HTMLElement colgroup, theadRow, tbody, tfootRow;
         root = table().css(contentTable, numberScore)
             .add(colgroup = colgroup().asElement())
@@ -33,7 +38,10 @@ class NumberScoreElement extends ScoreElement implements IsElement<HTMLTableElem
         }
 
         // header
-        theadRow.appendChild(th().textContent(" ").asElement());
+        theadRow.appendChild(th().css(clickable)
+            .textContent("↻")
+            .title("Switch to player score")
+            .on(click, e -> component.showPlayerScore()).asElement());
         for (Player player : players) {
             theadRow.appendChild(th()
                 .id(playerId(player))
@@ -58,7 +66,7 @@ class NumberScoreElement extends ScoreElement implements IsElement<HTMLTableElem
         }
 
         // footer
-        tfootRow.appendChild(th().textContent(" ").asElement());
+        tfootRow.appendChild(th().textContent("∑").asElement());
         for (Player player : players) {
             tfootRow.appendChild(th()
                 .id(sumId(player))

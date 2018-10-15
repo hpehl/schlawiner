@@ -1,5 +1,7 @@
 package org.jboss.schlawiner.client.game;
 
+import java.util.List;
+
 import com.github.nalukit.nalu.client.component.AbstractComponentController;
 import com.github.nalukit.nalu.client.component.annotation.Controller;
 import elemental2.dom.HTMLElement;
@@ -18,6 +20,7 @@ import org.jboss.schlawiner.engine.score.Scoreboard;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 
 @Controller(route = "/local-game",
     selector = "content",
@@ -66,7 +69,14 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
                 }
             });
         } else {
-            component.message("Game Over!");
+            String message = "The winner";
+            List<Player> winners = game.getScoreboard().getWinners();
+            if (winners.size() == 1) {
+                message += " is " + winners.get(0).getName();
+            } else {
+                message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
+            }
+            component.message("Game Over. " + message);
         }
     }
 
@@ -86,11 +96,13 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     }
 
     @Override
-    public void setTerm(String term) {
+    public void setTerm(String term, boolean updateInput) {
         this.term = term;
         boolean[] used = DiceValidator.used(game.getDice(), term);
-        component.showTerm(term);
         component.usage(used);
+        if (updateInput) {
+            component.showTerm(term);
+        }
     }
 
     @Override

@@ -43,9 +43,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
             .add(td().add(button("(").on(click, e -> addToken("("))))
             .add(td().add(button(")").on(click, e -> addToken(")"))))
-            .add(td().add(button()
-                .innerHtml(fromSafeConstant("&larr;"))
-                .on(click, e -> removeToken())))
+            .add(td().add(button("⌫").on(click, e -> removeToken())))
             .asElement());
 
         // second dice number
@@ -73,9 +71,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
             .add(td().add(button("*").on(click, e -> addToken(" * "))))
             .add(td().add(button("/").on(click, e -> addToken(" / "))))
-            .add(td().add(button()
-                .innerHtml(fromSafeConstant("&crarr;"))
-                .on(click, e -> solve())))
+            .add(td().add(button("↵").on(click, e -> solve())))
             .asElement());
     }
 
@@ -104,19 +100,19 @@ class NumpadElement implements IsElement<HTMLTableElement> {
 
     private void addToken(String token) {
         tokens.push(token);
-        controller.setTerm(String.join("", tokens));
+        controller.setTerm(String.join("", tokens), true);
     }
 
     private void removeToken() {
         if (!tokens.isEmpty()) {
             tokens.pop();
-            controller.setTerm(String.join("", tokens));
+            controller.setTerm(String.join("", tokens), true);
         }
     }
 
     private void clear() {
         tokens.clear();
-        controller.setTerm("");
+        controller.setTerm("", true);
     }
 
     private void solve() {

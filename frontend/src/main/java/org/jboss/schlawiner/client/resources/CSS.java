@@ -4,13 +4,15 @@ public interface CSS {
 
     String back = "back";
     String bottom = "bottom";
-    String cubeContainer = "cube-container";
+    String clickable = "clickable";
     String contentTable = "content-table";
     String control = "control";
     String countdown = "countdown";
     String countdownContainer = "countdown-container";
     String cube = "cube";
+    String cubeContainer = "cube-container";
     String dice = "dice";
+    String disabled = "disabled";
     String front = "front";
     String highlight = "highlight";
     String input = "input";
