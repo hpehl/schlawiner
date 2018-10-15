@@ -73,6 +73,12 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
+    public void setController(LocalGameController controller) {
+        super.setController(controller);
+        numpad.setController(controller);
+    }
+
+    @Override
     public void render() {
         initElement(root);
     }
@@ -90,12 +96,25 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         for (int i = 0, diceElementsLength = diceElements.length; i < diceElementsLength; i++) {
             diceElements[i].role(dice.numbers[i]);
         }
+        numpad.showDice(dice);
+    }
+
+    @Override
+    public void usage(boolean[] used) {
+        for (int i = 0, diceElementsLength = diceElements.length; i < diceElementsLength; i++) {
+            diceElements[i].highlight(used[i]);
+        }
     }
 
     @Override
     public void countdown(int timeout, int number) {
         countdown.reset(timeout);
         countdown.number(number);
+    }
+
+    @Override
+    public void showTerm(String term) {
+        solution.value = term;
     }
 
     @Override

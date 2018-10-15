@@ -14,7 +14,11 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void role(Dice dice);
 
+    void usage(boolean[] used);
+
     void countdown(int timeout, int number);
+
+    void showTerm(String term);
 
     void message(String message);
 

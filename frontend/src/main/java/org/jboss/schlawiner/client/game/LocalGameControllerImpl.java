@@ -7,6 +7,7 @@ import org.jboss.schlawiner.client.Context;
 import org.jboss.schlawiner.engine.algorithm.OperationAlgorithm;
 import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
+import org.jboss.schlawiner.engine.game.DiceValidator;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
@@ -26,6 +27,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     implements LocalGameController {
 
     private Game game;
+    private String term;
 
     @Override
     public void start() {
@@ -77,6 +79,14 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     @Override
     public void back() {
         router.route("/main");
+    }
+
+    @Override
+    public void setTerm(String term) {
+        this.term = term;
+        boolean[] used = DiceValidator.used(game.getDice(), term);
+        component.showTerm(term);
+        component.usage(used);
     }
 
     @Override

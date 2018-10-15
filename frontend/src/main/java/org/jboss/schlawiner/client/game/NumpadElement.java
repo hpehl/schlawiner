@@ -20,17 +20,16 @@ class NumpadElement implements IsElement<HTMLTableElement> {
     private final Stack<String> tokens;
     private final HTMLElement numbers[][]; // first dimension is the dice number, second dimension is the multiplier
     private final HTMLTableElement root;
+    private LocalGameController controller;
 
     NumpadElement() {
         HTMLElement colgroup, tbody;
-
         this.tokens = new Stack<>();
         this.numbers = new HTMLElement[3][3];
         this.root = table().css(numpad)
             .add(colgroup = colgroup().asElement())
             .add(tbody = tbody().asElement())
             .asElement();
-
         for (int width : WIDTHS) {
             colgroup.appendChild(col().style("width: " + width + "%").asElement());
         }
@@ -85,6 +84,10 @@ class NumpadElement implements IsElement<HTMLTableElement> {
         return root;
     }
 
+    void setController(LocalGameController controller) {
+        this.controller = controller;
+    }
+
     void showDice(Dice dice) {
         clear();
         for (int diceNumberIndex = 0; diceNumberIndex < dice.numbers.length; diceNumberIndex++) {
@@ -101,19 +104,22 @@ class NumpadElement implements IsElement<HTMLTableElement> {
 
     private void addToken(String token) {
         tokens.push(token);
+        controller.setTerm(String.join("", tokens));
     }
 
     private void removeToken() {
         if (!tokens.isEmpty()) {
             tokens.pop();
+            controller.setTerm(String.join("", tokens));
         }
     }
 
     private void clear() {
         tokens.clear();
+        controller.setTerm("");
     }
 
     private void solve() {
-
+        controller.solve();
     }
 }
