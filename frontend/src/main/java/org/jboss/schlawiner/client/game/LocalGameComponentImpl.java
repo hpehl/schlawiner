@@ -3,13 +3,16 @@ package org.jboss.schlawiner.client.game;
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
+import org.gwtproject.safehtml.shared.SafeHtmlUtils;
 import org.jboss.gwt.elemento.core.EventType;
+import org.jboss.gwt.elemento.core.Key;
 import org.jboss.schlawiner.client.resources.CSS;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.score.Score;
 import org.jboss.schlawiner.engine.score.Scoreboard;
+import rx.functions.Action0;
 
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.Elements.input;
@@ -21,7 +24,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     LocalGameComponent {
 
     private final HTMLElement root;
-    private final DiceElement[] diceElements;
+    private final DiceElements diceElements;
     private final HTMLInputElement solution;
     private final HTMLElement dice;
     private final HTMLElement skip;
@@ -34,23 +37,20 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private final HTMLElement playerScoreContainer;
     private NumberScoreElement numberScore;
     private PlayerScoreElement playerScore;
-    private double timeout;
 
     public LocalGameComponentImpl() {
-        diceElements = new DiceElement[3];
         root = div().css(page)
             .add(div().css(row, control)
                 .add(div().css(CSS.input)
-                    .add(div().css(CSS.dice)
-                        .add(div().css(cubeContainer)
-                            .add(diceElements[0] = new DiceElement()))
-                        .add(div().css(cubeContainer)
-                            .add(diceElements[1] = new DiceElement()))
-                        .add(div().css(cubeContainer)
-                            .add(diceElements[2] = new DiceElement())))
+                    .add(diceElements = new DiceElements())
                     .add(solution = input(text).css(CSS.solution)
                         .apply(i -> i.placeholder = "Enter solution")
-                        .on(EventType.input, e -> getController().setTerm(((HTMLInputElement) e.target).value))
+                        .on(EventType.keyup, e -> {
+                            if (Key.Enter.match(e)) {
+                                getController().solve();
+                            } else {
+                                getController().setTerm(((HTMLInputElement) e.target).value);                            }
+                        })
                         .asElement()))
                 .add(div().css(countdownContainer).add(countdown = new CountdownElement()))
                 .add(div().css(links)
@@ -94,18 +94,23 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void role(Dice dice) {
-        for (int i = 0, diceElementsLength = diceElements.length; i < diceElementsLength; i++) {
-            diceElements[i].role(dice.numbers[i]);
-        }
-        numpad.showDice(dice);
+    public void clear() {
+        diceElements.clear();
+        solution.value = "";
+        message.setMessage(SafeHtmlUtils.fromSafeConstant("&nbsp;"));
+    }
+
+    @Override
+    public void role(Dice dice, Action0 action) {
+        diceElements.role(dice, () -> {
+            numpad.showDice(dice);
+            action.call();
+        });
     }
 
     @Override
     public void usage(boolean[] used) {
-        for (int i = 0, diceElementsLength = diceElements.length; i < diceElementsLength; i++) {
-            diceElements[i].highlight(used[i]);
-        }
+        diceElements.usage(used);
     }
 
     @Override

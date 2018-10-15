@@ -7,12 +7,15 @@ import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.score.Score;
 import org.jboss.schlawiner.engine.score.Scoreboard;
+import rx.functions.Action0;
 
 public interface LocalGameComponent extends IsComponent<LocalGameController, HTMLElement> {
 
     void start(Game game);
 
-    void role(Dice dice);
+    void clear();
+
+    void role(Dice dice, Action0 action);
 
     void usage(boolean[] used);
 

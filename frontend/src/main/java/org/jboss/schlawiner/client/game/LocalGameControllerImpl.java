@@ -52,15 +52,19 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
             int currentNumber = game.getNumbers().current();
             int currentIndex = game.getNumbers().index();
 
-            component.role(game.getDice());
-            component.highlight(game.getPlayers().current(), currentIndex);
-            if (currentPlayer.isHuman()) {
-                component.countdown(context.getSettings().getTimeout(), currentNumber);
-            } else {
-                Solution solution = game.solve();
-                Score score = new Score(solution.getTerm(), abs(solution.getValue() - currentNumber));
-                component.showScore(scoreboard, currentPlayer, currentIndex, score);
-            }
+            component.clear();
+            component.role(game.getDice(), () -> {
+                component.message(currentPlayer.getName() + " it's your turn.");
+                component.highlight(currentPlayer, currentIndex);
+                if (currentPlayer.isHuman()) {
+                    component.countdown(context.getSettings().getTimeout(), currentNumber);
+                } else {
+                    Solution solution = game.solve();
+                    Score score = new Score(solution.getTerm(), abs(solution.getValue() - currentNumber));
+                    component.message(currentPlayer.getName() + " got " + solution + ".");
+                    component.showScore(scoreboard, currentPlayer, currentIndex, score);
+                }
+            });
         } else {
             component.message("Game Over!");
         }

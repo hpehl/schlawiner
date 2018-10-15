@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 import org.jboss.gwt.elemento.core.IsElement;
+import rx.functions.Action0;
 
 import static elemental2.dom.DomGlobal.clearInterval;
 import static elemental2.dom.DomGlobal.setInterval;
@@ -49,7 +50,7 @@ public class DiceElement implements IsElement<HTMLElement> {
         return root;
     }
 
-    void role(int number) {
+    void role(int number, Action0 action) {
         counter = 0;
         Random random = new Random();
         flip(random.nextInt(6));
@@ -57,16 +58,16 @@ public class DiceElement implements IsElement<HTMLElement> {
             counter++;
             if (counter == DICE_TIMES) {
                 flip(number);
-
             } else if (counter > DICE_TIMES) {
                 clearInterval(handle);
+                action.call();
             } else {
                 flip(random.nextInt(6));
             }
         }, DICE_INTERVAL);
     }
 
-    private void flip(int number) {
+    void flip(int number) {
         String newFace = "show-" + NUMBER_TO_FACE.get(number);
         root.classList.remove(currentFace);
         root.classList.add(newFace);
