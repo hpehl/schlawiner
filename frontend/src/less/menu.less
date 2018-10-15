@@ -1,0 +1,34 @@
+.dice-background {
+    position: relative;
+}
+
+.dice-background:after {
+    content: "";
+    background: url("dice.svg") no-repeat center;
+    background-size: contain;
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.menu {
+    display: flex;
+    height: 500px;
+    justify-content: center;
+
+    ul {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        li {
+            font-size: 2rem;
+            margin: @spacer-2 0;
+        }
+    }
+}
