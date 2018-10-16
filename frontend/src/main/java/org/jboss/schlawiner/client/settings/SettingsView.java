@@ -15,7 +15,6 @@ abstract class SettingsView implements IsElement<HTMLElement> {
         return new Templated_SettingsView();
     }
 
-    @DataElement HTMLInputElement name;
     @DataElement HTMLInputElement numbers;
     @DataElement HTMLOutputElement numbersOutput;
     @DataElement HTMLInputElement timeout;

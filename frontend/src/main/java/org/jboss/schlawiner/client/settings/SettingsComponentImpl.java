@@ -30,7 +30,6 @@ public class SettingsComponentImpl extends AbstractComponent<SettingsController,
     public void onAttach() {
         super.onAttach();
         this.handler = HandlerRegistrations.compose(
-            EventType.bind(view.name, input, event -> getController().setName(value(event))),
             EventType.bind(view.numbers, input, event -> {
                     view.numbersOutput.value = value(event);
                     getController().setNumbers(parseInt(value(event)));
@@ -73,7 +72,6 @@ public class SettingsComponentImpl extends AbstractComponent<SettingsController,
 
     @Override
     public void showSettings(Settings settings) {
-        view.name.value = settings.getName();
         view.numbers.value = String.valueOf(settings.getNumbers());
         view.numbersOutput.value = String.valueOf(settings.getNumbers());
         view.timeout.value = String.valueOf(settings.getTimeout());

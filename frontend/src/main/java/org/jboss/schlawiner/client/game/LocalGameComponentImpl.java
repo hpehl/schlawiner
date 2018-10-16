@@ -33,8 +33,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private final CountdownElement countdown;
     private final MessageElement message;
     private final NumpadElement numpad;
-    private final HTMLElement numberScoreContainer;
-    private final HTMLElement playerScoreContainer;
+    private final HTMLElement scoreContainer;
     private NumberScoreElement numberScore;
     private PlayerScoreElement playerScore;
 
@@ -70,8 +69,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                 .add(message = new MessageElement()))
             .add(div().css(row)
                 .add(numpad = new NumpadElement()))
-            .add(numberScoreContainer = div().css(row).asElement())
-            .add(playerScoreContainer = div().css(row).asElement())
+            .add(scoreContainer = div().css(row, score).asElement())
             .asElement();
     }
 
@@ -90,9 +88,9 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     public void start(Game game) {
         numberScore = new NumberScoreElement(this, game.getPlayers(), game.getNumbers());
         playerScore = new PlayerScoreElement(this, game.getPlayers(), game.getNumbers());
-        showNumberScore();
-        numberScoreContainer.appendChild(numberScore.asElement());
-        playerScoreContainer.appendChild(playerScore.asElement());
+        setVisible(playerScore.asElement(), false);
+        scoreContainer.appendChild(numberScore.asElement());
+        scoreContainer.appendChild(playerScore.asElement());
     }
 
     @Override
@@ -144,12 +142,17 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     void showNumberScore() {
-        setVisible(numberScore.asElement(), true);
-        setVisible(playerScore.asElement(), false);
+        numberScore.asElement().classList.remove(animated, fadeInRight, fadeOutRight);
+        playerScore.asElement().classList.remove(animated, fadeInLeft, fadeOutLeft);
+        playerScore.asElement().classList.add(animated, fadeOutLeft);
+        numberScore.asElement().classList.add(animated, fadeInRight);
     }
 
     void showPlayerScore() {
+        numberScore.asElement().classList.remove(animated, fadeInRight, fadeOutRight);
+        playerScore.asElement().classList.remove(animated, fadeInLeft, fadeOutLeft);
+        numberScore.asElement().classList.add(animated, fadeOutRight);
+        playerScore.asElement().classList.add(animated, fadeInLeft);
         setVisible(playerScore.asElement(), true);
-        setVisible(numberScore.asElement(), false);
     }
 }

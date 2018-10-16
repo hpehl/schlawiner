@@ -16,6 +16,7 @@ public interface Ids {
 
     // ------------------------------------------------------ ids (a-z)
     // Don't compose IDs with build(), otherwise they cannot be used in annotations.
+    String PLAYERS_STORAGE = "org.jboss.schlawiner.players";
     String SETTINGS_STORAGE = "org.jboss.schlawiner.settings";
 
     /**

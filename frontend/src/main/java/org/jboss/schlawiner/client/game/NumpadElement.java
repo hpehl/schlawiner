@@ -18,7 +18,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
     private static final int[] MULTIPLIER = {1, 10, 100};
 
     private final Stack<String> tokens;
-    private final HTMLElement numbers[][]; // first dimension is the dice number, second dimension is the multiplier
+    private final HTMLElement numbers[][]; // first dimension is the multiplier, second dimension is the dice number
     private final HTMLTableElement root;
     private LocalGameController controller;
 
@@ -34,25 +34,25 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             colgroup.appendChild(col().style("width: " + width + "%").asElement());
         }
 
-        // first dice number
-        int diceNumberIndex = 0, multiplierIndex = 0;
+        // <dice number> * 1
+        int multiplierIndex = 0, diceNumberIndex = 0;
         tbody.appendChild(tr()
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
             .add(td().add(button("(").on(click, e -> addToken("("))))
             .add(td().add(button(")").on(click, e -> addToken(")"))))
             .add(td().add(button("⌫").on(click, e -> removeToken())))
             .asElement());
 
-        // second dice number
-        diceNumberIndex++;
-        multiplierIndex = 0;
+        // <dice number> * 10
+        multiplierIndex++;
+        diceNumberIndex = 0;
         tbody.appendChild(tr()
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
             .add(td().add(button("+").on(click, e -> addToken(" + "))))
             .add(td().add(button("-").on(click, e -> addToken(" - "))))
@@ -61,13 +61,13 @@ class NumpadElement implements IsElement<HTMLTableElement> {
                 .on(click, e -> clear())))
             .asElement());
 
-        // third dice number
-        diceNumberIndex++;
-        multiplierIndex = 0;
+        // <dice number> * 100
+        multiplierIndex++;
+        diceNumberIndex = 0;
         tbody.appendChild(tr()
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex++] = button("0").asElement()))
-            .add(td().add(numbers[diceNumberIndex][multiplierIndex] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
+            .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
             .add(td().add(button("*").on(click, e -> addToken(" * "))))
             .add(td().add(button("/").on(click, e -> addToken(" / "))))
@@ -89,8 +89,8 @@ class NumpadElement implements IsElement<HTMLTableElement> {
         for (int diceNumberIndex = 0; diceNumberIndex < dice.numbers.length; diceNumberIndex++) {
             for (int multiplierIndex = 0; multiplierIndex < MULTIPLIER.length; multiplierIndex++) {
                 int number = dice.numbers[diceNumberIndex] * MULTIPLIER[multiplierIndex];
-                numbers[diceNumberIndex][multiplierIndex].textContent = String.valueOf(number);
-                numbers[diceNumberIndex][multiplierIndex].onclick = e -> {
+                numbers[multiplierIndex][diceNumberIndex].textContent = String.valueOf(number);
+                numbers[multiplierIndex][diceNumberIndex].onclick = e -> {
                     addToken(String.valueOf(number));
                     return null;
                 };

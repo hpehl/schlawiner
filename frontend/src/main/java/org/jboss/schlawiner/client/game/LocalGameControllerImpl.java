@@ -19,7 +19,6 @@ import org.jboss.schlawiner.engine.score.Score;
 import org.jboss.schlawiner.engine.score.Scoreboard;
 
 import static java.lang.Math.abs;
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 
 @Controller(route = "/local-game",
@@ -34,10 +33,8 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     @Override
     public void start() {
+        Players players = new Players(context.getPlayers());
         Settings settings = context.getSettings();
-        Players players = new Players(asList(
-            new Player(settings.getName(), true),
-            new Player("Computer", false)));
         Numbers numbers = new Numbers(settings.getNumbers());
         game = new Game(players, numbers, new OperationAlgorithm(), settings);
         component.start(game);

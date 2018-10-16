@@ -20,12 +20,6 @@ public class SettingsControllerImpl extends AbstractComponentController<Context,
     }
 
     @Override
-    public void setName(String name) {
-        context.getSettings().setName(name);
-        LocalStorage.saveSettings(context.getSettings());
-    }
-
-    @Override
     public void setNumbers(int numbers) {
         context.getSettings().setNumbers(numbers);
         LocalStorage.saveSettings(context.getSettings());

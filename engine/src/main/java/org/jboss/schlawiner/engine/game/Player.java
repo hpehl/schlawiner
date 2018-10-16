@@ -4,11 +4,17 @@ import java.util.Objects;
 
 public class Player {
 
-    private final String name;
-    private final boolean human;
+    private final String id;
+    private String name;
+    private boolean human;
     private int retries;
 
     public Player(String name, boolean human) {
+        this(UUID.get(), name, human);
+    }
+
+    public Player(String id, String name, boolean human) {
+        this.id = id;
         this.name = name;
         this.human = human;
         this.retries = 0;
@@ -19,13 +25,12 @@ public class Player {
         if (this == o) { return true; }
         if (!(o instanceof Player)) { return false; }
         Player player = (Player) o;
-        return human == player.human &&
-            Objects.equals(name, player.name);
+        return Objects.equals(id, player.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, human);
+        return Objects.hash(id);
     }
 
     @Override
@@ -33,12 +38,24 @@ public class Player {
         return name + (human ? ": human" : ": computer");
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isHuman() {
         return human;
+    }
+
+    public void setHuman(boolean human) {
+        this.human = human;
     }
 
     public int getRetries() {

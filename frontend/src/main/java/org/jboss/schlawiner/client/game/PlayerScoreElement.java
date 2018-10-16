@@ -10,20 +10,16 @@ import org.jboss.schlawiner.engine.game.Players;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.schlawiner.client.resources.CSS.clickable;
-import static org.jboss.schlawiner.client.resources.CSS.contentTable;
 import static org.jboss.schlawiner.client.resources.CSS.playerScore;
 import static org.jboss.schlawiner.client.resources.UIConstants.PLAYER_WIDTH;
 
 class PlayerScoreElement extends ScoreElement implements IsElement<HTMLTableElement> {
 
-    private final LocalGameComponentImpl component;
     private final HTMLTableElement root;
 
     PlayerScoreElement(LocalGameComponentImpl component, Players players, Numbers numbers) {
-        this.component = component;
-
         HTMLElement colgroup, theadRow, tbody;
-        root = table().css(contentTable, playerScore)
+        root = table().css(playerScore)
             .add(colgroup = colgroup().asElement())
             .add(thead().add(theadRow = tr().asElement()))
             .add(tbody = tbody().asElement())
@@ -40,7 +36,7 @@ class PlayerScoreElement extends ScoreElement implements IsElement<HTMLTableElem
         // header
         int numberIndex = 0;
         theadRow.appendChild(th().css(clickable)
-            .textContent("↻")
+            .textContent("⇆")
             .title("Switch to number score")
             .on(click, e -> component.showNumberScore()).asElement());
         for (int number : numbers) {

@@ -18,14 +18,6 @@ import static org.jboss.schlawiner.client.resources.CSS.highlight;
 
 abstract class ScoreElement implements IsElement<HTMLTableElement> {
 
-    void highlight(Player player) {
-        clear("TH", "TD");
-        Element element = document.getElementById(playerId(player));
-        if (element != null) {
-            element.classList.add(highlight);
-        }
-    }
-
     void highlight(Player player, int numberIndex) {
         clear("TH", "TD");
         Element element = document.getElementById(scoreId(player, numberIndex));
@@ -58,10 +50,8 @@ abstract class ScoreElement implements IsElement<HTMLTableElement> {
         }
     }
 
-    abstract String prefix();
-
     String playerId(Player player) {
-        return Ids.build(prefix(), "player", player.getName());
+        return Ids.build(prefix(), "player", player.getId());
     }
 
     String numberId(int numberIndex) {
@@ -69,10 +59,12 @@ abstract class ScoreElement implements IsElement<HTMLTableElement> {
     }
 
     String scoreId(Player player, int numberIndex) {
-        return Ids.build(prefix(), "score", player.getName(), String.valueOf(numberIndex));
+        return Ids.build(prefix(), "score", player.getId(), String.valueOf(numberIndex));
     }
 
     String sumId(Player player) {
-        return Ids.build(prefix(), "sum", player.getName());
+        return Ids.build(prefix(), "sum", player.getId());
     }
+
+    abstract String prefix();
 }

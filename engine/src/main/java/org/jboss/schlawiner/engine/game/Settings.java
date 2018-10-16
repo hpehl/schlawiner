@@ -4,7 +4,6 @@ import static org.jboss.schlawiner.engine.game.Level.MEDIUM;
 
 public class Settings {
 
-    private String name;
     private int timeout; // in seconds
     private int penalty;
     private int retries;
@@ -14,21 +13,12 @@ public class Settings {
 
     public Settings() {
         // defaults
-        this.name = System.getProperty("user.name", "Schlawiner");
         this.timeout = 60;
         this.penalty = 5;
         this.retries = 3;
         this.numbers = 8;
         this.autoDice = false;
         this.level = MEDIUM;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getTimeout() {

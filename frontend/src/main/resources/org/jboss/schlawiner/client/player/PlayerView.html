@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    <link rel="stylesheet" type="text/css" href="../../public/schlawiner.css"/>
+    <title>Players</title>
+</head>
+<body>
+<div class="page">
+    <h1>Players</h1>
+    <div class="d-flex f-column">
+        <table>
+            <colgroup>
+                <col style="width: 70%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="left-align">Name</th>
+                <th>Human</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody data-element="tbody"></tbody>
+        </table>
+        <div class="d-flex mb-5">
+            <input type="text" placeholder="Add Player" data-element="addPlayer" style="flex: 1 0 auto;"/>
+        </div>
+        <div class="d-flex" style="justify-content: flex-end">
+            <a href="#main" style="margin-right: 2rem">Back</a>
+            <a class="clickable" data-element="startGame">Start</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
