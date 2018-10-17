@@ -13,11 +13,11 @@ public class Term implements Node {
     private Node right;
 
 
-    Term(final Operator operator) {
+    Term(Operator operator) {
         this.operator = operator;
     }
 
-    public int eval(final Integer... values) {
+    public int eval(Integer... values) {
         assign(values);
         return new EvalIterator().eval(this);
     }
@@ -38,7 +38,7 @@ public class Term implements Node {
         return this;
     }
 
-    public Term assign(final Integer... values) {
+    public Term assign(Integer... values) {
         new AssignValuesIterator().assign(this, values);
         return this;
     }
@@ -49,7 +49,7 @@ public class Term implements Node {
     }
 
     @Override
-    public void setParent(final Node parent) {
+    public void setParent(Node parent) {
         this.parent = parent;
     }
 
@@ -59,7 +59,7 @@ public class Term implements Node {
     }
 
     @Override
-    public void setLeft(final Node left) {
+    public void setLeft(Node left) {
         this.left = left;
         this.left.setParent(this);
     }
@@ -70,7 +70,7 @@ public class Term implements Node {
     }
 
     @Override
-    public void setRight(final Node right) {
+    public void setRight(Node right) {
         this.right = right;
         this.right.setParent(this);
     }
@@ -88,7 +88,7 @@ public class Term implements Node {
             return stack.pop();
         }
 
-        private void postOrder(final Node node, Stack<Integer> stack) {
+        private void postOrder(Node node, Stack<Integer> stack) {
             if (node instanceof Term) {
                 postOrder(node.getLeft(), stack);
                 postOrder(node.getRight(), stack);
@@ -132,7 +132,7 @@ public class Term implements Node {
             return builder.toString();
         }
 
-        private void inOrder(final Node node, final StringBuilder builder) {
+        private void inOrder(Node node, StringBuilder builder) {
             if (node != null) {
                 inOrder(node.getLeft(), builder);
                 if (node instanceof Variable) {
@@ -157,7 +157,7 @@ public class Term implements Node {
             }
         }
 
-        private boolean needsBracket(final Node node) {
+        private boolean needsBracket(Node node) {
             if (node.getParent() instanceof Term && node.getParent().getParent() instanceof Term) {
                 Term parent = (Term) node.getParent();
                 Term grandparent = (Term) parent.getParent();
@@ -170,12 +170,12 @@ public class Term implements Node {
 
     static class AssignValuesIterator {
 
-        void assign(final Term term, final Integer... values) {
+        void assign(Term term, Integer... values) {
             Iterator<Integer> iterator = Iterators.forArray(values);
             inOrder(term, iterator);
         }
 
-        private void inOrder(final Node node, final Iterator<Integer> iterator) {
+        private void inOrder(Node node, Iterator<Integer> iterator) {
             if (node != null && iterator.hasNext()) {
                 inOrder(node.getLeft(), iterator);
                 if (node instanceof Variable) {
@@ -190,13 +190,13 @@ public class Term implements Node {
 
     static class SearchIterator {
 
-        Variable search(final Term term, final String name) {
+        Variable search(Term term, String name) {
             Variable[] result = new Variable[1];
             inOrder(term, name, result);
             return result[0];
         }
 
-        private void inOrder(final Node node, final String name, Variable[] result) {
+        private void inOrder(Node node, String name, Variable[] result) {
             if (node != null && result[0] == null) {
                 inOrder(node.getLeft(), name, result);
                 if (node instanceof Variable) {

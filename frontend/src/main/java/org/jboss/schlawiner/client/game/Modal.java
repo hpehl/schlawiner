@@ -12,15 +12,13 @@ import static org.jboss.gwt.elemento.core.Elements.div;
 import static org.jboss.schlawiner.client.resources.UIConstants.OBJECT;
 
 @JsType(isNative = true, namespace = "tingle", name = "modal")
-public class Modal {
+class Modal {
 
     @JsConstructor
     Modal(ModalOptions options) {
     }
 
     native void open();
-
-    native void close();
 
     native void destroy();
 
@@ -31,20 +29,6 @@ public class Modal {
 
     native void setContent(String content);
 
-    @JsOverlay
-    final void setFooterContent(HTMLElement element) {
-        setFooterContent(element.innerHTML);
-    }
-
-    native void setFooterContent(String content);
-
-    @JsOverlay
-    final void addFooterBtn(HTMLElement button, String cssClass, Callback callback) {
-        addFooterBtn(button.innerHTML, cssClass, callback);
-    }
-
-    native void addFooterBtn(String content, String cssClass, Callback callback);
-
     @JsFunction
     @FunctionalInterface
     interface Callback {
@@ -53,25 +37,10 @@ public class Modal {
     }
 
 
-    @JsFunction
-    @FunctionalInterface
-    interface Feedback {
-
-        boolean call();
-    }
-
-
     @JsType(isNative = true, namespace = GLOBAL, name = OBJECT)
-    public static class ModalOptions {
+    static class ModalOptions {
 
-        boolean footer;
-        boolean stickyFooter;
-        JsArray<State> cssClass;
-        String closeLabel;
         JsArray<String> closeMethods;
-        Callback beforeOpen;
-        Callback onOpen;
-        Feedback beforeClose;
         Callback onClose;
     }
 }

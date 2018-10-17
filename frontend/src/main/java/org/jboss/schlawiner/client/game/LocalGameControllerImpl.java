@@ -18,8 +18,6 @@ import org.jboss.schlawiner.engine.game.Players;
 import org.jboss.schlawiner.engine.game.Settings;
 
 import static java.util.stream.Collectors.joining;
-import static org.jboss.schlawiner.client.game.State.Local.FINISHED;
-import static org.jboss.schlawiner.client.game.State.Local.NEXT;
 
 @Controller(route = "/local-game",
     selector = "content",
@@ -30,7 +28,6 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     private Game game;
     private String term;
-    private State.Local state;
 
 
     // ------------------------------------------------------ controller lifecycle
@@ -42,27 +39,30 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         Numbers numbers = new Numbers(settings.getNumbers());
         game = new Game(players, numbers, new OperationAlgorithm(), settings);
         component.start(game);
-        pushState(NEXT);
+        component.reset();
+        next();
     }
 
 
     // ------------------------------------------------------ interface methods
 
     @Override
-    public void roleDice() {
+    public void dice() {
         Player currentPlayer = game.getPlayers().current();
         int currentNumber = game.getNumbers().current();
-
-        component.clear();
-        component.role(game.getDice(), () -> {
-            component.highlight(game.getPlayers().current(), game.getNumbers().index());
+        int currentIndex = game.getNumbers().index();
+        component.reset();
+        component.role(currentPlayer, game.getDice(), () -> {
+            component.highlight(currentPlayer, currentIndex);
             if (currentPlayer.isHuman()) {
                 component.countdown(context.getSettings().getTimeout(), currentNumber);
                 component.message(currentPlayer.getName() + " it's your turn.");
             } else {
                 Solution solution = game.solve();
                 component.showScore(game);
-                component.modal(currentPlayer.getName() + " got " + solution + ".", () -> pushState(NEXT));
+                component.computer(solution, () -> {
+                    component.modal(currentPlayer.getName() + " got " + solution + ".", this::next);
+                });
             }
         });
     }
@@ -70,7 +70,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     @Override
     public void retry() {
         if (game.retry()) {
-            roleDice();
+            dice();
         }
     }
 
@@ -82,7 +82,6 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
             () -> {
                 game.skip();
                 component.showScore(game);
-                pushState(NEXT);
             });
     }
 
@@ -119,7 +118,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
                     " (difference " + calculation.getBestDifference() + ").";
             }
             component.showScore(game);
-            component.modal(message, () -> pushState(NEXT));
+            component.modal(message, this::next);
         } catch (ArithmeticException e) {
             component.message(e.getMessage());
         }
@@ -128,48 +127,22 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     // ------------------------------------------------------ workflow
 
-    private void pushState(State.Local state) {
-        Settings settings = context.getSettings();
-
-        this.state = state;
-        switch (this.state) {
-
-            case NEXT: {
-                if (game.hasNext()) {
-                    game.next();
-                    game.dice(new Dice());
-                    if (!game.getPlayers().current().isHuman() || settings.isAutoDice()) {
-                        roleDice();
-                    }
-                } else {
-                    pushState(FINISHED);
-                }
-                break;
+    private void next() {
+        if (game.hasNext()) {
+            game.next();
+            game.dice(new Dice());
+            if (!game.getPlayers().current().isHuman() || context.getSettings().isAutoDice()) {
+                dice();
             }
-
-            case ENTER_TERM: {
-                break;
+        } else {
+            String message = "The winner";
+            List<Player> winners = game.getScoreboard().getWinners();
+            if (winners.size() == 1) {
+                message += " is " + winners.get(0).getName();
+            } else {
+                message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
             }
-
-            case COMPUTER: {
-                break;
-            }
-
-            case MODAL: {
-                break;
-            }
-
-            case FINISHED: {
-                String message = "The winner";
-                List<Player> winners = game.getScoreboard().getWinners();
-                if (winners.size() == 1) {
-                    message += " is " + winners.get(0).getName();
-                } else {
-                    message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
-                }
-                component.modal("Game Over. " + message);
-                break;
-            }
+            component.modal("Game Over. " + message, () -> component.reset());
         }
     }
 }

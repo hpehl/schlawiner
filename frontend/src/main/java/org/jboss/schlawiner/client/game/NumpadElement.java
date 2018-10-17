@@ -1,11 +1,14 @@
 package org.jboss.schlawiner.client.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import elemental2.dom.HTMLButtonElement;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTableElement;
 import org.jboss.gwt.elemento.core.IsElement;
+import org.jboss.gwt.elemento.core.builder.HtmlContentBuilder;
 import org.jboss.schlawiner.engine.game.Dice;
 
 import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromSafeConstant;
@@ -21,6 +24,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
 
     private final Stack<String> tokens;
     private final HTMLButtonElement numbers[][]; // first dimension is the multiplier, second dimension is the dice number
+    private final List<HTMLButtonElement> controls;
     private final HTMLTableElement root;
     private LocalGameController controller;
 
@@ -28,6 +32,7 @@ class NumpadElement implements IsElement<HTMLTableElement> {
         HTMLElement colgroup, tbody;
         this.tokens = new Stack<>();
         this.numbers = new HTMLButtonElement[3][3];
+        this.controls = new ArrayList<>();
         this.root = table().css(numpad)
             .add(colgroup = colgroup().asElement())
             .add(tbody = tbody().asElement())
@@ -43,9 +48,9 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
             .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
-            .add(td().add(button("(").on(click, e -> addToken("("))))
-            .add(td().add(button(")").on(click, e -> addToken(")"))))
-            .add(td().add(button("⌫").on(click, e -> removeToken())))
+            .add(td().add(pushControl(button("(").on(click, e -> addToken("(")))))
+            .add(td().add(pushControl(button(")").on(click, e -> addToken(")")))))
+            .add(td().add(pushControl(button("⌫").on(click, e -> removeToken()))))
             .asElement());
 
         // <dice number> * 10
@@ -56,11 +61,11 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
             .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
-            .add(td().add(button("+").on(click, e -> addToken(" + "))))
-            .add(td().add(button("-").on(click, e -> addToken(" - "))))
-            .add(td().add(button()
+            .add(td().add(pushControl(button("+").on(click, e -> addToken(" + ")))))
+            .add(td().add(pushControl(button("-").on(click, e -> addToken(" - ")))))
+            .add(td().add(pushControl(button()
                 .innerHtml(fromSafeConstant("&#10005;"))
-                .on(click, e -> clear())))
+                .on(click, e -> clear()))))
             .asElement());
 
         // <dice number> * 100
@@ -71,10 +76,15 @@ class NumpadElement implements IsElement<HTMLTableElement> {
             .add(td().add(numbers[multiplierIndex][diceNumberIndex++] = button("0").asElement()))
             .add(td().add(numbers[multiplierIndex][diceNumberIndex] = button("0").asElement()))
             .add(td().innerHtml(fromSafeConstant("&nbsp;")))
-            .add(td().add(button("*").on(click, e -> addToken(" * "))))
-            .add(td().add(button("/").on(click, e -> addToken(" / "))))
-            .add(td().add(button("↵").on(click, e -> controller.calculate())))
+            .add(td().add(pushControl(button("*").on(click, e -> addToken(" * ")))))
+            .add(td().add(pushControl(button("/").on(click, e -> addToken(" / ")))))
+            .add(td().add(pushControl(button("↵").on(click, e -> controller.calculate()))))
             .asElement());
+    }
+
+    private HtmlContentBuilder<HTMLButtonElement> pushControl(HtmlContentBuilder<HTMLButtonElement> button) {
+        controls.add(button.asElement());
+        return button;
     }
 
     @Override
@@ -114,6 +124,10 @@ class NumpadElement implements IsElement<HTMLTableElement> {
                 numbers[i][j].disabled = !enabled;
                 toggle(numbers[i][j], disabled, !enabled);
             }
+        }
+        for (HTMLButtonElement control : controls) {
+            control.disabled = !enabled;
+            toggle(control, disabled, !enabled);
         }
     }
 

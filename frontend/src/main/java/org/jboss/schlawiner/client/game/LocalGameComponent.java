@@ -2,6 +2,7 @@ package org.jboss.schlawiner.client.game;
 
 import com.github.nalukit.nalu.client.component.IsComponent;
 import elemental2.dom.HTMLElement;
+import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
@@ -11,15 +12,17 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void start(Game game);
 
-    void clear();
+    void reset();
 
-    void role(Dice dice, Action0 action);
+    void role(Player currentPlayer, Dice dice, Action0 action);
 
     void usage(boolean[] used);
 
     void countdown(int timeout, int number);
 
     void showTerm(String term);
+
+    void computer(Solution solution, Action0 action);
 
     void message(String message);
 
@@ -30,6 +33,4 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
     void highlight(Player player, int numberIndex);
 
     void showScore(Game game);
-
-    void uiState(State.Local state, Player currentPlayer);
 }

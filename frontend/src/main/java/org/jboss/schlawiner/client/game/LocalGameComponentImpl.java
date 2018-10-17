@@ -1,13 +1,16 @@
 package org.jboss.schlawiner.client.game;
 
+import java.util.Iterator;
+
 import com.github.nalukit.nalu.client.component.AbstractComponent;
+import com.google.common.primitives.Chars;
 import elemental2.core.JsArray;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
-import org.gwtproject.safehtml.shared.SafeHtmlUtils;
 import org.jboss.gwt.elemento.core.EventType;
 import org.jboss.gwt.elemento.core.Key;
 import org.jboss.schlawiner.client.resources.CSS;
+import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
@@ -15,11 +18,15 @@ import org.jboss.schlawiner.engine.score.Score;
 import org.jboss.schlawiner.engine.score.Scoreboard;
 import rx.functions.Action0;
 
+import static elemental2.dom.DomGlobal.clearInterval;
+import static elemental2.dom.DomGlobal.setInterval;
+import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromSafeConstant;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.Elements.input;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.InputType.text;
 import static org.jboss.schlawiner.client.resources.CSS.*;
+import static org.jboss.schlawiner.client.resources.UIConstants.TYPEWRITER_INTERVAL;
 
 public class LocalGameComponentImpl extends AbstractComponent<LocalGameController, HTMLElement> implements
     LocalGameComponent {
@@ -38,6 +45,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private NumberScoreElement numberScore;
     private PlayerScoreElement playerScore;
     private Modal modal;
+    private double handle;
 
     public LocalGameComponentImpl() {
         root = div().css(page, tingleContentWrapper)
@@ -58,7 +66,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                 .add(div().css(links)
                     .add(ul()
                         .add(li()
-                            .add(dice = a().textContent("Dice").on(click, e -> getController().roleDice()).asElement()))
+                            .add(dice = a().textContent("Dice").on(click, e -> getController().dice()).asElement()))
                         .add(li()
                             .add(skip = a().textContent("Skip").on(click, e -> getController().skip()).asElement()))
                         .add(li()
@@ -104,18 +112,22 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void clear() {
+    public void reset() {
         diceElements.clear();
         solution.value = "";
-        message.setMessage(SafeHtmlUtils.fromSafeConstant("&nbsp;"));
+        message.setMessage(fromSafeConstant("&nbsp;"));
         numberScore.clear();
         playerScore.clear();
+        numpad.disable();
     }
 
     @Override
-    public void role(Dice dice, Action0 action) {
+    public void role(Player currentPlayer, Dice dice, Action0 action) {
         diceElements.role(dice, () -> {
             numpad.showDice(dice);
+            if (currentPlayer.isHuman()) {
+                numpad.enable();
+            }
             action.call();
         });
     }
@@ -137,6 +149,22 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
+    public void computer(Solution solution, Action0 action) {
+        clearInterval(handle);
+        this.solution.value = "";
+
+        Iterator<Character> iterator = Chars.asList(solution.getTerm().toCharArray()).iterator();
+        handle = setInterval((o) -> {
+            if (iterator.hasNext()) {
+                this.solution.value = this.solution.value + String.valueOf(iterator.next());
+            } else {
+                clearInterval(handle);
+                action.call();
+            }
+        }, TYPEWRITER_INTERVAL);
+    }
+
+    @Override
     public void message(String message) {
         this.message.setMessage(message);
     }
@@ -148,14 +176,15 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
 
     @Override
     public void modal(String text, Action0 onClose) {
-        if (modal == null) {
-            Modal.ModalOptions options = new Modal.ModalOptions();
-            options.closeMethods = new JsArray<>("overlay", "escape");
-            if (onClose != null) {
-                options.onClose = onClose::call;
-            }
-            modal = new Modal(options);
+        if (modal != null) {
+            modal.destroy();
         }
+        Modal.ModalOptions options = new Modal.ModalOptions();
+        options.closeMethods = new JsArray<>("overlay", "escape");
+        if (onClose != null) {
+            options.onClose = onClose::call;
+        }
+        modal = new Modal(options);
         modal.setContent(p().css(mb0).textContent(text).asElement());
         modal.open();
     }
@@ -190,24 +219,5 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         numberScore.asElement().classList.add(animated, fadeOutRight);
         playerScore.asElement().classList.add(animated, fadeInLeft);
         setVisible(playerScore.asElement(), true);
-    }
-
-
-    // ------------------------------------------------------ change UI state
-
-    @Override
-    public void uiState(State.Local state, Player currentPlayer) {
-        switch (state) {
-            case NEXT:
-                break;
-            case ENTER_TERM:
-                break;
-            case COMPUTER:
-                break;
-            case MODAL:
-                break;
-            case FINISHED:
-                break;
-        }
     }
 }

@@ -4,7 +4,7 @@ import com.github.nalukit.nalu.client.component.IsComponent;
 
 public interface LocalGameController extends IsComponent.Controller {
 
-    void roleDice();
+    void dice();
 
     void retry();
 
