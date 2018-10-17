@@ -1,6 +1,7 @@
 package org.jboss.schlawiner.client.game;
 
 import com.github.nalukit.nalu.client.component.AbstractComponent;
+import elemental2.core.JsArray;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
 import org.gwtproject.safehtml.shared.SafeHtmlUtils;
@@ -36,9 +37,10 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private final HTMLElement scoreContainer;
     private NumberScoreElement numberScore;
     private PlayerScoreElement playerScore;
+    private Modal modal;
 
     public LocalGameComponentImpl() {
-        root = div().css(page)
+        root = div().css(page, tingleContentWrapper)
             .add(div().css(row, control)
                 .add(div().css(CSS.input)
                     .add(diceElements = new DiceElements())
@@ -46,7 +48,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                         .apply(i -> i.placeholder = "Enter solution")
                         .on(EventType.keyup, e -> {
                             if (Key.Enter.match(e)) {
-                                getController().solve();
+                                getController().calculate();
                             } else {
                                 getController().setTerm(((HTMLInputElement) e.target).value, false);
                             }
@@ -56,7 +58,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                 .add(div().css(links)
                     .add(ul()
                         .add(li()
-                            .add(dice = a().textContent("Dice").on(click, e -> getController().dice()).asElement()))
+                            .add(dice = a().textContent("Dice").on(click, e -> getController().roleDice()).asElement()))
                         .add(li()
                             .add(skip = a().textContent("Skip").on(click, e -> getController().skip()).asElement()))
                         .add(li()
@@ -85,6 +87,14 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        if (modal != null) {
+            modal.destroy();
+        }
+    }
+
+    @Override
     public void start(Game game) {
         numberScore = new NumberScoreElement(this, game.getPlayers(), game.getNumbers());
         playerScore = new PlayerScoreElement(this, game.getPlayers(), game.getNumbers());
@@ -98,6 +108,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         diceElements.clear();
         solution.value = "";
         message.setMessage(SafeHtmlUtils.fromSafeConstant("&nbsp;"));
+        numberScore.clear();
+        playerScore.clear();
     }
 
     @Override
@@ -130,13 +142,37 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
+    public void modal(String text) {
+        modal(text, null);
+    }
+
+    @Override
+    public void modal(String text, Action0 onClose) {
+        if (modal == null) {
+            Modal.ModalOptions options = new Modal.ModalOptions();
+            options.closeMethods = new JsArray<>("overlay", "escape");
+            if (onClose != null) {
+                options.onClose = onClose::call;
+            }
+            modal = new Modal(options);
+        }
+        modal.setContent(p().css(mb0).textContent(text).asElement());
+        modal.open();
+    }
+
+    @Override
     public void highlight(Player player, int numberIndex) {
         numberScore.highlight(player, numberIndex);
         playerScore.highlight(player, numberIndex);
     }
 
     @Override
-    public void showScore(Scoreboard scoreboard, Player player, int numberIndex, Score score) {
+    public void showScore(Game game) {
+        Scoreboard scoreboard = game.getScoreboard();
+        Player player = game.getPlayers().current();
+        int numberIndex = game.getNumbers().index();
+        Score score = scoreboard.getScore(player, numberIndex);
+
         numberScore.setScore(scoreboard, player, numberIndex, score);
         playerScore.setScore(scoreboard, player, numberIndex, score);
     }
@@ -154,5 +190,24 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         numberScore.asElement().classList.add(animated, fadeOutRight);
         playerScore.asElement().classList.add(animated, fadeInLeft);
         setVisible(playerScore.asElement(), true);
+    }
+
+
+    // ------------------------------------------------------ change UI state
+
+    @Override
+    public void uiState(State.Local state, Player currentPlayer) {
+        switch (state) {
+            case NEXT:
+                break;
+            case ENTER_TERM:
+                break;
+            case COMPUTER:
+                break;
+            case MODAL:
+                break;
+            case FINISHED:
+                break;
+        }
     }
 }

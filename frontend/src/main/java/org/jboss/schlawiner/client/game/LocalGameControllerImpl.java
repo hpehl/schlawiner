@@ -8,6 +8,7 @@ import elemental2.dom.HTMLElement;
 import org.jboss.schlawiner.client.Context;
 import org.jboss.schlawiner.engine.algorithm.OperationAlgorithm;
 import org.jboss.schlawiner.engine.algorithm.Solution;
+import org.jboss.schlawiner.engine.game.Calculation;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.DiceValidator;
 import org.jboss.schlawiner.engine.game.Game;
@@ -15,11 +16,10 @@ import org.jboss.schlawiner.engine.game.Numbers;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Players;
 import org.jboss.schlawiner.engine.game.Settings;
-import org.jboss.schlawiner.engine.score.Score;
-import org.jboss.schlawiner.engine.score.Scoreboard;
 
-import static java.lang.Math.abs;
 import static java.util.stream.Collectors.joining;
+import static org.jboss.schlawiner.client.game.State.Local.FINISHED;
+import static org.jboss.schlawiner.client.game.State.Local.NEXT;
 
 @Controller(route = "/local-game",
     selector = "content",
@@ -30,6 +30,10 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
 
     private Game game;
     private String term;
+    private State.Local state;
+
+
+    // ------------------------------------------------------ controller lifecycle
 
     @Override
     public void start() {
@@ -38,53 +42,53 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         Numbers numbers = new Numbers(settings.getNumbers());
         game = new Game(players, numbers, new OperationAlgorithm(), settings);
         component.start(game);
+        pushState(NEXT);
+    }
+
+
+    // ------------------------------------------------------ interface methods
+
+    @Override
+    public void roleDice() {
+        Player currentPlayer = game.getPlayers().current();
+        int currentNumber = game.getNumbers().current();
+
+        component.clear();
+        component.role(game.getDice(), () -> {
+            component.highlight(game.getPlayers().current(), game.getNumbers().index());
+            if (currentPlayer.isHuman()) {
+                component.countdown(context.getSettings().getTimeout(), currentNumber);
+                component.message(currentPlayer.getName() + " it's your turn.");
+            } else {
+                Solution solution = game.solve();
+                component.showScore(game);
+                component.modal(currentPlayer.getName() + " got " + solution + ".", () -> pushState(NEXT));
+            }
+        });
     }
 
     @Override
-    public void dice() {
-        if (game.hasNext()) {
-            game.next();
-            game.dice(new Dice());
-
-            Players players = game.getPlayers();
-            Player currentPlayer = players.current();
-            Scoreboard scoreboard = game.getScoreboard();
-            int currentNumber = game.getNumbers().current();
-            int currentIndex = game.getNumbers().index();
-
-            component.clear();
-            component.role(game.getDice(), () -> {
-                component.message(currentPlayer.getName() + " it's your turn.");
-                component.highlight(currentPlayer, currentIndex);
-                if (currentPlayer.isHuman()) {
-                    component.countdown(context.getSettings().getTimeout(), currentNumber);
-                } else {
-                    Solution solution = game.solve();
-                    Score score = new Score(solution.getTerm(), abs(solution.getValue() - currentNumber));
-                    component.message(currentPlayer.getName() + " got " + solution + ".");
-                    component.showScore(scoreboard, currentPlayer, currentIndex, score);
-                }
-            });
-        } else {
-            String message = "The winner";
-            List<Player> winners = game.getScoreboard().getWinners();
-            if (winners.size() == 1) {
-                message += " is " + winners.get(0).getName();
-            } else {
-                message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
-            }
-            component.message("Game Over. " + message);
+    public void retry() {
+        if (game.retry()) {
+            roleDice();
         }
     }
 
     @Override
     public void skip() {
-        component.message("Skip not yet implemented");
+        Solution solution = game.solve();
+        component.modal("The best solution is " + solution + ". You get " +
+                context.getSettings().getPenalty() + " penalty points.",
+            () -> {
+                game.skip();
+                component.showScore(game);
+                pushState(NEXT);
+            });
     }
 
     @Override
     public void restart() {
-        component.message("Restart not yet implemented");
+        router.route("/local-game");
     }
 
     @Override
@@ -103,30 +107,69 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     }
 
     @Override
-    public void solve() {
+    public void calculate() {
         try {
-            DiceValidator.validate(game.getDice(), term);
-
-            Players players = game.getPlayers();
-            Player currentPlayer = players.current();
-            Scoreboard scoreboard = game.getScoreboard();
-            int currentNumber = game.getNumbers().current();
-            int currentIndex = game.getNumbers().index();
-            int difference = game.calculate(term);
-            Solution bestSolution = game.getAlgorithm()
-                .compute(game.getDice().numbers[0], game.getDice().numbers[1], game.getDice().numbers[2], currentNumber)
-                .bestSolution();
-            int bestDifference = Math.abs(bestSolution.getValue() - currentNumber);
-            if (difference > bestDifference) {
-                component.message("Your difference is " + difference + ". " +
-                    "The best solution is " + bestSolution + ".");
+            String message;
+            Calculation calculation = game.calculate(term);
+            if (calculation.isBest()) {
+                message = "Well done, your solution is the best.";
             } else {
-                component.message("Well done, your solution is the best.");
+                message = "Your difference is " + calculation.getDifference() + ". " +
+                    "The best solution is " + calculation.getBestSolution() +
+                    " (difference " + calculation.getBestDifference() + ").";
             }
-            Score score = new Score(term, difference);
-            component.showScore(scoreboard, currentPlayer, currentIndex, score);
+            component.showScore(game);
+            component.modal(message, () -> pushState(NEXT));
         } catch (ArithmeticException e) {
             component.message(e.getMessage());
+        }
+    }
+
+
+    // ------------------------------------------------------ workflow
+
+    private void pushState(State.Local state) {
+        Settings settings = context.getSettings();
+
+        this.state = state;
+        switch (this.state) {
+
+            case NEXT: {
+                if (game.hasNext()) {
+                    game.next();
+                    game.dice(new Dice());
+                    if (!game.getPlayers().current().isHuman() || settings.isAutoDice()) {
+                        roleDice();
+                    }
+                } else {
+                    pushState(FINISHED);
+                }
+                break;
+            }
+
+            case ENTER_TERM: {
+                break;
+            }
+
+            case COMPUTER: {
+                break;
+            }
+
+            case MODAL: {
+                break;
+            }
+
+            case FINISHED: {
+                String message = "The winner";
+                List<Player> winners = game.getScoreboard().getWinners();
+                if (winners.size() == 1) {
+                    message += " is " + winners.get(0).getName();
+                } else {
+                    message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
+                }
+                component.modal("Game Over. " + message);
+                break;
+            }
         }
     }
 }

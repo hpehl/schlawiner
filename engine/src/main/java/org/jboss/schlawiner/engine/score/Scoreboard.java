@@ -51,7 +51,7 @@ public class Scoreboard {
         }
     }
 
-    public Score getScore(int numberIndex, Player player) {
+    public Score getScore(Player player, int numberIndex) {
         return numberScores[numberIndex].getScore(player);
     }
 

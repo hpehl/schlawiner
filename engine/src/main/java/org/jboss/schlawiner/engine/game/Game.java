@@ -95,17 +95,22 @@ public class Game {
      *
      * @return the difference between the calculated solution and the current number
      *
-     * @throws IllegalStateException if the current player is not human
+     * @throws ArithmeticException if the term is not valid
      */
-    public int calculate(String term) {
-        if (!players.current().isHuman()) {
-            throw new IllegalStateException("Current player is not human.");
+    public Calculation calculate(String term) {
+        Calculation calculation;
+        DiceValidator.validate(dice, term);
+        int result = Calculator.calculate(term, dice);
+        int difference = abs(result - numbers.current());
+        if (difference > 0) {
+            Solutions solutions = algorithm.compute(dice.numbers[0], dice.numbers[1], dice.numbers[2],
+                numbers.current());
+            calculation = new Calculation(difference, numbers.current(), solutions.bestSolution());
         } else {
-            int result = Calculator.calculate(term, dice);
-            int difference = abs(result - numbers.current());
-            score(term, difference);
-            return difference;
+            calculation = new Calculation(difference, numbers.current(), null);
         }
+        score(term, difference);
+        return calculation;
     }
 
     /**
@@ -113,19 +118,13 @@ public class Game {
      * be called for computer players.
      *
      * @return the best solution based on the level
-     *
-     * @throws IllegalStateException if the current player is human
      */
     public Solution solve() {
-        if (players.current().isHuman()) {
-            throw new IllegalStateException("Current player is human.");
-        } else {
-            Solutions solutions = algorithm.compute(dice.numbers[0], dice.numbers[1], dice.numbers[2],
-                numbers.current());
-            Solution solution = solutions.bestSolution(settings.getLevel());
-            score(solution.getTerm(), abs(solution.getValue() - numbers.current()));
-            return solution;
-        }
+        Solutions solutions = algorithm.compute(dice.numbers[0], dice.numbers[1], dice.numbers[2],
+            numbers.current());
+        Solution solution = solutions.bestSolution(settings.getLevel());
+        score(solution.getTerm(), abs(solution.getValue() - numbers.current()));
+        return solution;
     }
 
     private void score(String term, int difference) {

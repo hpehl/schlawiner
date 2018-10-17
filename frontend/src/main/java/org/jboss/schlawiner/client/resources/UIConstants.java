@@ -7,6 +7,7 @@ public interface UIConstants {
     int DICE_TIMES = 3;
     int NUMBER_WIDTH = 10; // %
     int PLAYER_WIDTH = 20; // %
+    int SUM_WIDTH = 10; // %
 
     String OBJECT = "Object";
 }

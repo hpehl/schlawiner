@@ -23,6 +23,7 @@ public interface CSS {
     String left = "left";
     String leftAlign = "left-align";
     String links = "links";
+    String mb0 = "mb-0";
     String numberScore = "number-score";
     String numpad = "numpad";
     String page = "page";
@@ -32,5 +33,6 @@ public interface CSS {
     String score = "score";
     String showFront = "show-front";
     String solution = "solution";
+    String tingleContentWrapper = "tingle-content-wrapper";
     String top = "top";
 }

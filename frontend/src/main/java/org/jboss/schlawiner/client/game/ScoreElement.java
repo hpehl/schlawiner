@@ -19,14 +19,18 @@ import static org.jboss.schlawiner.client.resources.CSS.highlight;
 abstract class ScoreElement implements IsElement<HTMLTableElement> {
 
     void highlight(Player player, int numberIndex) {
-        clear("TH", "TD");
+        clearTags("TH", "TD");
         Element element = document.getElementById(scoreId(player, numberIndex));
         if (element != null) {
             element.classList.add(highlight);
         }
     }
 
-    private void clear(String... tags) {
+    void clear() {
+        clearTags("TH", "TD");
+    }
+
+    private void clearTags(String... tags) {
         for (String tag : tags) {
             stream(asElement().getElementsByTagName(tag))
                 .filter(htmlElements())

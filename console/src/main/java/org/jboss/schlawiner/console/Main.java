@@ -8,6 +8,7 @@ import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 import org.jboss.schlawiner.engine.algorithm.OperationAlgorithm;
 import org.jboss.schlawiner.engine.algorithm.Solution;
+import org.jboss.schlawiner.engine.game.Calculation;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Level;
@@ -204,15 +205,11 @@ public class Main {
                         } else if ("cancel".equalsIgnoreCase(term)) {
                             game.cancel();
                         } else {
-                            int difference = game.calculate(term);
-                            Solution bestSolution = game.getAlgorithm()
-                                .compute(game.getDice().numbers[0], game.getDice().numbers[1],
-                                    game.getDice().numbers[2], currentNumber)
-                                .bestSolution();
-                            int bestDifference = Math.abs(bestSolution.getValue() - currentNumber);
-                            if (difference > bestDifference) {
+                            Calculation calculation = game.calculate(term);
+                            if (!calculation.isBest()) {
                                 terminal.printf("Your difference is %d. The best solution is %s (difference %d)%n",
-                                    difference, bestSolution, bestDifference);
+                                    calculation.getDifference(), calculation.getBestSolution(),
+                                    calculation.getBestDifference());
                             }
                             validTerm = true;
                         }

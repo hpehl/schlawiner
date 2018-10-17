@@ -4,7 +4,9 @@ import com.github.nalukit.nalu.client.component.IsComponent;
 
 public interface LocalGameController extends IsComponent.Controller {
 
-    void dice();
+    void roleDice();
+
+    void retry();
 
     void skip();
 
@@ -14,5 +16,5 @@ public interface LocalGameController extends IsComponent.Controller {
 
     void setTerm(String term, boolean updateInput);
 
-    void solve();
+    void calculate();
 }

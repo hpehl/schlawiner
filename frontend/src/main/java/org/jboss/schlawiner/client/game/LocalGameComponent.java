@@ -5,8 +5,6 @@ import elemental2.dom.HTMLElement;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
-import org.jboss.schlawiner.engine.score.Score;
-import org.jboss.schlawiner.engine.score.Scoreboard;
 import rx.functions.Action0;
 
 public interface LocalGameComponent extends IsComponent<LocalGameController, HTMLElement> {
@@ -25,7 +23,13 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void message(String message);
 
+    void modal(String text);
+
+    void modal(String text, Action0 onClose);
+
     void highlight(Player player, int numberIndex);
 
-    void showScore(Scoreboard scoreboard, Player player, int numberIndex, Score score);
+    void showScore(Game game);
+
+    void uiState(State.Local state, Player currentPlayer);
 }

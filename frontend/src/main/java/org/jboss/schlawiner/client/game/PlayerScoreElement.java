@@ -12,6 +12,7 @@ import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.schlawiner.client.resources.CSS.clickable;
 import static org.jboss.schlawiner.client.resources.CSS.playerScore;
 import static org.jboss.schlawiner.client.resources.UIConstants.PLAYER_WIDTH;
+import static org.jboss.schlawiner.client.resources.UIConstants.SUM_WIDTH;
 
 class PlayerScoreElement extends ScoreElement implements IsElement<HTMLTableElement> {
 
@@ -26,12 +27,12 @@ class PlayerScoreElement extends ScoreElement implements IsElement<HTMLTableElem
             .asElement();
 
         // colgroup
-        double numberWidth = (100.0 - PLAYER_WIDTH) / (numbers.size() + 1); // the last column shows the sum
+        double numberWidth = (100.0 - PLAYER_WIDTH - SUM_WIDTH) / numbers.size();
         colgroup.appendChild(col().style("width: " + PLAYER_WIDTH + "%").asElement());
         for (int ignored : numbers) {
             colgroup.appendChild(col().style("width: " + numberWidth + "%").asElement());
         }
-        colgroup.appendChild(col().style("width: " + numberWidth + "%").asElement());
+        colgroup.appendChild(col().style("width: " + SUM_WIDTH + "%").asElement());
 
         // header
         int numberIndex = 0;
