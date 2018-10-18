@@ -12,8 +12,6 @@ public interface PlayerComponent extends IsComponent<PlayerController, HTMLEleme
 
     void addPlayer(Player player);
 
-    void updateName(Player player);
-
     void updateHuman(Player player);
 
     void removePlayer(Player player);

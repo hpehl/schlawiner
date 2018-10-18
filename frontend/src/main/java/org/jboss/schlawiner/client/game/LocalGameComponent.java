@@ -19,7 +19,11 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void usage(boolean[] used);
 
-    void countdown(int timeout);
+    void startCountdown(Action0 timout);
+
+    void cancelCountdown();
+
+    void resetCountdown();
 
     void showTerm(String term);
 

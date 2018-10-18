@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         clean: {
             public: [
                 '<%= config.public %>/schlawiner*.css',
-                '<%= config.public %>/external*.js'
+                '<%= config.public %>/external.js'
             ]
         },
 
@@ -68,7 +68,8 @@ module.exports = function (grunt) {
                 },
                 src: [
                     '<%= config.node %>/raphael/raphael.min.js',
-                    '<%= config.node %>/tingle.js/dist/tingle.js'
+                    '<%= config.node %>/tingle.js/dist/tingle.js',
+                    '<%= config.public %>/countdown.js'
                 ],
                 dest: '<%= config.public %>/external.js'
             }

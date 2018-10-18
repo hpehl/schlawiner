@@ -90,8 +90,10 @@ public class Game {
     }
 
     /**
-     * Calculates the specified term for the current dice numbers and current target number. Meant to be called for
-     * human players.
+     * Calculates the specified term for the current dice numbers and current target number. Stores the difference in
+     * the score board.
+     *
+     * Meant to be called for human players.
      *
      * @return the difference between the calculated solution and the current number
      *
@@ -109,13 +111,14 @@ public class Game {
         } else {
             calculation = new Calculation(difference, numbers.current(), null);
         }
-        score(term, difference);
         return calculation;
     }
 
     /**
-     * Computes the best solution for the current dice numbers and current target number based on the level. Meant to
-     * be called for computer players.
+     * Computes the best solution for the current dice numbers and current target number based on the level. Stores
+     * the difference in the score board.
+     *
+     * Meant to be called for computer players.
      *
      * @return the best solution based on the level
      */
@@ -123,12 +126,18 @@ public class Game {
         Solutions solutions = algorithm.compute(dice.numbers[0], dice.numbers[1], dice.numbers[2],
             numbers.current());
         Solution solution = solutions.bestSolution(settings.getLevel());
-        score(solution.getTerm(), abs(solution.getValue() - numbers.current()));
         return solution;
     }
 
-    private void score(String term, int difference) {
+    /** Stores the difference to the current number for the current player in the score board. */
+    public void score(String term, int difference) {
         scoreboard.setScore(numbers.index(), players.current(), term, difference);
+    }
+
+    /** Stores the solution for the current player in the score board. */
+    public void score(Solution solution) {
+        scoreboard.setScore(numbers.index(), players.current(), solution.getTerm(),
+            abs(solution.getValue() - numbers.current()));
     }
 
     public Players getPlayers() {

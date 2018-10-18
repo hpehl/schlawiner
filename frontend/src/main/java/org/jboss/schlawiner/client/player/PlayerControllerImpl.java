@@ -28,16 +28,6 @@ public class PlayerControllerImpl extends AbstractComponentController<Context, P
     }
 
     @Override
-    public void editPlayer(String id, String name) {
-        Player player = find(id);
-        if (player != null) {
-            player.setName(name);
-            LocalStorage.savePlayers(context.getPlayers());
-            component.updateName(player);
-        }
-    }
-
-    @Override
     public void editPlayer(String id, boolean human) {
         Player player = find(id);
         if (player != null) {

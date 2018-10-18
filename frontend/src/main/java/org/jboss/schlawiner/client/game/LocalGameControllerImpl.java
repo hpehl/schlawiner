@@ -53,12 +53,21 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         int currentIndex = game.getNumbers().index();
 
         component.reset();
+        component.resetCountdown();
         component.highlight(currentPlayer, currentNumber, currentIndex);
+        role(true);
+    }
+
+    private void role(boolean startCountdown) {
+        Player currentPlayer = game.getPlayers().current();
         component.role(currentPlayer, game.getDice(), () -> {
             if (currentPlayer.isHuman()) {
-                component.countdown(context.getSettings().getTimeout());
+                if (startCountdown) {
+                    component.startCountdown(this::timeout);
+                }
             } else {
                 Solution solution = game.solve();
+                game.score(solution);
                 component.computer(solution, () -> {
                     component.showScore(game);
                     component.modal(currentPlayer.getName() + " got " + solution + ".", this::next);
@@ -70,17 +79,31 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
     @Override
     public void retry() {
         if (game.retry()) {
-            dice();
+            role(false);
         }
     }
 
     @Override
     public void skip() {
+        component.cancelCountdown();
         Solution solution = game.solve();
         component.modal("The best solution is " + solution + ". You get " +
                 context.getSettings().getPenalty() + " penalty points.",
             () -> {
                 game.skip();
+                component.showScore(game);
+                next();
+            });
+    }
+
+    @Override
+    public void timeout() {
+        component.cancelCountdown();
+        Solution solution = game.solve();
+        component.modal("The best solution is " + solution + ". You get " +
+                context.getSettings().getPenalty() + " penalty points.",
+            () -> {
+                game.timeout();
                 component.showScore(game);
                 next();
             });
@@ -111,6 +134,8 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         try {
             String message;
             Calculation calculation = game.calculate(term);
+            game.score(term, calculation.getDifference());
+            component.cancelCountdown();
             if (calculation.isBest()) {
                 message = "Well done, your solution is the best.";
             } else {

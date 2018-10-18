@@ -211,6 +211,7 @@ public class Main {
                                     calculation.getDifference(), calculation.getBestSolution(),
                                     calculation.getBestDifference());
                             }
+                            game.score(term, calculation.getDifference());
                             validTerm = true;
                         }
                     } catch (ArithmeticException e) {
@@ -219,6 +220,7 @@ public class Main {
                 }
             } else {
                 Solution solution = game.solve();
+                game.score(solution);
                 terminal.printf("%s diced %s. Solution: %s%n", currentPlayer.getName(), game.getDice(), solution);
             }
         }
@@ -255,7 +257,7 @@ public class Main {
         for (int number : game.getNumbers()) {
             terminal.printf("%3d ", number);
             for (Player player : game.getPlayers()) {
-                Score score = game.getScoreboard().getScore(numberIndex, player);
+                Score score = game.getScoreboard().getScore(player, numberIndex);
                 String difference = score.getDifference() == -1 ? "  " : String.format("%2d", score.getDifference());
                 terminal.printf("| %15s | %s ", nullToEmpty(score.getTerm()), difference);
             }

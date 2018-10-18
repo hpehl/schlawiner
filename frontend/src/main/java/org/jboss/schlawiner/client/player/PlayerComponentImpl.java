@@ -22,7 +22,6 @@ import static org.jboss.gwt.elemento.core.Elements.failSafeRemoveFromParent;
 import static org.jboss.gwt.elemento.core.Elements.td;
 import static org.jboss.gwt.elemento.core.Elements.tr;
 import static org.jboss.gwt.elemento.core.EventType.click;
-import static org.jboss.gwt.elemento.core.EventType.input;
 import static org.jboss.gwt.elemento.core.EventType.keyup;
 import static org.jboss.schlawiner.client.resources.CSS.clickable;
 import static org.jboss.schlawiner.client.resources.CSS.leftAlign;
@@ -75,14 +74,6 @@ public class PlayerComponentImpl extends AbstractComponent<PlayerController, HTM
     }
 
     @Override
-    public void updateName(Player player) {
-        Element element = document.getElementById(nameId(player));
-        if (element != null) {
-            element.textContent = player.getName();
-        }
-    }
-
-    @Override
     public void updateHuman(Player player) {
         Element element = document.getElementById(humanId(player));
         if (element != null) {
@@ -103,8 +94,6 @@ public class PlayerComponentImpl extends AbstractComponent<PlayerController, HTM
         return tr().id(player.getId())
             .add(td().css(leftAlign)
                 .id(nameId(player))
-                .apply(e -> e.setAttribute("contenteditable", "true"))
-                .on(input, e -> getController().editPlayer(player.getId(), ((Element) e.target).textContent))
                 .textContent(player.getName())
                 .title("Click to edit"))
             .add(td().css(clickable)

@@ -15,6 +15,7 @@ import static org.jboss.schlawiner.client.resources.UIConstants.OBJECT;
 class Modal {
 
     @JsConstructor
+    @SuppressWarnings("unused")
     Modal(ModalOptions options) {
     }
 

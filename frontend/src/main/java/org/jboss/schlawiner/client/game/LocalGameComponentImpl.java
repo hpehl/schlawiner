@@ -20,6 +20,7 @@ import org.jboss.schlawiner.engine.score.Scoreboard;
 import rx.functions.Action0;
 
 import static elemental2.dom.DomGlobal.clearInterval;
+import static elemental2.dom.DomGlobal.console;
 import static elemental2.dom.DomGlobal.setInterval;
 import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromSafeConstant;
 import static org.jboss.gwt.elemento.core.Elements.*;
@@ -27,6 +28,7 @@ import static org.jboss.gwt.elemento.core.Elements.input;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.InputType.text;
 import static org.jboss.schlawiner.client.resources.CSS.*;
+import static org.jboss.schlawiner.client.resources.UIConstants.COUNTDOWN_INTERVAL;
 import static org.jboss.schlawiner.client.resources.UIConstants.TYPEWRITER_INTERVAL;
 
 public class LocalGameComponentImpl extends AbstractComponent<LocalGameController, HTMLElement> implements
@@ -46,7 +48,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private NumberScoreElement numberScore;
     private PlayerScoreElement playerScore;
     private Modal modal;
-    private double handle;
+    private double countdownHandle;
+    private double typeWriterHandle;
     private Settings settings;
 
     public LocalGameComponentImpl() {
@@ -107,6 +110,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     @Override
     public void onDetach() {
         super.onDetach();
+        clearInterval(countdownHandle);
+        clearInterval(typeWriterHandle);
         if (modal != null) {
             modal.destroy();
         }
@@ -158,8 +163,27 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void countdown(int timeout) {
-        countdown.reset(timeout);
+    public void startCountdown(Action0 timeout) {
+        console.log("start countdown");
+        countdownHandle = setInterval(o -> {
+            if (!countdown.tick()) {
+                console.log("time is up");
+                cancelCountdown();
+                timeout.call();
+            }
+        }, COUNTDOWN_INTERVAL);
+    }
+
+    @Override
+    public void cancelCountdown() {
+        console.log("cancel countdown");
+        clearInterval(countdownHandle);
+    }
+
+    @Override
+    public void resetCountdown() {
+        console.log("reset countdown");
+        countdown.reset(settings.getTimeout());
     }
 
     @Override
@@ -178,15 +202,15 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
 
     @Override
     public void computer(Solution solution, Action0 action) {
-        clearInterval(handle);
+        clearInterval(typeWriterHandle);
         this.solution.value = "";
 
         Iterator<Character> iterator = Chars.asList(solution.getTerm().toCharArray()).iterator();
-        handle = setInterval((o) -> {
+        typeWriterHandle = setInterval(o -> {
             if (iterator.hasNext()) {
                 this.solution.value = this.solution.value + String.valueOf(iterator.next());
             } else {
-                clearInterval(handle);
+                clearInterval(typeWriterHandle);
                 action.call();
             }
         }, TYPEWRITER_INTERVAL);

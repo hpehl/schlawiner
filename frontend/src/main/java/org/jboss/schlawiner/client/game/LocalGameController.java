@@ -10,6 +10,8 @@ public interface LocalGameController extends IsComponent.Controller {
 
     void skip();
 
+    void timeout();
+
     void restart();
 
     void back();
