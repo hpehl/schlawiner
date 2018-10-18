@@ -6,11 +6,12 @@ import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
+import org.jboss.schlawiner.engine.game.Settings;
 import rx.functions.Action0;
 
 public interface LocalGameComponent extends IsComponent<LocalGameController, HTMLElement> {
 
-    void start(Game game);
+    void start(Game game, Settings settings);
 
     void reset();
 
@@ -18,9 +19,11 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void usage(boolean[] used);
 
-    void countdown(int timeout, int number);
+    void countdown(int timeout);
 
     void showTerm(String term);
+
+    void humanTurn(Player currentPlayer);
 
     void computer(Solution solution, Action0 action);
 
@@ -30,7 +33,9 @@ public interface LocalGameComponent extends IsComponent<LocalGameController, HTM
 
     void modal(String text, Action0 onClose);
 
-    void highlight(Player player, int numberIndex);
+    void highlight(Player player, int currentNumber, int numberIndex);
 
     void showScore(Game game);
+
+    void gameOver();
 }

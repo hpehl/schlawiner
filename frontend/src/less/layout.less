@@ -41,7 +41,6 @@ a.disabled {
 }
 
 a.disabled:hover {
-    cursor: default;
     text-decoration: none;
 }
 
@@ -87,6 +86,9 @@ ul {
 
 .disabled {
     color: @grey;
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .highlight {

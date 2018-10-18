@@ -14,6 +14,7 @@ import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
 import org.jboss.schlawiner.engine.game.Game;
 import org.jboss.schlawiner.engine.game.Player;
+import org.jboss.schlawiner.engine.game.Settings;
 import org.jboss.schlawiner.engine.score.Score;
 import org.jboss.schlawiner.engine.score.Scoreboard;
 import rx.functions.Action0;
@@ -46,6 +47,7 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private PlayerScoreElement playerScore;
     private Modal modal;
     private double handle;
+    private Settings settings;
 
     public LocalGameComponentImpl() {
         root = div().css(page, tingleContentWrapper)
@@ -66,7 +68,15 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                 .add(div().css(links)
                     .add(ul()
                         .add(li()
-                            .add(dice = a().textContent("Dice").on(click, e -> getController().dice()).asElement()))
+                            .add(dice = a().textContent("Dice")
+                                .on(click, e -> {
+                                    String textContent = ((HTMLElement) e.target).textContent;
+                                    if ("Dice".equals(textContent)) {
+                                        getController().dice();
+                                    } else if (textContent.startsWith("Retry")) {
+                                        getController().retry();
+                                    }
+                                }).asElement()))
                         .add(li()
                             .add(skip = a().textContent("Skip").on(click, e -> getController().skip()).asElement()))
                         .add(li()
@@ -103,7 +113,9 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void start(Game game) {
+    public void start(Game game, Settings settings) {
+        this.settings = settings;
+
         numberScore = new NumberScoreElement(this, game.getPlayers(), game.getNumbers());
         playerScore = new PlayerScoreElement(this, game.getPlayers(), game.getNumbers());
         setVisible(playerScore.asElement(), false);
@@ -118,15 +130,23 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         message.setMessage(fromSafeConstant("&nbsp;"));
         numberScore.clear();
         playerScore.clear();
-        numpad.disable();
     }
 
     @Override
     public void role(Player currentPlayer, Dice dice, Action0 action) {
+        disableLinks(this.dice, this.skip);
+        numpad.disable();
         diceElements.role(dice, () -> {
             numpad.showDice(dice);
             if (currentPlayer.isHuman()) {
+                enableLinks(this.skip);
                 numpad.enable();
+                if (settings.getRetries() > 0) {
+                    this.dice.textContent = "Retry (" + currentPlayer.getRetries() + ")";
+                    if (currentPlayer.getRetries() > 0) {
+                        enableLinks(this.dice);
+                    }
+                }
             }
             action.call();
         });
@@ -138,14 +158,22 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void countdown(int timeout, int number) {
+    public void countdown(int timeout) {
         countdown.reset(timeout);
-        countdown.number(number);
     }
 
     @Override
     public void showTerm(String term) {
         solution.value = term;
+    }
+
+    @Override
+    public void humanTurn(Player currentPlayer) {
+        reset();
+        dice.textContent = "Dice";
+        enableLinks(dice, skip);
+        numpad.disable();
+        message(currentPlayer.getName() + " it's your turn.");
     }
 
     @Override
@@ -190,7 +218,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     @Override
-    public void highlight(Player player, int numberIndex) {
+    public void highlight(Player player, int currentNumber, int numberIndex) {
+        countdown.number(currentNumber);
         numberScore.highlight(player, numberIndex);
         playerScore.highlight(player, numberIndex);
     }
@@ -206,6 +235,12 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         playerScore.setScore(scoreboard, player, numberIndex, score);
     }
 
+    @Override
+    public void gameOver() {
+        reset();
+        disableLinks(dice, skip);
+    }
+
     void showNumberScore() {
         numberScore.asElement().classList.remove(animated, fadeInRight, fadeOutRight);
         playerScore.asElement().classList.remove(animated, fadeInLeft, fadeOutLeft);
@@ -219,5 +254,17 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
         numberScore.asElement().classList.add(animated, fadeOutRight);
         playerScore.asElement().classList.add(animated, fadeInLeft);
         setVisible(playerScore.asElement(), true);
+    }
+
+    private void enableLinks(HTMLElement... links) {
+        for (HTMLElement link : links) {
+            link.classList.remove(disabled);
+        }
+    }
+
+    private void disableLinks(HTMLElement... links) {
+        for (HTMLElement link : links) {
+            link.classList.add(disabled);
+        }
     }
 }

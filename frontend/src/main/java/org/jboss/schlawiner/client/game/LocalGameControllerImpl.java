@@ -38,7 +38,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         Settings settings = context.getSettings();
         Numbers numbers = new Numbers(settings.getNumbers());
         game = new Game(players, numbers, new OperationAlgorithm(), settings);
-        component.start(game);
+        component.start(game, settings);
         component.reset();
         next();
     }
@@ -51,16 +51,16 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         Player currentPlayer = game.getPlayers().current();
         int currentNumber = game.getNumbers().current();
         int currentIndex = game.getNumbers().index();
+
         component.reset();
+        component.highlight(currentPlayer, currentNumber, currentIndex);
         component.role(currentPlayer, game.getDice(), () -> {
-            component.highlight(currentPlayer, currentIndex);
             if (currentPlayer.isHuman()) {
-                component.countdown(context.getSettings().getTimeout(), currentNumber);
-                component.message(currentPlayer.getName() + " it's your turn.");
+                component.countdown(context.getSettings().getTimeout());
             } else {
                 Solution solution = game.solve();
-                component.showScore(game);
                 component.computer(solution, () -> {
+                    component.showScore(game);
                     component.modal(currentPlayer.getName() + " got " + solution + ".", this::next);
                 });
             }
@@ -82,6 +82,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
             () -> {
                 game.skip();
                 component.showScore(game);
+                next();
             });
     }
 
@@ -131,9 +132,14 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
         if (game.hasNext()) {
             game.next();
             game.dice(new Dice());
-            if (!game.getPlayers().current().isHuman() || context.getSettings().isAutoDice()) {
+
+            Player currentPlayer = game.getPlayers().current();
+            if (!currentPlayer.isHuman() || context.getSettings().isAutoDice()) {
                 dice();
+            } else if (currentPlayer.isHuman() && !context.getSettings().isAutoDice()) {
+                component.humanTurn(currentPlayer);
             }
+
         } else {
             String message = "The winner";
             List<Player> winners = game.getScoreboard().getWinners();
@@ -142,7 +148,7 @@ public class LocalGameControllerImpl extends AbstractComponentController<Context
             } else {
                 message += "s are " + winners.stream().map(Player::getName).collect(joining(", "));
             }
-            component.modal("Game Over. " + message, () -> component.reset());
+            component.modal("Game Over. " + message, () -> component.gameOver());
         }
     }
 }
