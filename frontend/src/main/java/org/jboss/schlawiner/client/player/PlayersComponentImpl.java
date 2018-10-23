@@ -1,7 +1,5 @@
 package org.jboss.schlawiner.client.player;
 
-import java.util.List;
-
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
@@ -62,7 +60,7 @@ public abstract class PlayersComponentImpl extends AbstractComponent<PlayersCont
     }
 
     @Override
-    public void showPlayers(List<Player> players) {
+    public void showPlayers(Iterable<Player> players) {
         removeChildrenFrom(tbody);
         for (Player player : players) {
             tbody.appendChild(playerRow(player));
@@ -100,18 +98,17 @@ public abstract class PlayersComponentImpl extends AbstractComponent<PlayersCont
         Element human;
         HTMLTableRowElement row = tr().id(player.getId())
             .add(td().css(textLeft)
-                .id(nameId(player))
                 .textContent(player.getName()))
             .add(human = td().css(clickable)
                 .id(humanId(player))
                 .title("Toggle human and computer player")
-                .on(click, e -> getController().togglePlayer(player.getId(), !player.isHuman()))
+                .on(click, e -> getController().togglePlayer(player, !player.isHuman()))
                 .asElement())
             .add(td().css(actions)
                 .add(i()
                     .css(far("trash-alt"), clickable)
                     .title("Remove player")
-                    .on(click, e -> getController().removePlayer(player.getId()))))
+                    .on(click, e -> getController().removePlayer(player))))
             .asElement();
         if (player.isHuman()) {
             human.appendChild(i().css(fas("check")).asElement());
@@ -119,10 +116,6 @@ public abstract class PlayersComponentImpl extends AbstractComponent<PlayersCont
             human.innerHTML = "&nbsp;";
         }
         return row;
-    }
-
-    private String nameId(Player player) {
-        return Ids.build(player.getId(), "name");
     }
 
     private String humanId(Player player) {

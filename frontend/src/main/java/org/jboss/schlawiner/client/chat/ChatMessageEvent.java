@@ -1,4 +1,4 @@
-package org.jboss.schlawiner.client.game;
+package org.jboss.schlawiner.client.chat;
 
 import org.gwtproject.event.shared.Event;
 
@@ -7,9 +7,9 @@ public class ChatMessageEvent extends Event<ChatMessageEvent.ChatMessageHandler>
     public static final Type<ChatMessageHandler> TYPE = new Type<ChatMessageHandler>();
 
 
-    private final String message;
+    private final ChatMessage message;
 
-    public ChatMessageEvent(String message) {
+    public ChatMessageEvent(ChatMessage message) {
         this.message = message;
     }
 
@@ -23,15 +23,9 @@ public class ChatMessageEvent extends Event<ChatMessageEvent.ChatMessageHandler>
         handler.onMessage(this);
     }
 
-    public String getMessage() {
+    public ChatMessage getMessage() {
         return message;
     }
-
-    @Override
-    public String toString() {
-        return "ChatMessageEvent(" + message + ")";
-    }
-
 
     public interface ChatMessageHandler {
 

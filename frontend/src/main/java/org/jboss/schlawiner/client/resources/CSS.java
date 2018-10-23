@@ -7,6 +7,8 @@ import static org.jboss.schlawiner.client.resources.FontAwesomeStyle.solid;
 
 public interface CSS {
 
+    String about = "about";
+    String action = "action";
     String actions = "actions";
     String alignSelfCenter = "align-self-center";
     String back = "back";
@@ -35,13 +37,16 @@ public interface CSS {
     String numpad = "numpad";
     String overflowY = "overflow-y";
     String page = "page";
+    String pageWithOpenChat = "page-with-open-chat";
     String right = "right";
     String row = "row";
+    String selected = "selected";
     String score = "score";
     String showFront = "show-front";
     String solution = "solution";
     String text = "text";
     String textLeft = "text-left";
+    String textTruncate = "text-truncate";
     String tingleContentWrapper = "tingle-content-wrapper";
     String top = "top";
     String user = "user";

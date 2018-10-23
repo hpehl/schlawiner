@@ -26,12 +26,23 @@ thead {
         }
 
         .actions {
-            padding-right: @spacer-2;
-            text-align: right;
+            align-items: center;
+            display: flex;
+            height: 100%;
+            justify-content: flex-end;
+
+            .action {
+                cursor: pointer;
+                padding: 0 @spacer-2;
+            }
         }
 
         .actions .fas, .actions .far {
             visibility: hidden;
         }
     }
+}
+
+.selected {
+    background-color: fade(@light-red, 25%);
 }

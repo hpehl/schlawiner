@@ -1,6 +1,6 @@
 package org.jboss.schlawiner.engine.game;
 
-class UUID {
+public class UUID {
 
     private static final char[] CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
@@ -8,7 +8,7 @@ class UUID {
      * Generate a RFC4122, version 4 ID. Example:
      * "92329D39-6F5C-4520-ABFC-AAB64544E172"
      */
-    static String get() {
+    public static String get() {
         char[] uuid = new char[36];
         int r;
 

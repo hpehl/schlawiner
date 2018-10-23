@@ -7,7 +7,7 @@ import org.jboss.schlawiner.client.Context;
 import org.jboss.schlawiner.client.LocalStorage;
 import org.jboss.schlawiner.engine.game.Player;
 
-@Controller(route = "/player",
+@Controller(route = "/players",
     selector = "content",
     component = PlayersComponentImpl.class,
     componentInterface = PlayersComponent.class)
@@ -33,8 +33,7 @@ public class PlayersControllerImpl extends AbstractComponentController<Context, 
     }
 
     @Override
-    public void togglePlayer(String id, boolean human) {
-        Player player = find(id);
+    public void togglePlayer(Player player, boolean human) {
         if (player != null) {
             player.setHuman(human);
             LocalStorage.savePlayers(context.getPlayers());
@@ -43,8 +42,7 @@ public class PlayersControllerImpl extends AbstractComponentController<Context, 
     }
 
     @Override
-    public void removePlayer(String id) {
-        Player player = find(id);
+    public void removePlayer(Player player) {
         if (player != null) {
             context.getPlayers().remove(player);
             LocalStorage.savePlayers(context.getPlayers());
@@ -55,14 +53,5 @@ public class PlayersControllerImpl extends AbstractComponentController<Context, 
     @Override
     public void startGame() {
         router.route("/local-game");
-    }
-
-    private Player find(String id) {
-        for (Player player : context.getPlayers()) {
-            if (id.equals(player.getId())) {
-                return player;
-            }
-        }
-        return null;
     }
 }

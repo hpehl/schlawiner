@@ -9,6 +9,9 @@ public class Loader extends AbstractApplicationLoader<Context> {
 
     @Override
     public void load(FinishLoadCommand finishLoadCommand) {
+        // TODO load from server
+        context.setCurrentPlayer(new Player("Schlawiner", true));
+
         List<Player> players = LocalStorage.loadPlayers();
         if (players.isEmpty()) {
             players.add(new Player("Schlawiner", true));

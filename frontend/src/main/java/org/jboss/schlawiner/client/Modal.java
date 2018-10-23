@@ -1,4 +1,4 @@
-package org.jboss.schlawiner.client.game;
+package org.jboss.schlawiner.client;
 
 import elemental2.core.JsArray;
 import elemental2.dom.HTMLElement;
@@ -12,36 +12,36 @@ import static org.jboss.gwt.elemento.core.Elements.div;
 import static org.jboss.schlawiner.client.resources.UIConstants.OBJECT;
 
 @JsType(isNative = true, namespace = "tingle", name = "modal")
-class Modal {
+public class Modal {
 
     @JsConstructor
     @SuppressWarnings("unused")
-    Modal(ModalOptions options) {
+    public Modal(ModalOptions options) {
     }
 
-    native void open();
+    public native void open();
 
-    native void destroy();
+    public native void destroy();
 
     @JsOverlay
-    final void setContent(HTMLElement element) {
+    public final void setContent(HTMLElement element) {
         setContent(div().add(element).asElement().innerHTML);
     }
 
-    native void setContent(String content);
+    public native void setContent(String content);
 
     @JsFunction
     @FunctionalInterface
-    interface Callback {
+    public interface Callback {
 
         void call();
     }
 
 
     @JsType(isNative = true, namespace = GLOBAL, name = OBJECT)
-    static class ModalOptions {
+    public static class ModalOptions {
 
-        JsArray<String> closeMethods;
-        Callback onClose;
+        public JsArray<String> closeMethods;
+        public Callback onClose;
     }
 }

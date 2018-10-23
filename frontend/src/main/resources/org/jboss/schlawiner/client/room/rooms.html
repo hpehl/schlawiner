@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    <link rel="stylesheet" type="text/css" href="../../public/schlawiner.css"/>
+    <title>Rooms</title>
+</head>
+<body>
+<div> <!-- just here to have one root element -->
+    <div class="page">
+        <h1>Rooms</h1>
+        <p data-element="message">Please enter your name and add a new or join an existing room.</p>
+        <div class="d-flex mb-5">
+            <input type="text" placeholder="Name" data-element="player" class="flex-grow-1"/>
+        </div>
+        <table class="actions-table scroll-table" style="height: 100px">
+            <colgroup>
+                <col style="width: 75%;">
+                <col style="width: 15%;">
+                <col style="width: 10%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-left">Room</th>
+                <th>Players</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody data-element="tbody"></tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <a href="#main" class="mr-5">Back</a>
+            <a class="clickable" data-element="addRoom">Add</a>
+        </div>
+    </div>
+    <div data-element="chat"></div>
+    <div class="d-none" data-element="modalContent">
+        <div class="form-group">
+            <label for="room-name">Name</label>
+            <div class="form-control">
+                <input type="text" id="room-name" placeholder="Name"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="max-players">Max players</label>
+            <div class="form-control">
+                <input id="max-players" type="range" min="2" max="20"/>
+                <output for="max-players">1</output>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

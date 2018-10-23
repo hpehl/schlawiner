@@ -35,7 +35,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return name + (human ? ": human" : ": computer");
+        return "Player(" + name + (human ? ": human)" : ": computer)");
     }
 
     public String getId() {

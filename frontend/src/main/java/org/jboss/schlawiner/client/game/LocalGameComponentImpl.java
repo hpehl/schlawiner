@@ -9,6 +9,7 @@ import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
 import org.jboss.gwt.elemento.core.EventType;
 import org.jboss.gwt.elemento.core.Key;
+import org.jboss.schlawiner.client.Modal;
 import org.jboss.schlawiner.client.resources.CSS;
 import org.jboss.schlawiner.engine.algorithm.Solution;
 import org.jboss.schlawiner.engine.game.Dice;
