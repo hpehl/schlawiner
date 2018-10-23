@@ -10,7 +10,6 @@ import org.jboss.schlawiner.engine.game.Players;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.schlawiner.client.resources.CSS.clickable;
-import static org.jboss.schlawiner.client.resources.CSS.numberScore;
 import static org.jboss.schlawiner.client.resources.UIConstants.NUMBER_WIDTH;
 
 class NumberScoreElement extends ScoreElement implements IsElement<HTMLTableElement> {
@@ -19,7 +18,7 @@ class NumberScoreElement extends ScoreElement implements IsElement<HTMLTableElem
 
     NumberScoreElement(LocalGameComponentImpl component, Players players, Numbers numbers) {
         HTMLElement colgroup, theadRow, tbody, tfootRow;
-        root = table().css(numberScore)
+        root = table()
             .add(colgroup = colgroup().asElement())
             .add(thead().add(theadRow = tr().asElement()))
             .add(tbody = tbody().asElement())

@@ -11,4 +11,9 @@ import org.jboss.schlawiner.client.Context;
     componentInterface = AboutComponent.class)
 public class AboutControllerImpl extends AbstractComponentController<Context, AboutComponent, HTMLElement>
     implements AboutController {
+
+    @Override
+    public AboutComponent createComponent() {
+        return AboutComponentImpl.create();
+    }
 }

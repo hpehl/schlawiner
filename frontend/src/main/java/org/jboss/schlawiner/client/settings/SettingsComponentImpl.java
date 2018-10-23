@@ -4,53 +4,69 @@ import com.github.nalukit.nalu.client.component.AbstractComponent;
 import elemental2.dom.Event;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
+import elemental2.dom.HTMLOutputElement;
 import elemental2.dom.HTMLSelectElement;
 import org.gwtproject.event.shared.HandlerRegistration;
 import org.gwtproject.event.shared.HandlerRegistrations;
 import org.jboss.gwt.elemento.core.EventType;
+import org.jboss.gwt.elemento.template.DataElement;
+import org.jboss.gwt.elemento.template.Templated;
 import org.jboss.schlawiner.engine.game.Level;
 import org.jboss.schlawiner.engine.game.Settings;
 
 import static java.lang.Integer.parseInt;
 import static org.jboss.gwt.elemento.core.EventType.input;
 
-public class SettingsComponentImpl extends AbstractComponent<SettingsController, HTMLElement> implements
+@Templated("settings.html")
+public abstract class SettingsComponentImpl extends AbstractComponent<SettingsController, HTMLElement> implements
     SettingsComponent {
 
-    private SettingsView view;
+    static SettingsComponent create() {
+        return new Templated_SettingsComponentImpl();
+    }
+
+    @DataElement HTMLInputElement numbers;
+    @DataElement HTMLOutputElement numbersOutput;
+    @DataElement HTMLInputElement timeout;
+    @DataElement HTMLOutputElement timeoutOutput;
+    @DataElement HTMLInputElement penalty;
+    @DataElement HTMLOutputElement penaltyOutput;
+    @DataElement HTMLInputElement retries;
+    @DataElement HTMLOutputElement retriesOutput;
+    @DataElement HTMLInputElement autoDice;
+    @DataElement HTMLSelectElement level;
     private HandlerRegistration handler;
 
     @Override
     public void render() {
-        view = SettingsView.create();
-        initElement(view.asElement());
+        initElement(asElement());
     }
 
     @Override
     public void onAttach() {
         super.onAttach();
         this.handler = HandlerRegistrations.compose(
-            EventType.bind(view.numbers, input, event -> {
-                    view.numbersOutput.value = value(event);
+            EventType.bind(numbers, input, event -> {
+                    numbersOutput.value = value(event);
                     getController().setNumbers(parseInt(value(event)));
                 }
             ),
-            EventType.bind(view.timeout, input, event -> {
-                    view.timeoutOutput.value = value(event);
+            EventType.bind(timeout, input, event -> {
+                    timeoutOutput.value = value(event);
                     getController().setTimeout(parseInt(value(event)));
                 }
             ),
-            EventType.bind(view.penalty, input, event -> {
-                view.penaltyOutput.value = value(event);
+            EventType.bind(penalty, input, event -> {
+                penaltyOutput.value = value(event);
                 getController().setPenalty(parseInt(value(event)));
             }),
-            EventType.bind(view.retries, input, event -> {
-                view.retriesOutput.value = value(event);
+            EventType.bind(retries, input, event -> {
+                retriesOutput.value = value(event);
                 getController().setRetries(parseInt(value(event)));
             }),
-            EventType.bind(view.autoDice, input,
+            EventType.bind(autoDice, input,
                 event -> getController().setAutoDice(((HTMLInputElement) event.target).checked)),
-            EventType.bind(view.level, input,
+            EventType.bind(level, input,
                 event -> {
                     String value = ((HTMLSelectElement) event.target).value;
                     Level level = Level.valueOf(value.toUpperCase());
@@ -72,15 +88,15 @@ public class SettingsComponentImpl extends AbstractComponent<SettingsController,
 
     @Override
     public void showSettings(Settings settings) {
-        view.numbers.value = String.valueOf(settings.getNumbers());
-        view.numbersOutput.value = String.valueOf(settings.getNumbers());
-        view.timeout.value = String.valueOf(settings.getTimeout());
-        view.timeoutOutput.value = String.valueOf(settings.getTimeout());
-        view.penalty.value = String.valueOf(settings.getPenalty());
-        view.penaltyOutput.value = String.valueOf(settings.getPenalty());
-        view.retries.value = String.valueOf(settings.getRetries());
-        view.retriesOutput.value = String.valueOf(settings.getRetries());
-        view.autoDice.checked = settings.isAutoDice();
-        view.level.value = settings.getLevel().name().toLowerCase();
+        numbers.value = String.valueOf(settings.getNumbers());
+        numbersOutput.value = String.valueOf(settings.getNumbers());
+        timeout.value = String.valueOf(settings.getTimeout());
+        timeoutOutput.value = String.valueOf(settings.getTimeout());
+        penalty.value = String.valueOf(settings.getPenalty());
+        penaltyOutput.value = String.valueOf(settings.getPenalty());
+        retries.value = String.valueOf(settings.getRetries());
+        retriesOutput.value = String.valueOf(settings.getRetries());
+        autoDice.checked = settings.isAutoDice();
+        level.value = settings.getLevel().name().toLowerCase();
     }
 }

@@ -1,9 +1,10 @@
 package org.jboss.schlawiner.client.settings;
 
 import com.github.nalukit.nalu.client.component.IsComponent;
+import com.github.nalukit.nalu.client.component.IsComponentCreator;
 import org.jboss.schlawiner.engine.game.Level;
 
-public interface SettingsController extends IsComponent.Controller {
+public interface SettingsController extends IsComponent.Controller, IsComponentCreator<SettingsComponent> {
 
     void setNumbers(int numbers);
 

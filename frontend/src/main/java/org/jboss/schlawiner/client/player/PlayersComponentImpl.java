@@ -6,49 +6,51 @@ import com.github.nalukit.nalu.client.component.AbstractComponent;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
+import elemental2.dom.HTMLTableRowElement;
 import org.gwtproject.event.shared.HandlerRegistration;
 import org.gwtproject.event.shared.HandlerRegistrations;
-import org.gwtproject.safehtml.shared.SafeHtml;
-import org.jboss.gwt.elemento.core.Elements;
 import org.jboss.gwt.elemento.core.EventType;
 import org.jboss.gwt.elemento.core.Key;
+import org.jboss.gwt.elemento.template.DataElement;
+import org.jboss.gwt.elemento.template.Templated;
 import org.jboss.schlawiner.client.resources.Ids;
 import org.jboss.schlawiner.engine.game.Player;
 
 import static elemental2.dom.DomGlobal.document;
-import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromSafeConstant;
-import static org.gwtproject.safehtml.shared.SafeHtmlUtils.fromString;
-import static org.jboss.gwt.elemento.core.Elements.failSafeRemoveFromParent;
-import static org.jboss.gwt.elemento.core.Elements.td;
-import static org.jboss.gwt.elemento.core.Elements.tr;
+import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.EventType.keyup;
-import static org.jboss.schlawiner.client.resources.CSS.clickable;
-import static org.jboss.schlawiner.client.resources.CSS.leftAlign;
+import static org.jboss.schlawiner.client.resources.CSS.*;
 
-public class PlayerComponentImpl extends AbstractComponent<PlayerController, HTMLElement> implements
-    PlayerComponent {
+@Templated("players.html")
+public abstract class PlayersComponentImpl extends AbstractComponent<PlayersController, HTMLElement> implements
+    PlayersComponent {
 
-    private PlayerView view;
+    static PlayersComponent create() {
+        return new Templated_PlayersComponentImpl();
+    }
+
+    @DataElement HTMLElement tbody;
+    @DataElement HTMLInputElement addPlayer;
+    @DataElement HTMLElement startGame;
     private HandlerRegistration handler;
 
     @Override
     public void render() {
-        view = PlayerView.create();
-        initElement(view.asElement());
+        initElement(asElement());
     }
 
     @Override
     public void onAttach() {
         super.onAttach();
         this.handler = HandlerRegistrations.compose(
-            EventType.bind(view.addPlayer, keyup, e -> {
+            EventType.bind(addPlayer, keyup, e -> {
                     if (Key.Enter.match(e)) {
                         getController().addPlayer(((HTMLInputElement) e.target).value);
                     }
                 }
             ),
-            EventType.bind(view.startGame, click, event -> getController().startGame()));
+            EventType.bind(startGame, click, event -> getController().startGame()));
     }
 
     @Override
@@ -61,24 +63,28 @@ public class PlayerComponentImpl extends AbstractComponent<PlayerController, HTM
 
     @Override
     public void showPlayers(List<Player> players) {
-        Elements.removeChildrenFrom(view.tbody);
+        removeChildrenFrom(tbody);
         for (Player player : players) {
-            view.tbody.appendChild(playerRow(player));
+            tbody.appendChild(playerRow(player));
         }
     }
 
     @Override
     public void addPlayer(Player player) {
-        view.tbody.appendChild(playerRow(player));
-        view.addPlayer.value = "";
+        tbody.appendChild(playerRow(player));
+        addPlayer.value = "";
     }
 
     @Override
     public void updateHuman(Player player) {
         Element element = document.getElementById(humanId(player));
         if (element != null) {
-            SafeHtml html = player.isHuman() ? fromString("✓") : fromSafeConstant("&nbsp;");
-            element.innerHTML = html.asString();
+            removeChildrenFrom(element);
+            if (player.isHuman()) {
+                element.appendChild(i().css(fas("check")).asElement());
+            } else {
+                element.innerHTML = "&nbsp;";
+            }
         }
     }
 
@@ -91,19 +97,28 @@ public class PlayerComponentImpl extends AbstractComponent<PlayerController, HTM
     }
 
     private HTMLElement playerRow(Player player) {
-        return tr().id(player.getId())
-            .add(td().css(leftAlign)
+        Element human;
+        HTMLTableRowElement row = tr().id(player.getId())
+            .add(td().css(textLeft)
                 .id(nameId(player))
-                .textContent(player.getName())
-                .title("Click to edit"))
-            .add(td().css(clickable)
+                .textContent(player.getName()))
+            .add(human = td().css(clickable)
                 .id(humanId(player))
-                .on(click, e -> getController().editPlayer(player.getId(), !player.isHuman()))
-                .innerHtml(player.isHuman() ? fromString("✓") : fromSafeConstant("&nbsp;")))
-            .add(td().css(clickable)
-                .on(click, e -> getController().removePlayer(player.getId()))
-                .textContent("x"))
+                .title("Toggle human and computer player")
+                .on(click, e -> getController().togglePlayer(player.getId(), !player.isHuman()))
+                .asElement())
+            .add(td().css(actions)
+                .add(i()
+                    .css(far("trash-alt"), clickable)
+                    .title("Remove player")
+                    .on(click, e -> getController().removePlayer(player.getId()))))
             .asElement();
+        if (player.isHuman()) {
+            human.appendChild(i().css(fas("check")).asElement());
+        } else {
+            human.innerHTML = "&nbsp;";
+        }
+        return row;
     }
 
     private String nameId(Player player) {

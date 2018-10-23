@@ -9,27 +9,27 @@
 <body>
 <div class="page">
     <h1>Players</h1>
-    <div class="d-flex f-column">
-        <table>
+    <div class="d-flex flex-column">
+        <table class="actions-table">
             <colgroup>
-                <col style="width: 70%;">
+                <col style="width: 80%;">
                 <col style="width: 15%;">
-                <col style="width: 15%;">
+                <col style="width: 5%">
             </colgroup>
             <thead>
             <tr>
-                <th class="left-align">Name</th>
+                <th class="text-left">Name</th>
                 <th>Human</th>
-                <th>Remove</th>
+                <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody data-element="tbody"></tbody>
         </table>
         <div class="d-flex mb-5">
-            <input type="text" placeholder="Add Player" data-element="addPlayer" style="flex: 1 0 auto;"/>
+            <input type="text" placeholder="Add Player" data-element="addPlayer" class="flex-grow-1"/>
         </div>
-        <div class="d-flex" style="justify-content: flex-end">
-            <a href="#main" style="margin-right: 2rem">Back</a>
+        <div class="d-flex justify-content-end">
+            <a href="#main" class="mr-5">Back</a>
             <a class="clickable" data-element="startGame">Start</a>
         </div>
     </div>

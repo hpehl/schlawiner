@@ -11,4 +11,9 @@ import org.jboss.schlawiner.client.Context;
     componentInterface = MainComponent.class)
 public class MainControllerImpl extends AbstractComponentController<Context, MainComponent, HTMLElement>
     implements MainController {
+
+    @Override
+    public MainComponent createComponent() {
+        return MainComponentImpl.create();
+    }
 }

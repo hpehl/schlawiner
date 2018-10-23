@@ -39,8 +39,6 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     private final HTMLInputElement solution;
     private final HTMLElement dice;
     private final HTMLElement skip;
-    private final HTMLElement restart;
-    private final HTMLElement back;
     private final CountdownElement countdown;
     private final MessageElement message;
     private final NumpadElement numpad;
@@ -82,12 +80,8 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
                                 }).asElement()))
                         .add(li()
                             .add(skip = a().textContent("Skip").on(click, e -> getController().skip()).asElement()))
-                        .add(li()
-                            .add(restart = a().textContent("Restart")
-                                .on(click, e -> getController().restart())
-                                .asElement()))
-                        .add(li()
-                            .add(back = a().textContent("Back").on(click, e -> getController().back()).asElement())))))
+                        .add(li().add(a().textContent("Restart").on(click, e -> getController().restart())))
+                        .add(li().add(a().textContent("Back").on(click, e -> getController().back()))))))
             .add(div().css(row)
                 .add(message = new MessageElement()))
             .add(div().css(row)
@@ -266,18 +260,13 @@ public class LocalGameComponentImpl extends AbstractComponent<LocalGameControlle
     }
 
     void showNumberScore() {
-        numberScore.asElement().classList.remove(animated, fadeInRight, fadeOutRight);
-        playerScore.asElement().classList.remove(animated, fadeInLeft, fadeOutLeft);
-        playerScore.asElement().classList.add(animated, fadeOutLeft);
-        numberScore.asElement().classList.add(animated, fadeInRight);
+        setVisible(numberScore.asElement(), true);
+        setVisible(playerScore.asElement(), false);
     }
 
     void showPlayerScore() {
-        numberScore.asElement().classList.remove(animated, fadeInRight, fadeOutRight);
-        playerScore.asElement().classList.remove(animated, fadeInLeft, fadeOutLeft);
-        numberScore.asElement().classList.add(animated, fadeOutRight);
-        playerScore.asElement().classList.add(animated, fadeInLeft);
         setVisible(playerScore.asElement(), true);
+        setVisible(numberScore.asElement(), false);
     }
 
     private void enableLinks(HTMLElement... links) {

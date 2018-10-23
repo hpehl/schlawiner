@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.github.nalukit.nalu.client.component.IsComponent;
 import elemental2.dom.HTMLElement;
+import org.jboss.gwt.elemento.core.IsElement;
 import org.jboss.schlawiner.engine.game.Player;
 
-public interface PlayerComponent extends IsComponent<PlayerController, HTMLElement> {
+public interface PlayersComponent extends IsComponent<PlayersController, HTMLElement>, IsElement<HTMLElement> {
 
     void showPlayers(List<Player> players);
 

@@ -206,7 +206,9 @@ public class Main {
                             game.cancel();
                         } else {
                             Calculation calculation = game.calculate(term);
-                            if (!calculation.isBest()) {
+                            if (calculation.isBest()) {
+                                terminal.printf("Well done, your solution is the best.%n");
+                            } else {
                                 terminal.printf("Your difference is %d. The best solution is %s (difference %d)%n",
                                     calculation.getDifference(), calculation.getBestSolution(),
                                     calculation.getBestDifference());

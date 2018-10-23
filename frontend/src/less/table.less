@@ -15,20 +15,23 @@ thead {
     }
 }
 
-.number-score {
-    thead th:first-child, tbody td:first-child, tfoot th:first-child {
-        border-right: 1px solid @white;
-    }
-    tfoot th {
-        border-top: 1px solid @white;
-    }
-}
+.actions-table {
+    tbody {
+        tr:hover {
+            .highlight();
 
-.player-score {
-    thead th:first-child, tbody td:first-child {
-        border-right: 1px solid @white;
-    }
-    thead th:last-child, tbody td:last-child {
-        border-left: 1px solid @white;
+            .actions .fas, .actions .far {
+                visibility: visible;
+            }
+        }
+
+        .actions {
+            padding-right: @spacer-2;
+            text-align: right;
+        }
+
+        .actions .fas, .actions .far {
+            visibility: hidden;
+        }
     }
 }

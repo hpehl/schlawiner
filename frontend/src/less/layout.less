@@ -5,7 +5,14 @@
     font-family: "Architects Daughter";
     font-style: normal;
     font-weight: 400;
-    src: local("Architects Daughter"), local("ArchitectsDaughter"), url("ArchitectsDaughter.woff") format("woff");
+    src: url("@{schlawiner-font-path}/ArchitectsDaughter-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: url("@{schlawiner-font-path}/RobotoMono-Regular.ttf") format("truetype");
 }
 
 html, a, button, input, output, select {
@@ -80,8 +87,26 @@ ul {
 /* Common Classes (a-z)
    ========================================================================== */
 
+.about {
+    cursor: help;
+}
+
+.align-self-center {
+    align-self: center;
+}
+
+.clearfix:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
 .clickable {
     cursor: pointer;
+}
+
+.d-flex {
+    display: flex;
 }
 
 .disabled {
@@ -91,25 +116,21 @@ ul {
     pointer-events: none;
 }
 
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
 .highlight {
     background-color: fade(@grey, 25%);
 }
 
-.d-flex {
-    display: flex;
-}
+.justify-content-end {
+    justify-content: flex-end;
 
-.f-column {
-    flex-direction: column;
-}
-
-.left-align {
-    text-align: left;
-}
-
-.page {
-    width: 800px;
-    margin: @spacer-4 auto;
 }
 
 .noscript {
@@ -123,6 +144,25 @@ ul {
     position: absolute;
     top: 10%;
     width: 22rem;
+}
+
+.overflow-y {
+    overflow-y: auto;
+}
+
+.page {
+    width: 800px;
+    margin: @spacer-4 auto;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .underline {
@@ -156,6 +196,30 @@ ul {
     margin-bottom: @spacer-5;
 }
 
+.mr-0 {
+    margin-right: @spacer-0;
+}
+
+.mr-1 {
+    margin-right: @spacer-1;
+}
+
+.mr-2 {
+    margin-right: @spacer-2;
+}
+
+.mr-3 {
+    margin-right: @spacer-3;
+}
+
+.mr-4 {
+    margin-right: @spacer-4;
+}
+
+.mr-5 {
+    margin-right: @spacer-5;
+}
+
 .mt-0 {
     margin-top: @spacer-0;
 }
@@ -166,6 +230,10 @@ ul {
 
 .mt-2 {
     margin-top: @spacer-2;
+}
+
+.ml-3 {
+    margin-left: @spacer-3;
 }
 
 .mt-3 {
@@ -188,6 +256,10 @@ ul {
     padding-bottom: @spacer-1;
 }
 
+.p-2 {
+    padding: @spacer-2;
+}
+
 .pb-2 {
     padding-bottom: @spacer-2;
 }
@@ -198,6 +270,11 @@ ul {
 
 .pb-4 {
     padding-bottom: @spacer-4;
+}
+
+.py-4 {
+    padding-bottom: @spacer-4;
+    padding-top: @spacer-4;
 }
 
 .pb-5 {

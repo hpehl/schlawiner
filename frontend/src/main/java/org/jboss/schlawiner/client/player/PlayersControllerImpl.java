@@ -9,10 +9,15 @@ import org.jboss.schlawiner.engine.game.Player;
 
 @Controller(route = "/player",
     selector = "content",
-    component = PlayerComponentImpl.class,
-    componentInterface = PlayerComponent.class)
-public class PlayerControllerImpl extends AbstractComponentController<Context, PlayerComponent, HTMLElement>
-    implements PlayerController {
+    component = PlayersComponentImpl.class,
+    componentInterface = PlayersComponent.class)
+public class PlayersControllerImpl extends AbstractComponentController<Context, PlayersComponent, HTMLElement>
+    implements PlayersController {
+
+    @Override
+    public PlayersComponent createComponent() {
+        return PlayersComponentImpl.create();
+    }
 
     @Override
     public void start() {
@@ -28,7 +33,7 @@ public class PlayerControllerImpl extends AbstractComponentController<Context, P
     }
 
     @Override
-    public void editPlayer(String id, boolean human) {
+    public void togglePlayer(String id, boolean human) {
         Player player = find(id);
         if (player != null) {
             player.setHuman(human);

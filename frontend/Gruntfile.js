@@ -31,12 +31,23 @@ module.exports = function (grunt) {
 
         clean: {
             public: [
+                '<%= config.public %>/webfonts/fa-*',
                 '<%= config.public %>/schlawiner*.css',
                 '<%= config.public %>/external.js'
             ]
         },
 
         copy: {
+            resources: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= config.node %>/@fortawesome/fontawesome-free/webfonts',
+                        src: '*',
+                        dest: '<%= config.public %>/webfonts'
+                    },
+                ]
+            },
             css: {
                 files: [
                     {
@@ -134,6 +145,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', [
         'clean',
+        'copy:resources',
         'concat:external',
         'less',
         'postcss'
@@ -141,6 +153,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('prod', [
         'clean',
+        'copy:resources',
         'concat:external',
         'less',
         'postcss',

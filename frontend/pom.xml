@@ -95,6 +95,7 @@
                         <fileset>
                             <directory>src/main/resources/org/jboss/hal/public</directory>
                             <includes>
+                                <include>webfonts/fa-*</include>
                                 <include>external.js</include>
                                 <include>schlawiner.css</include>
                             </includes>

@@ -11,5 +11,8 @@ public interface UIConstants {
     int PLAYER_WIDTH = 20; // %
     int SUM_WIDTH = 12; // %
 
+    String ARIA_EXPANDED = "aria-expanded";
+    String FALSE = "false";
     String OBJECT = "Object";
+    String TRUE = "true";
 }

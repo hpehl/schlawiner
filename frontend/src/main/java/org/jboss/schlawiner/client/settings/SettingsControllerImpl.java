@@ -15,6 +15,11 @@ public class SettingsControllerImpl extends AbstractComponentController<Context,
     implements SettingsController {
 
     @Override
+    public SettingsComponent createComponent() {
+        return SettingsComponentImpl.create();
+    }
+
+    @Override
     public void start() {
         component.showSettings(context.getSettings());
     }
