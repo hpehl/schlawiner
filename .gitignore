@@ -1,10 +1,11 @@
 *.iml
 *.bak
 .DS_Store
-.idea
-.settings
-.project
 .classpath
+.idea
+.project
+.settings
+.vertx
 buildNumber.properties
 dependency-reduced-pom.xml
 gwt-unitCache
@@ -19,4 +20,3 @@ target
 frontend/playground
 frontend/src/chrome
 frontend/src/old
-backend

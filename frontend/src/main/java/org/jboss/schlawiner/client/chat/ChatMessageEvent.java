@@ -4,12 +4,12 @@ import org.gwtproject.event.shared.Event;
 
 public class ChatMessageEvent extends Event<ChatMessageEvent.ChatMessageHandler> {
 
-    public static final Type<ChatMessageHandler> TYPE = new Type<ChatMessageHandler>();
+    static final Type<ChatMessageHandler> TYPE = new Type<ChatMessageHandler>();
 
 
     private final ChatMessage message;
 
-    public ChatMessageEvent(ChatMessage message) {
+    ChatMessageEvent(ChatMessage message) {
         this.message = message;
     }
 
@@ -26,6 +26,7 @@ public class ChatMessageEvent extends Event<ChatMessageEvent.ChatMessageHandler>
     public ChatMessage getMessage() {
         return message;
     }
+
 
     public interface ChatMessageHandler {
 

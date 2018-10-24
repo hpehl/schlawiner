@@ -21,7 +21,7 @@ class DiceValidatorTest {
     }
 
     @Test
-    public void validateEmpty() {
+    void validateEmpty() {
         assertThrows(ArithmeticException.class, () -> DiceValidator.validate(dice, ""));
     }
 

@@ -1,7 +1,5 @@
 package org.jboss.schlawiner.client.chat;
 
-import java.util.Date;
-
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
@@ -35,7 +33,6 @@ public class ChatElement implements IsElement<HTMLElement> {
     private final HTMLElement disabled;
     private final HTMLElement reason;
     private boolean open;
-    private boolean available;
     private EventBus eventBus;
     private Player player;
 
@@ -60,8 +57,10 @@ public class ChatElement implements IsElement<HTMLElement> {
                         if (eventBus != null && Key.Enter.match(e)) {
                             HTMLInputElement input = (HTMLInputElement) e.target;
                             if (emptyToNull(input.value) != null) {
-                                eventBus.fireEvent(new ChatMessageEvent(new ChatMessage(player, input.value)));
+                                ChatMessage message = new ChatMessage(player, input.value);
+                                eventBus.fireEvent(new ChatMessageEvent(message));
                                 input.value = "";
+                                addLine(message); // TODO remove hack
                             }
                         }
                     })
@@ -87,7 +86,6 @@ public class ChatElement implements IsElement<HTMLElement> {
         setVisible(history, false);
         setVisible(input, false);
         setVisible(disabled, true);
-        available = false;
     }
 
     public void enable() {
@@ -95,16 +93,17 @@ public class ChatElement implements IsElement<HTMLElement> {
         setVisible(disabled, false);
         setVisible(history, true);
         setVisible(input, true);
-        available = true;
     }
 
-    public void addLine(String user, Date time, String text) {
+    private void addLine(ChatMessage message) {
         HTMLElement line = span().css(CSS.line)
-            .add(span().css(user).textContent("[" + user + "]"))
-            .add(time().textContent(Format.time(time)))
-            .add(span().css(CSS.text).textContent(text))
+            .add(span().css(user).textContent("[" + message.getPlayer().getName() + "]"))
+            .add(time().textContent(Format.time(message.getTime())))
+            .add(span().css(CSS.text).textContent(message.getMessage()))
             .asElement();
-        history.appendChild(line);
+        // flex-direction is column-reverse (in order to have overflow-y),
+        // so we need to use insertBefore instead of appendChild
+        history.insertBefore(line, history.firstElementChild);
         line.scrollIntoView();
     }
 

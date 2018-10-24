@@ -19,6 +19,7 @@ import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.EventType.keyup;
 import static org.jboss.schlawiner.client.resources.CSS.*;
+import static org.jboss.schlawiner.client.resources.FontAwesomeSize.xs;
 
 @Templated("players.html")
 public abstract class PlayersComponentImpl extends AbstractComponent<PlayersController, HTMLElement> implements
@@ -105,13 +106,12 @@ public abstract class PlayersComponentImpl extends AbstractComponent<PlayersCont
                 .on(click, e -> getController().togglePlayer(player, !player.isHuman()))
                 .asElement())
             .add(td().css(actions)
-                .add(i()
-                    .css(far("trash-alt"), clickable)
+                .add(i().css(far("trash-alt", xs), action)
                     .title("Remove player")
                     .on(click, e -> getController().removePlayer(player))))
             .asElement();
         if (player.isHuman()) {
-            human.appendChild(i().css(fas("check")).asElement());
+            human.appendChild(i().css(fas("check", xs)).asElement());
         } else {
             human.innerHTML = "&nbsp;";
         }

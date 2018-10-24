@@ -10,7 +10,7 @@ public class ChatMessage {
     private final String message;
     private final Date time;
 
-    public ChatMessage(Player player, String message) {
+    ChatMessage(Player player, String message) {
         this.player = player;
         this.message = message;
         this.time = new Date();

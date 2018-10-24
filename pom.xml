@@ -58,15 +58,19 @@
     </scm>
 
     <properties>
+        <grunt-task>dev</grunt-task>
         <gwt.draftCompile>true</gwt.draftCompile>
         <gwt.failOnError>true</gwt.failOnError>
         <gwt.logLevel>INFO</gwt.logLevel>
         <gwt.optimize>0</gwt.optimize>
         <gwt.style>DETAILED</gwt.style>
+        <main.verticle>org.jboss.schlawiner.server.MainVerticle</main.verticle>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <plugin.buildhelper.version>3.0.0</plugin.buildhelper.version>
+        <plugin.frontend.version>1.6</plugin.frontend.version>
         <plugin.gwt.version>1.0-rc-9</plugin.gwt.version>
+        <plugin.vertx.version>1.0.17</plugin.vertx.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -78,14 +82,17 @@
         <junit.version>5.3.1</junit.version>
         <mockito.version>2.22.0</mockito.version>
         <nalu.version>1.0.0-rc-6-SNAPSHOT</nalu.version>
+        <node.version>v8.11.3</node.version>
         <rx.gwt>0.4</rx.gwt>
         <rxjava.version>2.2.2</rxjava.version>
         <slf4j.version>1.5.3</slf4j.version>
         <textio.version>3.3.0</textio.version>
         <vertx.version>3.5.3</vertx.version>
+        <yarn.version>v1.9.2</yarn.version>
     </properties>
 
     <modules>
+        <module>backend</module>
         <module>console</module>
         <module>frontend</module>
         <module>engine</module>
@@ -93,11 +100,16 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Schlawiner dependencies -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>schlawiner-engine</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>schlawiner-frontend</artifactId>
+                <version>${project.version}</version>
+                <classifier>resources</classifier>
             </dependency>
 
             <dependency>
@@ -117,12 +129,12 @@
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
-                <artifactId>guava-gwt</artifactId>
+                <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
+                <artifactId>guava-gwt</artifactId>
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
@@ -194,6 +206,24 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -203,10 +233,20 @@
                     <version>${plugin.buildhelper.version}</version>
                 </plugin>
                 <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${plugin.frontend.version}</version>
+                </plugin>
+                <plugin>
                     <groupId>net.ltgt.gwt.maven</groupId>
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>${plugin.gwt.version}</version>
                     <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <groupId>io.reactiverse</groupId>
+                    <artifactId>vertx-maven-plugin</artifactId>
+                    <version>${plugin.vertx.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -216,6 +256,7 @@
         <profile>
             <id>prod</id>
             <properties>
+                <grunt-task>prod</grunt-task>
                 <gwt.draftCompile>false</gwt.draftCompile>
                 <gwt.logLevel>INFO</gwt.logLevel>
                 <gwt.optimize>0</gwt.optimize>

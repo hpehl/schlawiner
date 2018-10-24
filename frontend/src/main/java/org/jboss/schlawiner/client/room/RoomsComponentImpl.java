@@ -23,6 +23,7 @@ import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.EventType.keyup;
 import static org.jboss.schlawiner.client.resources.CSS.*;
+import static org.jboss.schlawiner.client.resources.FontAwesomeSize.xs;
 
 @Templated("rooms.html")
 public abstract class RoomsComponentImpl extends AbstractComponent<RoomsController, HTMLElement> implements
@@ -110,27 +111,29 @@ public abstract class RoomsComponentImpl extends AbstractComponent<RoomsControll
 
     private HTMLElement roomRow(Room room) {
         HTMLElement actions;
-        EventCallbackFn<MouseEvent> callback = e -> getController().selectRoom(room);
+        EventCallbackFn<MouseEvent> selectCallback = e -> getController().selectRoom(room);
 
         HTMLTableRowElement tr = tr().id(room.getId())
             .add(td().css(textLeft, about, textTruncate)
                 .textContent(room.getName())
-                .on(click, callback))
-            .add(td().textContent(String.valueOf(room.getPlayers())).on(click, callback))
-            .add(actions = td().css(CSS.actions).on(click, callback).asElement())
+                .on(click, selectCallback))
+            .add(td().textContent(String.valueOf(room.getPlayers())).on(click, selectCallback))
+            .add(td()
+                .on(click, selectCallback)
+                .add(actions = div().css(CSS.actions).asElement()))
             .asElement();
 
         if (getController().isOwnRoom(room)) {
-            actions.appendChild(i().css(fas("play"), action)
+            actions.appendChild(i().css(fas("play", xs), action)
                 .title("Start game")
                 .on(click, e -> getController().startGame(room))
                 .asElement());
-            actions.appendChild(i().css(far("trash-alt"), action)
+            actions.appendChild(i().css(far("trash-alt", xs), action)
                 .title("Remove room")
                 .on(click, e -> getController().removeRoom(room))
                 .asElement());
         } else if (room.getPlayers() < room.getLimit()) {
-            actions.appendChild(i().css(fas("sign-in-alt"), action)
+            actions.appendChild(i().css(fas("sign-in-alt", xs), action)
                 .title("Join room")
                 .on(click, e -> getController().joinRoom(room))
                 .asElement());
