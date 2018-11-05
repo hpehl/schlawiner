@@ -1,0 +1,82 @@
+button {
+    background-color: fade(@grey, 25%);
+    border: 2px solid @light-grey;
+    font-size: 1.2rem;
+}
+
+button:active, button:hover {
+    background-color: fade(@white, 40%);
+}
+
+button[disabled], button[disabled]:hover {
+    background-color: fade(@grey, 25%);
+}
+
+input[type=text] {
+    background: transparent;
+    border-bottom-left-radius: 5px;
+    border-bottom: 1px solid @light-grey;
+    border-left: 1px solid @light-grey;
+    border-right: none;
+    border-top: none;
+    font-family: "Architects Daughter", cursive;
+    outline: none;
+    padding: 0 @spacer-2;
+}
+
+input[type=text]:focus {
+    background-color: fade(@grey, 25%);
+}
+
+input[type=range] {
+    appearance: none;
+    background-color: @white;
+    height: 3px;
+    vertical-align: middle;
+}
+
+select {
+    background: transparent;
+    border: none;
+    font-family: "Architects Daughter", cursive;
+}
+
+select:focus {
+    outline: 0;
+}
+
+.form-group {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: @spacer-3;
+
+    label {
+        flex: none;
+        padding-right: @spacer-4;
+        text-align: right;
+        width: 20%;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    output {
+        padding-left: @spacer-4;
+        text-align: right;
+        width: 4rem;
+    }
+
+    .form-control {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        flex: 1 1 auto;
+    }
+
+    .from-select {
+        flex: none;
+        width: auto;
+    }
+}

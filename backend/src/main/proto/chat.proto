@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.jboss.schlawiner.server.chat";
+option java_outer_classname = "ChatProto";
+
+import "google/protobuf/timestamp.proto";
+package chat;
+
+message ClientMessage {
+    string player = 1;
+    string message = 2;
+}
+
+message ServerMessage {
+    google.protobuf.Timestamp timestamp = 1;
+    ClientMessage message = 2;
+}
+
+service ChatService {
+    rpc chat(stream ClientMessage) returns (stream ServerMessage);
+}

@@ -105,10 +105,11 @@ public abstract class PlayersComponentImpl extends AbstractComponent<PlayersCont
                 .title("Toggle human and computer player")
                 .on(click, e -> getController().togglePlayer(player, !player.isHuman()))
                 .asElement())
-            .add(td().css(actions)
-                .add(i().css(far("trash-alt", xs), action)
-                    .title("Remove player")
-                    .on(click, e -> getController().removePlayer(player))))
+            .add(td()
+                .add(div().css(actions)
+                    .add(i().css(far("trash-alt", xs), action)
+                        .title("Remove player")
+                        .on(click, e -> getController().removePlayer(player)))))
             .asElement();
         if (player.isHuman()) {
             human.appendChild(i().css(fas("check", xs)).asElement());

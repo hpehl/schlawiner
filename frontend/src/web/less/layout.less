@@ -1,0 +1,310 @@
+/* Font & Basic Tags
+   ========================================================================== */
+
+@font-face {
+    font-family: "Architects Daughter";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/ArchitectsDaughter-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/RobotoMono-Regular.ttf") format("truetype");
+}
+
+html, a, button, input, output, select {
+    color: @white;
+}
+
+body {
+    background: @black url("../wood.jpg") repeat;
+    font-family: "Architects Daughter", cursive;
+    font-size: 1.5rem;
+}
+
+a, a:visited, a:active {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:before {
+    content: "< ";
+}
+
+a:after {
+    content: " >";
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+a.disabled:hover {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-top: @spacer-3;
+    margin-bottom: @spacer-5;
+}
+
+img {
+    vertical-align: middle;
+}
+
+p, table, ul {
+    margin-top: 0;
+    margin-bottom: @spacer-4;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Pseudo Classes
+   ========================================================================== */
+
+:focus {
+    outline: none;
+}
+
+::selection {
+    background: @grey;
+    text-shadow: none;
+}
+
+/* Common Classes (a-z)
+   ========================================================================== */
+
+.about {
+    cursor: help;
+}
+
+.align-self-center {
+    align-self: center;
+}
+
+.clearfix:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-none {
+    display: none;
+}
+
+.disabled {
+    color: @grey;
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.highlight {
+    background-color: fade(@grey, 25%);
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+
+}
+
+.noscript {
+    background-color: @white;
+    border: 2px solid @red;
+    color: @red;
+    font-family: sans-serif;
+    left: 50%;
+    margin-left: -11rem;
+    padding: @spacer-5;
+    position: absolute;
+    top: 10%;
+    width: 22rem;
+}
+
+.overflow-y {
+    overflow-y: auto;
+}
+
+.page {
+    width: 800px;
+    margin: @spacer-4 auto;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+/* Margin & Padding
+   ========================================================================== */
+
+.mb-0 {
+    margin-bottom: @spacer-0;
+}
+
+.mb-1 {
+    margin-bottom: @spacer-1;
+}
+
+.mb-2 {
+    margin-bottom: @spacer-2;
+}
+
+.mb-3 {
+    margin-bottom: @spacer-3;
+}
+
+.mb-4 {
+    margin-bottom: @spacer-4;
+}
+
+.mb-5 {
+    margin-bottom: @spacer-5;
+}
+
+.mr-0 {
+    margin-right: @spacer-0;
+}
+
+.mr-1 {
+    margin-right: @spacer-1;
+}
+
+.mr-2 {
+    margin-right: @spacer-2;
+}
+
+.mr-3 {
+    margin-right: @spacer-3;
+}
+
+.mr-4 {
+    margin-right: @spacer-4;
+}
+
+.mr-5 {
+    margin-right: @spacer-5;
+}
+
+.mt-0 {
+    margin-top: @spacer-0;
+}
+
+.mt-1 {
+    margin-top: @spacer-1;
+}
+
+.mt-2 {
+    margin-top: @spacer-2;
+}
+
+.ml-3 {
+    margin-left: @spacer-3;
+}
+
+.mt-3 {
+    margin-top: @spacer-3;
+}
+
+.mt-4 {
+    margin-top: @spacer-4;
+}
+
+.mt-5 {
+    margin-top: @spacer-5;
+}
+
+.pb-0 {
+    padding-bottom: @spacer-0;
+}
+
+.pb-1 {
+    padding-bottom: @spacer-1;
+}
+
+.p-2 {
+    padding: @spacer-2;
+}
+
+.pb-2 {
+    padding-bottom: @spacer-2;
+}
+
+.pb-3 {
+    padding-bottom: @spacer-3;
+}
+
+.pb-4 {
+    padding-bottom: @spacer-4;
+}
+
+.py-4 {
+    padding-bottom: @spacer-4;
+    padding-top: @spacer-4;
+}
+
+.pb-5 {
+    padding-bottom: @spacer-5;
+}
+
+.pt-0 {
+    padding-top: @spacer-0;
+}
+
+.pt-1 {
+    padding-top: @spacer-1;
+}
+
+.pt-2 {
+    padding-top: @spacer-2;
+}
+
+.pt-3 {
+    padding-top: @spacer-3;
+}
+
+.pt-4 {
+    padding-top: @spacer-4;
+}
+
+.pt-5 {
+    padding-top: @spacer-5;
+}

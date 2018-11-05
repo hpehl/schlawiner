@@ -70,6 +70,8 @@
         <plugin.buildhelper.version>3.0.0</plugin.buildhelper.version>
         <plugin.frontend.version>1.6</plugin.frontend.version>
         <plugin.gwt.version>1.0-rc-9</plugin.gwt.version>
+        <plugin.os.maven.version>1.4.1.Final</plugin.os.maven.version>
+        <plugin.protobuf.version>0.6.1</plugin.protobuf.version>
         <plugin.vertx.version>1.0.17</plugin.vertx.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -83,11 +85,13 @@
         <mockito.version>2.22.0</mockito.version>
         <nalu.version>1.0.0-rc-6-SNAPSHOT</nalu.version>
         <node.version>v8.11.3</node.version>
+        <protoc.version>3.3.0</protoc.version>
         <rx.gwt>0.4</rx.gwt>
         <rxjava.version>2.2.2</rxjava.version>
         <slf4j.version>1.5.3</slf4j.version>
         <textio.version>3.3.0</textio.version>
         <vertx.version>3.5.3</vertx.version>
+        <vertx.grpc.version>1.9.0</vertx.grpc.version>
         <yarn.version>v1.9.2</yarn.version>
     </properties>
 
@@ -242,6 +246,11 @@
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>${plugin.gwt.version}</version>
                     <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <groupId>org.xolstice.maven.plugins</groupId>
+                    <artifactId>protobuf-maven-plugin</artifactId>
+                    <version>${plugin.protobuf.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>io.reactiverse</groupId>

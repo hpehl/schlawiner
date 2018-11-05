@@ -1,0 +1,136 @@
+.control {
+    align-items: center;
+    display: flex;
+    margin-bottom: @spacer-4;
+
+    .links {
+        margin-left: 20px;
+        width: 10rem;
+    }
+}
+
+.countdown-container {
+    flex: 1 0 auto;
+}
+
+.countdown {
+    margin: 0 auto;
+    width: 150px;
+}
+
+.input {
+    margin-left: -20px;
+}
+
+.solution {
+    margin-left: 20px;
+    margin-top: 10px;
+    padding: 0 10px;
+    width: 290px;
+}
+
+/* Dice & Cubes
+   ========================================================================== */
+
+.dice {
+    cursor: default;
+    display: flex;
+}
+
+.cube-container {
+    height: 80px;
+    margin: 20px 35px;
+    perspective: 1000px;
+    position: relative;
+    width: 80px;
+}
+
+.cube-container:first-child {
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.cube-container:last-child {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+.cube {
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    width: 100%;
+}
+
+.cube figure {
+    backface-visibility: hidden;
+    background-color: rgba(251, 0, 0, .25);
+    border: 2px solid #ccc;
+    color: white;
+    display: block;
+    font-size: 50px;
+    height: 76px;
+    line-height: 76px;
+    position: absolute;
+    text-align: center;
+    width: 76px;
+}
+
+.cube figure.highlight {
+    background-color: fade(@grey, 25);
+}
+
+.front {
+    transform: translateZ(40px);
+}
+
+.back {
+    transform: rotateX(-180deg) translateZ(40px);
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(40px);
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(40px);
+}
+
+.top {
+    transform: rotateX(90deg) translateZ(40px);
+}
+
+.bottom {
+    transform: rotateX(-90deg) translateZ(40px);
+}
+
+.show-front {
+    transform: translateZ(-40px);
+}
+
+.show-back {
+    transform: translateZ(-40px) rotateX(-180deg);
+}
+
+.show-right {
+    transform: translateZ(-40px) rotateY(-90deg);
+}
+
+.show-left {
+    transform: translateZ(-40px) rotateY(90deg);
+}
+
+.show-top {
+    transform: translateZ(-40px) rotateX(-90deg);
+}
+
+.show-bottom {
+    transform: translateZ(-40px) rotateX(90deg);
+}
+
+.highlight {
+    .front, .back, .right, .left, .top, .bottom {
+        background-color: fade(@grey, 25%);
+    }
+}

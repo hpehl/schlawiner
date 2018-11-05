@@ -1,0 +1,112 @@
+.chat {
+    background-color: @dark-green;
+    display: flex;
+    height: 100vh;
+    margin-left: @spacer-3;
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+    }
+
+    .chat-disabled {
+        align-items: center;
+        align-self: center;
+        display: flex;
+        flex: 1;
+        padding: @spacer-3;
+
+        p {
+            font-family: "Roboto Mono", monospace;
+            font-size: 0.8rem;
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+    .chat-history {
+        display: flex;
+        flex: 1;
+        flex-direction: column-reverse;
+        margin: @spacer-2 0;
+        padding-right: @spacer-2;
+
+        .line {
+            border-bottom: 1px solid fade(@light-grey, 25%);
+            display: block;
+            padding-top: @spacer-1;
+            padding-bottom: @spacer-1;
+
+            &:after {
+                display: block;
+                clear: both;
+                content: "";
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .user, .text, time {
+            font-family: "Roboto Mono", monospace;
+            font-size: 0.8rem;
+        }
+
+        .user, time {
+            color: @grey;
+        }
+
+        .user {
+            float: left;
+            padding-right: @spacer-2;
+        }
+
+        .text {
+            display: inherit;
+        }
+
+        time {
+            float: right;
+            font-style: italic;
+            padding-left: @spacer-2;
+            text-align: right;
+        }
+    }
+
+    .chat-input {
+        background-color: @black;
+        border-bottom: 2px solid @dark-green;
+        border-left: 2px solid @dark-green;
+        border-radius: 0;
+        border-right: 2px solid @dark-green;
+        border-top: none;
+        color: @white;
+        font-family: "Roboto Mono", monospace;
+        font-size: 0.8rem;
+        margin-left: -25px;
+        padding: @spacer-2;
+
+        &:focus {
+            background-color: @dark-grey;
+        }
+    }
+
+    .chat-slider {
+        display: flex;
+        padding: @spacer-2;
+
+        &:hover {
+            background-color: fade(@green, 25%);
+        }
+    }
+}
+
+.page-with-open-chat {
+    filter: blur(1px);
+    pointer-events: none;
+}
