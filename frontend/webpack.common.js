@@ -7,15 +7,15 @@ const DIST = process.env.DIST || 'target/classes/org/jboss/schlawiner/public';
 
 module.exports = {
     entry: {
-        external: './src/web/main.js'
+        external: './src/main/web/main.js'
     },
 
     plugins: [
         new CleanWebpackPlugin([DIST]),
         new HtmlWebpackPlugin({
             inject: 'head',
-            favicon: './src/web/favicon.ico',
-            template: './src/web/index.html'
+            favicon: './src/main/web/favicon.ico',
+            template: './src/main/web/index.html'
         }),
         new MiniCssExtractPlugin({
             filename: 'schlawiner.css',
