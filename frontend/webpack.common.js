@@ -1,8 +1,9 @@
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const DIST = process.env.DIST || 'target/dist';
+const DIST = process.env.DIST || 'target/classes/org/jboss/schlawiner/public';
 
 module.exports = {
     entry: {
@@ -11,9 +12,14 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin([DIST]),
+        new HtmlWebpackPlugin({
+            inject: 'head',
+            favicon: './src/web/favicon.ico',
+            template: './src/web/index.html'
+        }),
         new MiniCssExtractPlugin({
-            filename: "schlawiner.css",
-            chunkFilename: "[id].css"
+            filename: 'schlawiner.css',
+            chunkFilename: '[id].css'
         })
     ],
 
@@ -29,6 +35,7 @@ module.exports = {
                 }]
             },
             {test: /\.svg$/, use: 'file-loader'},
+            {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
             {
                 test: /\.(woff(2)?|ttf|eot)$/,
                 use: [{

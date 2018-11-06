@@ -85,6 +85,7 @@
         <mockito.version>2.22.0</mockito.version>
         <nalu.version>1.0.0-rc-6-SNAPSHOT</nalu.version>
         <node.version>v8.11.3</node.version>
+        <npm.version>6.4.1</npm.version>
         <protoc.version>3.3.0</protoc.version>
         <rx.gwt>0.4</rx.gwt>
         <rxjava.version>2.2.2</rxjava.version>
@@ -92,7 +93,6 @@
         <textio.version>3.3.0</textio.version>
         <vertx.version>3.5.3</vertx.version>
         <vertx.grpc.version>1.9.0</vertx.grpc.version>
-        <yarn.version>v1.9.2</yarn.version>
     </properties>
 
     <modules>

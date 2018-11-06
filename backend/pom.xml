@@ -129,18 +129,6 @@
                             <goal>compile-custom</goal>
                         </goals>
                     </execution>
-<!--
-                    <execution>
-                        <id>compile-js</id>
-                        <goals>
-                            <goal>compile-js</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/classes/webroot</outputDirectory>
-                            <javaScriptOptions>import_style=commonjs</javaScriptOptions>
-                        </configuration>
-                    </execution>
--->
                 </executions>
             </plugin>
             <plugin>

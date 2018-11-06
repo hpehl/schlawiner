@@ -8,8 +8,11 @@ require('tingle.js/src/tingle.css')
 require('tingle.js/src/tingle.js')
 require('raphael/raphael.js')
 
-// TODO gRPC dependencies
+// generated gRPC dependencies
+require('./grpc/helloworld_pb.js');
+require('./grpc/helloworld_grpc_web_pb.js');
 
 // Schlawiner dependencies
 require('./less/schlawiner.less')
+require('./favicon.ico');
 require('./countdown.js');
