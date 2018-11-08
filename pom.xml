@@ -68,6 +68,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <plugin.buildhelper.version>3.0.0</plugin.buildhelper.version>
+        <plugin.docker.version>0.27.2</plugin.docker.version>
         <plugin.frontend.version>1.6</plugin.frontend.version>
         <plugin.gwt.version>1.0-rc-9</plugin.gwt.version>
         <plugin.os.maven.version>1.4.1.Final</plugin.os.maven.version>
@@ -84,7 +85,7 @@
         <junit.version>5.3.1</junit.version>
         <mockito.version>2.22.0</mockito.version>
         <nalu.version>1.0.0-rc-6-SNAPSHOT</nalu.version>
-        <node.version>v8.11.3</node.version>
+        <node.version>v10.13.0</node.version>
         <npm.version>6.4.1</npm.version>
         <protoc.version>3.3.0</protoc.version>
         <rx.gwt>0.4</rx.gwt>
@@ -115,7 +116,6 @@
                 <version>${project.version}</version>
                 <classifier>resources</classifier>
             </dependency>
-
             <dependency>
                 <groupId>com.github.nalukit</groupId>
                 <artifactId>nalu</artifactId>
@@ -235,6 +235,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${plugin.buildhelper.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${plugin.docker.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.eirslett</groupId>

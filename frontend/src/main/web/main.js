@@ -9,8 +9,17 @@ require('tingle.js/src/tingle.js')
 require('raphael/raphael.js')
 
 // generated gRPC dependencies
-require('./grpc/helloworld_pb.js');
-require('./grpc/helloworld_grpc_web_pb.js');
+require('./grpc/chat_grpc_web_pb.js');
+require('./grpc/chat_pb.js');
+let client = new ChatServiceClient('http://localhost:8080');
+let clientMessage = new ClientMessage("test");
+client.simpleChat(clientMessage, {}, (error, serverMessage) => {
+    if (error) {
+        console.log("gRPC error: " + error.code + ": " + error.message);
+    } else {
+        console.log("Received message from server: " + serverMessage.getMessage());
+    }
+});
 
 // Schlawiner dependencies
 require('./less/schlawiner.less')

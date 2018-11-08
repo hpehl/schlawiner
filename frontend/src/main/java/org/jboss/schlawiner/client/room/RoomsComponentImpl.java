@@ -45,6 +45,7 @@ public abstract class RoomsComponentImpl extends AbstractComponent<RoomsControll
     @Override
     public void render() {
         initElement(asElement());
+        chat.init(getController().getChatService(), getController().getPlayer());
     }
 
     @Override
@@ -53,7 +54,6 @@ public abstract class RoomsComponentImpl extends AbstractComponent<RoomsControll
         this.handler = HandlerRegistrations.compose(
             EventType.bind(player, keyup, e -> getController().setPlayer(((HTMLInputElement) e.target).value)),
             EventType.bind(addRoom, click, event -> prepareAddRoom()));
-        this.chat.init(getController().getEventBus(), getController().getPlayer());
     }
 
     @Override

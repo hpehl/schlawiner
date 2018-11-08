@@ -2,6 +2,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 const DIST = process.env.DIST || 'target/classes/org/jboss/schlawiner/public';
 
@@ -20,7 +21,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'schlawiner.css',
             chunkFilename: '[id].css'
-        })
+        }),
+        new WebpackShellPlugin({onBuildStart: ['./protojs.sh']})
     ],
 
     module: {

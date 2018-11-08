@@ -3,7 +3,7 @@ package org.jboss.schlawiner.client.chat;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
-import org.gwtproject.event.shared.EventBus;
+import org.jboss.gwt.elemento.core.InputType;
 import org.jboss.gwt.elemento.core.IsElement;
 import org.jboss.gwt.elemento.core.Key;
 import org.jboss.schlawiner.client.resources.CSS;
@@ -16,7 +16,6 @@ import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.Elements.input;
 import static org.jboss.gwt.elemento.core.EventType.click;
 import static org.jboss.gwt.elemento.core.EventType.keyup;
-import static org.jboss.gwt.elemento.core.InputType.text;
 import static org.jboss.schlawiner.client.resources.CSS.*;
 import static org.jboss.schlawiner.client.resources.UIConstants.ARIA_EXPANDED;
 import static org.jboss.schlawiner.client.resources.UIConstants.FALSE;
@@ -33,7 +32,7 @@ public class ChatElement implements IsElement<HTMLElement> {
     private final HTMLElement disabled;
     private final HTMLElement reason;
     private boolean open;
-    private EventBus eventBus;
+    private ChatServiceClient chatService;
     private Player player;
 
     public ChatElement() {
@@ -51,16 +50,14 @@ public class ChatElement implements IsElement<HTMLElement> {
                 .asElement())
             .add(container = div().css(chatContainer).aria(ARIA_EXPANDED, TRUE)
                 .add(history = div().css(chatHistory, overflowY).asElement())
-                .add(input = input(text).css(chatInput)
+                .add(input = input(InputType.text).css(chatInput)
                     .apply(i -> i.placeholder = "Enter message")
                     .on(keyup, e -> {
-                        if (eventBus != null && Key.Enter.match(e)) {
+                        if (chatService != null && Key.Enter.match(e)) {
                             HTMLInputElement input = (HTMLInputElement) e.target;
                             if (emptyToNull(input.value) != null) {
-                                ChatMessage message = new ChatMessage(player, input.value);
-                                eventBus.fireEvent(new ChatMessageEvent(message));
+                                sendMessage(input.value);
                                 input.value = "";
-                                addLine(message); // TODO remove hack
                             }
                         }
                     })
@@ -71,8 +68,21 @@ public class ChatElement implements IsElement<HTMLElement> {
         collapse();
     }
 
-    public void init(EventBus eventBus, Player player) {
-        this.eventBus = eventBus;
+    private void sendMessage(String message) {
+        if (chatService != null) {
+            ClientMessage clientMessage = new ClientMessage();
+            clientMessage.setMessage(message);
+            clientMessage.setPlayer(player.getName());
+            chatService.simpleChat(clientMessage, null, (error, serverMessage) -> {
+                if (error != null) {
+                    addLine(serverMessage);
+                }
+            });
+        }
+    }
+
+    public void init(ChatServiceClient chatService, Player player) {
+        this.chatService = chatService;
         this.player = player;
     }
 
@@ -95,11 +105,11 @@ public class ChatElement implements IsElement<HTMLElement> {
         setVisible(input, true);
     }
 
-    private void addLine(ChatMessage message) {
+    private void addLine(ServerMessage message) {
         HTMLElement line = span().css(CSS.line)
-            .add(span().css(user).textContent("[" + message.getPlayer().getName() + "]"))
-            .add(time().textContent(Format.time(message.getTime())))
-            .add(span().css(CSS.text).textContent(message.getMessage()))
+            .add(span().css(user).textContent("[" + message.getMessage().getPlayer() + "]"))
+            .add(time().textContent(Format.time(message.getTimestamp().asDate())))
+            .add(span().css(CSS.text).textContent(message.getMessage().getMessage()))
             .asElement();
         // flex-direction is column-reverse (in order to have overflow-y),
         // so we need to use insertBefore instead of appendChild

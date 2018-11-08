@@ -2,7 +2,7 @@ package org.jboss.schlawiner.client.room;
 
 import com.github.nalukit.nalu.client.component.IsComponent;
 import com.github.nalukit.nalu.client.component.IsComponentCreator;
-import org.gwtproject.event.shared.EventBus;
+import org.jboss.schlawiner.client.chat.ChatServiceClient;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Room;
 
@@ -22,7 +22,7 @@ public interface RoomsController extends IsComponent.Controller, IsComponentCrea
 
     void joinRoom(Room room);
 
-    EventBus getEventBus();
+    ChatServiceClient getChatService();
 
     Player getPlayer();
 }

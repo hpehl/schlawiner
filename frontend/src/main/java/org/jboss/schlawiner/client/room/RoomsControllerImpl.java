@@ -7,8 +7,8 @@ import com.github.nalukit.nalu.client.component.annotation.Controller;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import elemental2.dom.HTMLElement;
-import org.gwtproject.event.shared.EventBus;
 import org.jboss.schlawiner.client.Context;
+import org.jboss.schlawiner.client.chat.ChatServiceClient;
 import org.jboss.schlawiner.engine.game.Player;
 import org.jboss.schlawiner.engine.game.Room;
 
@@ -19,10 +19,13 @@ import org.jboss.schlawiner.engine.game.Room;
 public class RoomsControllerImpl extends AbstractComponentController<Context, RoomsComponent, HTMLElement>
     implements RoomsController {
 
+    private ChatServiceClient chatService;
     private Room selectedRoom;
     private Multimap<Player, Room> roomsByPlayer;
 
+
     public RoomsControllerImpl() {
+        // this.chatService = new ChatServiceClient(/*"http://localhost:8080"*/);
         this.selectedRoom = null;
         this.roomsByPlayer = ArrayListMultimap.create();
     }
@@ -79,7 +82,6 @@ public class RoomsControllerImpl extends AbstractComponentController<Context, Ro
 
     @Override
     public void startGame(Room room) {
-
     }
 
     @Override
@@ -93,12 +95,11 @@ public class RoomsControllerImpl extends AbstractComponentController<Context, Ro
 
     @Override
     public void joinRoom(Room room) {
-
     }
 
     @Override
-    public EventBus getEventBus() {
-        return eventBus;
+    public ChatServiceClient getChatService() {
+        return chatService;
     }
 
     @Override

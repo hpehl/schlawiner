@@ -86,15 +86,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>webroot/node_modules/**/*</exclude>
-                </excludes>
-            </resource>
-        </resources>
-
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>
@@ -162,7 +153,7 @@
                 <artifactId>vertx-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>vmp</id>
+                        <id>vertext-maven-plugin</id>
                         <goals>
                             <goal>initialize</goal>
                             <goal>package</goal>
@@ -172,6 +163,55 @@
                 <configuration>
                     <redeploy>true</redeploy>
                     <verticle>org.jboss.schlawiner.server.MainVerticle</verticle>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <alias>schlawiner-proxy</alias>
+                            <name>schlawiner/proxy</name>
+                            <build>
+                                <dockerFileDir>proxy</dockerFileDir>
+                            </build>
+                            <run>
+                                <links>
+                                    <link>schlawiner-backend</link>
+                                </links>
+                                <ports>
+                                    <port>8080:8080</port>
+                                </ports>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>schlawiner-backend</alias>
+                            <name>schlawiner/backend</name>
+                            <build>
+                                <dockerFileDir>vertx</dockerFileDir>
+                                <assembly>
+                                    <mode>dir</mode>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.build.directory}</directory>
+                                                <includes>
+                                                    <include>schlawiner-backend-0.5.jar</include>
+                                                </includes>
+                                                <outputDirectory>.</outputDirectory>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <ports>
+                                    <port>8081:8081</port>
+                                </ports>
+                            </run>
+                        </image>
+                    </images>
                 </configuration>
             </plugin>
         </plugins>
