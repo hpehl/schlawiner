@@ -6,14 +6,14 @@ import jsinterop.base.JsPropertyMap;
 import org.jboss.schlawiner.client.grpc.Error;
 
 @JsType(isNative = true, namespace = "proto.chat")
-public interface ChatServiceClient {
+public class ChatServiceClient {
 
 /*
     public ChatServiceClient(String hostename) {
     }
 */
 
-    void simpleChat(ClientMessage message, JsPropertyMap<String> metadata, MessageCallback callback);
+    public native void simpleChat(ClientMessage message, JsPropertyMap<String> metadata, MessageCallback callback);
 
     @JsFunction
     @FunctionalInterface

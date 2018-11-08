@@ -25,7 +25,7 @@ public class RoomsControllerImpl extends AbstractComponentController<Context, Ro
 
 
     public RoomsControllerImpl() {
-        // this.chatService = new ChatServiceClient(/*"http://localhost:8080"*/);
+        this.chatService = new ChatServiceClient(/*"http://localhost:8080"*/);
         this.selectedRoom = null;
         this.roomsByPlayer = ArrayListMultimap.create();
     }

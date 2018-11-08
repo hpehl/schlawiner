@@ -9,15 +9,16 @@ require('tingle.js/src/tingle.js')
 require('raphael/raphael.js')
 
 // generated gRPC dependencies
-require('./grpc/chat_grpc_web_pb.js');
-require('./grpc/chat_pb.js');
-let client = new ChatServiceClient('http://localhost:8080');
-let clientMessage = new ClientMessage("test");
+const {ChatServiceClient} = require('./grpc/chat_grpc_web_pb.js');
+const {ClientMessage, ServerMessage} = require('./grpc/chat_pb.js');
+var client = new ChatServiceClient('http://localhost:8080', null, null);
+var clientMessage = new ClientMessage();
+clientMessage.setMessage("Message in a bottle");
 client.simpleChat(clientMessage, {}, (error, serverMessage) => {
     if (error) {
         console.log("gRPC error: " + error.code + ": " + error.message);
     } else {
-        console.log("Received message from server: " + serverMessage.getMessage());
+        console.log("Received message from server: " + serverMessage.getMessage().getMessage());
     }
 });
 
