@@ -11,6 +11,7 @@ import org.jboss.schlawiner.client.resources.Format;
 import org.jboss.schlawiner.engine.game.Player;
 
 import static com.google.common.base.Strings.emptyToNull;
+import static elemental2.dom.DomGlobal.console;
 import static elemental2.dom.DomGlobal.document;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.Elements.input;
@@ -75,6 +76,8 @@ public class ChatElement implements IsElement<HTMLElement> {
             clientMessage.setPlayer(player.getName());
             chatService.simpleChat(clientMessage, null, (error, serverMessage) -> {
                 if (error != null) {
+                    console.log("gRPC error " + error.getCode() + ": " + error.getMessage());
+                } else {
                     addLine(serverMessage);
                 }
             });

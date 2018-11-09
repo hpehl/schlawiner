@@ -8,19 +8,9 @@ require('tingle.js/src/tingle.css')
 require('tingle.js/src/tingle.js')
 require('raphael/raphael.js')
 
-// generated gRPC dependencies
+// gRPC dependencies
 const {ChatServiceClient} = require('./grpc/chat_grpc_web_pb.js');
-const {ClientMessage, ServerMessage} = require('./grpc/chat_pb.js');
-var client = new ChatServiceClient('http://localhost:8080', null, null);
-var clientMessage = new ClientMessage();
-clientMessage.setMessage("Message in a bottle");
-client.simpleChat(clientMessage, {}, (error, serverMessage) => {
-    if (error) {
-        console.log("gRPC error: " + error.code + ": " + error.message);
-    } else {
-        console.log("Received message from server: " + serverMessage.getMessage().getMessage());
-    }
-});
+proto.chat.ChatServiceClient = ChatServiceClient; // re-export under namespace "proto.chat"
 
 // Schlawiner dependencies
 require('./less/schlawiner.less')

@@ -107,7 +107,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run dev</arguments>
+                            <arguments>run ${npm.script}</arguments>
                         </configuration>
                     </execution>
                 </executions>

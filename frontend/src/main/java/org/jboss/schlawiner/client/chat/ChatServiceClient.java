@@ -8,10 +8,8 @@ import org.jboss.schlawiner.client.grpc.Error;
 @JsType(isNative = true, namespace = "proto.chat")
 public class ChatServiceClient {
 
-/*
-    public ChatServiceClient(String hostename) {
+    public ChatServiceClient(String hostename, Object credentials, Object options) {
     }
-*/
 
     public native void simpleChat(ClientMessage message, JsPropertyMap<String> metadata, MessageCallback callback);
 
