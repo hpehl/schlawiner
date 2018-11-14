@@ -1,5 +1,7 @@
 package org.jboss.schlawiner.client.chat;
 
+import java.util.Date;
+
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
@@ -11,7 +13,6 @@ import org.jboss.schlawiner.client.resources.Format;
 import org.jboss.schlawiner.engine.game.Player;
 
 import static com.google.common.base.Strings.emptyToNull;
-import static elemental2.dom.DomGlobal.console;
 import static elemental2.dom.DomGlobal.document;
 import static org.jboss.gwt.elemento.core.Elements.*;
 import static org.jboss.gwt.elemento.core.Elements.input;
@@ -57,7 +58,7 @@ public class ChatElement implements IsElement<HTMLElement> {
                         if (chatService != null && Key.Enter.match(e)) {
                             HTMLInputElement input = (HTMLInputElement) e.target;
                             if (emptyToNull(input.value) != null) {
-                                sendMessage(input.value);
+                                sendMessage(input.value, player.getName(), new Date());
                                 input.value = "";
                             }
                         }
@@ -69,19 +70,9 @@ public class ChatElement implements IsElement<HTMLElement> {
         collapse();
     }
 
-    private void sendMessage(String message) {
-        if (chatService != null) {
-            ClientMessage clientMessage = new ClientMessage();
-            clientMessage.setMessage(message);
-            clientMessage.setPlayer(player.getName());
-            chatService.simpleChat(clientMessage, null, (error, serverMessage) -> {
-                if (error != null) {
-                    console.log("gRPC error " + error.getCode() + ": " + error.getMessage());
-                } else {
-                    addLine(serverMessage);
-                }
-            });
-        }
+    private void sendMessage(String player, String message, Date date) {
+        // TODO send chat message once bidi communication is available
+        addLine(player, message, date);
     }
 
     public void init(ChatServiceClient chatService, Player player) {
@@ -108,11 +99,11 @@ public class ChatElement implements IsElement<HTMLElement> {
         setVisible(input, true);
     }
 
-    private void addLine(ServerMessage message) {
+    private void addLine(String player, String message, Date date) {
         HTMLElement line = span().css(CSS.line)
-            .add(span().css(user).textContent("[" + message.getMessage().getPlayer() + "]"))
-            .add(time().textContent(Format.time(message.getTimestamp().asDate())))
-            .add(span().css(CSS.text).textContent(message.getMessage().getMessage()))
+            .add(span().css(user).textContent("[" + player + "]"))
+            .add(time().textContent(Format.time(date)))
+            .add(span().css(CSS.text).textContent(message))
             .asElement();
         // flex-direction is column-reverse (in order to have overflow-y),
         // so we need to use insertBefore instead of appendChild

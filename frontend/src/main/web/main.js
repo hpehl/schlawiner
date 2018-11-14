@@ -10,7 +10,7 @@ require('raphael/raphael.js')
 
 // gRPC dependencies
 const {ChatServiceClient} = require('./grpc/chat_grpc_web_pb.js');
-proto.chat.ChatServiceClient = ChatServiceClient; // re-export under namespace "proto.chat"
+proto.chat.ChatServiceClient = ChatServiceClient; // export to be picked up by JsInterop
 
 // Schlawiner dependencies
 require('./less/schlawiner.less')

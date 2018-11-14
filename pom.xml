@@ -90,7 +90,7 @@
         <protoc.version>3.3.0</protoc.version>
         <rx.gwt>0.4</rx.gwt>
         <rxjava.version>2.2.2</rxjava.version>
-        <slf4j.version>1.5.3</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <textio.version>3.3.0</textio.version>
         <vertx.version>3.5.3</vertx.version>
         <vertx.grpc.version>1.9.0</vertx.grpc.version>
@@ -99,8 +99,9 @@
     <modules>
         <module>backend</module>
         <module>console</module>
-        <module>frontend</module>
         <module>engine</module>
+        <module>frontend</module>
+        <module>javafx-chat</module>
     </modules>
 
     <dependencyManagement>
@@ -108,6 +109,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>schlawiner-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>schlawiner-backend</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
